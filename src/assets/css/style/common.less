@@ -1,0 +1,139 @@
+/*一些box公共样式及ui插件样式更改--zhouqi*/
+@import '../var.less';
+
+// reset
+html,
+body{
+	background: #F8F8F8;
+	font-family: PingFang-SC-Heavy, PingFangSC-Regular, PingFang SC;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: none;
+	-webkit-overflow-scrolling: touch;
+	color: @gray333;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background-color: transparent;
+}
+img{
+    max-width: 100%;
+    vertical-align: middle;
+  }
+button{
+    margin: 0;
+    padding: 0;
+    border: 1px solid transparent;  //自定义边框
+    outline: none;    //消除默认点击蓝色边框效果
+}
+.box_frame{
+    display: flex;
+    flex-direction:column;
+    // height: 245px;
+  
+}
+.box{
+    background:#e4e4e4;
+    min-height:100%
+}
+.home{
+    padding-top: 2.9rem;
+    .home_padd{
+        padding: 0 1rem;
+    }
+}
+.flex_evenly {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .flex_start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .flex_around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+.box_frame-row{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    // height: 245px;
+  
+}
+.flex-row{
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    // height: 245px;
+  
+}
+.ruleForm{
+    padding: 0 1em;
+}
+.textEllipsis{
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/*vant的form样式修改*/
+
+.van-cell{
+    padding:inherit;
+    line-height: 2.5rem;
+    background-color:inherit;
+    height: 2.5rem;
+    border-bottom: @borderColor;
+    color: @fontColor;
+    
+   
+}
+.van-cell__right-icon{
+    height: 2.5rem;
+    line-height: 2.5rem;
+}
+.van-swipe__indicator{
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+  .van-cell__title{
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+   .van-cell-group{
+            background-color:inherit
+        }
+        .van-field__control{
+            text-align: right;
+            color: @fontColor;
+        }
+        .van-field__label{
+            width: 10em;
+            color: inherit;
+        }
+        .van-field__right-icon{
+            width: 1.2rem;
+        }
+        .van-field__label{
+            width: 7em;
+        }
+        .van-field__value{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .van-field__body{
+                width: 90%;
+            }
+            .van-field__error-message{
+                width: 35%;
+            }
+        }
+/*vant样式修改完*/
+/*一些box公共样式及ui插件样式更改--zhouqi结束*/
