@@ -2,7 +2,7 @@
     <div class="home">
         <div class="login login_title">
             <div class="login_title_img">
-                <van-image src="https://nwzimg.wezhan.cn/contents/sitefiles2026/10130673/images/4747374.png">
+                <van-image :src="src">
                     <template v-slot:error>加载失败</template>
                 </van-image>
             </div>
@@ -32,10 +32,12 @@
                     <img slot="right-icon" v-if='eye'
                         @click="changeSeen"
                         src="../assets/icons/eye-close.png"
+                        alt="图片加载失败"
                     />
                     <img slot="right-icon" v-if='!eye'
                         @click="changeSeen"
                         src="../assets/icons/eye.png"
+                        alt="图片加载失败"
                     />
                 </van-field>
             </div>
@@ -53,6 +55,7 @@
 import '../assets/css/style/login.less';
 import createDom from '../utils/createDom';
 import DialogMessage from '../components/MyComponents/DialogMessage.vue';
+import logo from '../assets/icons/logoFormssi.png';
 
 const time = new Date().getTime() + 7 * 24 * 3600 * 1000;
 // const num = /^[0-9]*$/;// 判断字符串是否只为数字[0−9]∗]∗/
@@ -65,6 +68,7 @@ export default {
       pwd: '', // 密码
       type: 'password',
       thisStyle: '',
+      src: logo,
       code: '',
       seen: 'password',
       btnAgree: true,

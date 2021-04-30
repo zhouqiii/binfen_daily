@@ -9,10 +9,6 @@
             <svg-icon iconClass="shouye" style="width:1.5rem;height:1.5rem"></svg-icon>
             <p>首页</p>
           </div>
-          <!-- <div class="item" @click="clickItem('/Commission')"
-            :class="{active: $route.path==='/Commission'}"
-            style="padding-top:.3rem"
-          > -->
           <div class="item" style="padding-top:.3rem">
             <svg-icon iconClass="renwu"></svg-icon>
             <p>任务</p>

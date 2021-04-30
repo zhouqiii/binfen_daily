@@ -10,7 +10,7 @@
             <!--1-->
             <div class="home_topselect framebox flex_start">
               <div class="home_icon">
-                <img src="../assets/icons/wode.png" style="width:80%"/>
+                <img src="../assets/icons/wode.png" style="width:80%" alt=""/>
               </div>
               <div class="home_user box_frame">
                 <div class="myinfo_user_name">你好,{{username}}</div>
@@ -62,6 +62,7 @@
 import SwiperCard from '../components/MyComponents/SwiperCard.vue';
 import SvgIcon from '../components/SvgIcon.vue';
 import '../assets/css/style/myinfo.less';
+import pic from '../assets/icons/swiper.png';
 
 export default {
   components: { SwiperCard, SvgIcon },
@@ -69,7 +70,7 @@ export default {
   data() {
     return {
       username: '',
-      image: ['http://nwzimg.wezhan.cn/contents/sitefiles2026/10130673/images/4769338.png', 'http://nwzimg.wezhan.cn/contents/sitefiles2026/10130673/images/4769338.png'],
+      image: [pic, pic],
     };
   },
   methods: {

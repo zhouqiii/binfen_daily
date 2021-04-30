@@ -2,7 +2,7 @@
   <!-- <div class="loading" v-show="loadingShow"> -->
   <div class="loading">
     <div class="loading_bg">
-      <img src="../assets/icons/icon_loading.png" alt="" class="loading_img" />
+      <img src="../assets/icons/icon_loading.png" alt="加载中..." class="loading_img" />
     </div>
   </div>
 </template>

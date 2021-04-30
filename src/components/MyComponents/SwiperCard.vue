@@ -3,7 +3,7 @@
         <div class="swiper">
             <van-swipe :autoplay="3000" :show-indicators="false">
                 <van-swipe-item v-for="(image, index) in images" :key="index">
-                    <img :src="image" :class="{active:widthImg}"/>
+                    <img :src="image" :class="{active:widthImg}" :alt="alt"/>
                 </van-swipe-item>
             </van-swipe>
         </div>
@@ -22,11 +22,13 @@ export default {
   data() {
     return {
       widthImg: false,
+      alt: '',
 
     };
   },
   mounted() {
     this.widthImg = this.classImg;
+    this.alt = `你好，${this.storage.get('username')}`;
   },
   computed: {
 
@@ -38,7 +40,6 @@ export default {
 .swiper{
     width: 100%;
     height:10rem;
-    line-height: 8rem;
     background: #999999;
     text-align: center;
     position: relative;

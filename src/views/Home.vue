@@ -9,15 +9,15 @@
           <div class="home_padd">
             <div class="home_select flex_around">
               <div @click="routeItem('/WriteDaily')">
-                <img src="../assets/icons/News.png"/>
+                <img src="../assets/icons/News.png" alt="图片加载失败"/>
                 <p>日报</p>
               </div>
               <div @click="routeItem('/WriteExtention')">
-                <img src="../assets/icons/dailyDelay.png"/>
+                <img src="../assets/icons/dailyDelay.png" alt="图片加载失败"/>
                 <p>延迟申请</p>
               </div>
              <div >
-                <img src="../assets/icons/vacation.png"/>
+                <img src="../assets/icons/vacation.png" alt="图片加载失败"/>
                 <p>请假</p>
               </div>
           </div>
@@ -27,6 +27,7 @@
 </template>
 <script>
 import SwiperCard from '../components/MyComponents/SwiperCard.vue';
+import pic from '../assets/icons/swiper.png';
 
 export default {
   components: { SwiperCard },
@@ -34,7 +35,7 @@ export default {
   data() {
     return {
       type: '0',
-      image: ['http://nwzimg.wezhan.cn/contents/sitefiles2026/10130673/images/4769338.png', 'http://nwzimg.wezhan.cn/contents/sitefiles2026/10130673/images/4769338.png'],
+      image: [pic, pic],
     };
   },
   methods: {
