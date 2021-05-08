@@ -28,11 +28,8 @@
                   </template>
                   <div v-for="(item,index) in commiList" :key="index">
                     <div>
-                      <van-radio-group v-model="radio" @change="getCommiIndex()"
-                      >
-                        <van-cell :title="item"
-                          clickable @click="getCommi(index,item.title)"
-                        >
+                      <van-radio-group v-model="radio">
+                        <van-cell :title="item" clickable >
                           <template #right-icon>
                             <van-radio :name="index" @click="getRadioIndex(index)"/>
                           </template>
@@ -76,6 +73,7 @@
                         v-model="currentStart"
                         type="time"
                         title=" "
+                        @cancel='startTimeHM = false'
                         @confirm='onConfirmStartHM'
                     />
                 </van-popup>
@@ -94,6 +92,7 @@
                         v-model="currentEnd"
                         type="time"
                         title=" "
+                        @cancel='endTimeHM = false'
                         @confirm='onConfirmEndHM'
                     />
                 </van-popup>
@@ -177,6 +176,7 @@ export default {
         .catch(() => {
         });
     },
+    // 因为需要传任务id，把任务id按顺序存在了taskList里，所以根据index判断taskId
     getRadioIndex(index) {
       this.commision = this.commiList[index];
       this.taskId = this.taskList[index];
@@ -196,9 +196,7 @@ export default {
       this.endTime = val;
       this.endTimeHM = false;
     },
-    getCommi(index, val) {
-      this.commision = val;
-    },
+
     sendFlag(val) {
       this.flagToParent = val;
       return this.flagToParent;

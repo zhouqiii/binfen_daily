@@ -2,12 +2,14 @@
   <div class="navbar">
     <van-nav-bar
       :title="title"
+      :class="{activeBg:!navBg}"
       @click-left="onClickLeft"
       @click-right="onClickRight"
     >
       <template #left>
         <slot name="back">
           <img
+              v-show="navBg"
               src="../assets/icons/icon_back@2x.png"
               alt="图片加载失败"
               class="back back_btn"
@@ -31,7 +33,8 @@ import { callAppMethod } from '../utils/commonApp';
 export default {
   name: 'NavBarBase',
   data() {
-    return {};
+    return {
+    };
   },
   props: {
     title: {
@@ -50,6 +53,10 @@ export default {
       type: String,
       default: 'rightClick',
     },
+    navBg: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     onClickRight() {
@@ -67,15 +74,24 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .navbar{
   width: 100%;
   position: fixed;
-  z-index: 1000;
+  z-index: 100;
   top:0;
+}
+.activeBg{
+  background: rgba(102, 102, 102, 1);
+  .van-nav-bar__title{
+    color: #ffffff;
+}
 }
 .back_btn {
     width:.9rem;
     height: .9rem;
+}
+.van-nav-bar__title{
+    font-size: 1.125rem !important;
 }
 </style>

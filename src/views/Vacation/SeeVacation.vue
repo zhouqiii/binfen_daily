@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <nav-bar-top title="延迟申请" @rightClick="showTime">
+        <nav-bar-top title="休假申请" @rightClick="showTime">
             <template v-slot:right>
                 <svg-icon iconClass="timelou"></svg-icon>
             </template>
@@ -28,13 +28,13 @@
               <!--延迟申请列表-->
               <div class="home_padd"  v-show="ifList">
                 <div v-for="(item,index) in commiList" :key="index" class="daily_seebox"
-                    @click="routeItem('/ExtentionDetail',index)"
+                    @click="routeItem('/VacationDetail',index)"
                 >
-                    <div class="daily_seedate">{{item.date}} {{item.time}}</div>
+                    <div class="daily_seedate">{{item.date}}  {{item.time}}</div>
                     <div class="daily_seecontent">
-                        <div class="text textEllipsis" style="width:90%">任务：{{item.taskName}}</div>
-                        <div class="text">申请日期：{{item.date}}</div>
-                        <div class="text">申请延迟工时：{{item.workerHour}}</div>
+                        <div class="vacationText">{{item.taskName}}</div>
+                        <div class="text">休假日期：{{item.date}}</div>
+                        <div class="text">休假时段：{{item.workerHour}}</div>
                         <div class="daily_seecontent_stepline">
                           <van-steps active-color="#5a5959"
                             :active="item.changestatus" active-icon="success"
@@ -53,7 +53,7 @@
               <div v-show="!ifList" class="home_noContent">
                 <div class="home_noContent_box">
                   <img src="../../assets/icons/noDelayDaily.png"/>
-                  <div>延期申请内容为空</div>
+                  <div>休假申请内容为空</div>
                   <div>请填写当日延迟申请哦~</div>
                 </div>
               </div>
@@ -108,6 +108,26 @@
                             </van-popup>
                         </div>
                     </div>
+                    <div class="typeBtn ruleForm" >
+                        <div class="formItem">
+                            <van-field
+                                v-model="vacationType"
+                                is-link
+                                readonly
+                                label="休假类型"
+                                placeholder="请选择"
+                                @click="pickVacationType = true"
+                            />
+                            <van-popup v-model="pickVacationType" round position="bottom">
+                            <van-picker
+                                show-toolbar
+                                :columns="vacationSelects"
+                                @cancel="pickVacationType = false"
+                                @confirm="onConfirmVacation"
+                            />
+                            </van-popup>
+                        </div>
+                    </div>
                     <div class="statusSelect_btn box_frame">
                       <div class="checktitle">审批结果</div>
                       <div class="statusCheckBtn box_frame-row">
@@ -135,7 +155,7 @@
             <!--固定的编辑图标-->
             <div class="home_edit box_frame">
                 <div>
-                  <svg-icon iconClass="bu" @click="routeItem('/WriteExtention')"></svg-icon>
+                  <svg-icon iconClass="bu" @click="routeItem('/WriteVacation')"></svg-icon>
                 </div>
             </div>
         </div>
@@ -147,19 +167,19 @@ import '../../assets/css/style/seeExtention.less';
 
 export default {
   components: { SvgIcon },
-  name: 'SeeExtention',
+  name: 'SeeVacation',
   data() {
     return {
       commiList: [{
-        time: '7:30', date: '2021-4-30', state: ['已申请', '审批中', '审批中'], taskName: '海外分行功能优化细化001-百姓', workerHour: '3小时', status: '0', id: '1', changestatus: '0',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '审批中', '审批中'], taskName: '事假', workerHour: '8:30~10:30', status: '0', id: '1', changestatus: '0',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '审批中'], taskName: '海外分行功能优化细化001-百姓', workerHour: '3小时', status: '1', id: '1', changestatus: '1',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '1', id: '1', changestatus: '1',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '拒绝', '审批中'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-1', id: '1', changestatus: '1',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '拒绝', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '-1', id: '1', changestatus: '1',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '拒绝'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-2', id: '1', changestatus: '2',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '拒绝'], taskName: '病假', workerHour: '8:30~10:30', status: '-2', id: '1', changestatus: '2',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '已通过'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '2', id: '1', changestatus: '2',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '已通过'], taskName: '年假', workerHour: '8:30~10:30', status: '2', id: '1', changestatus: '2',
       }],
       isLoading: false,
       show: false, // 右侧弹出框
@@ -169,10 +189,13 @@ export default {
       maxDate: new Date(),
       startTimePop: false, // 开始时间弹出框
       endTimePop: false, // 结束时间弹出框
-      applyStatus: false,
+      applyStatus: false, // 3个筛选状态
       passStatus: false,
       checkStatus: false,
-      ifList: true,
+      ifList: true, // 休假列表是否为空
+      pickVacationType: false, // 休假类型选项
+      vacationType: '', // 休假类型
+      vacationSelects: ['年假', '事假', '婚假', '产假', '陪产假', '病假', '丧假', '流产假'],
 
     };
   },
@@ -195,10 +218,16 @@ export default {
       this.endTimePop = false;
       this.endDate = `${this.formatDate(date)}`;
     },
+    // 休假类型确定按钮
+    onConfirmVacation(val) {
+      this.vacationType = val;
+      this.pickVacationType = false;
+    },
     // 重置按钮
     resetCheck() {
       this.startDate = '';
       this.endDate = '';
+      this.vacationType = '';
       this.currentDate = new Date();
       this.applyStatus = false;// 清除审核进程状态的筛选条件
       this.passStatus = false;
@@ -232,9 +261,9 @@ export default {
         this.$router.push({
           path,
           query: {
-            refuse, // 是否有拒绝状态
             id: JSON.stringify(this.commiList[val].id), // 携带id给日报详情页面，详情页面根据id查接口数据
             date: JSON.stringify(this.commiList[val].date), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date
+            refuse, // 是否有拒绝状态
           },
         });
       } else {
@@ -244,3 +273,11 @@ export default {
   },
 };
 </script>
+<style lang='less' scoped>
+.vacationText{
+    font-size: 1rem;
+}
+.typeBtn{
+    margin-top: 1rem;
+}
+</style>

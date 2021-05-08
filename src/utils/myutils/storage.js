@@ -70,8 +70,5 @@ const storage = {
     localStorage.clear();
   },
 };
-const login = () => {
-  storage.get('username');
-};
 
-export { storage, login };
+export default storage;

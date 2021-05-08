@@ -70,14 +70,13 @@ export default {
         query: {
           date: JSON.stringify(this.getdate), // 带给修改页面的默认date
           data: JSON.stringify(this.dayListInfo), // 把这一页的数据带到修改页面
-          id: this.$route.query.id, // 修改接口需要一个从日表列表传过来的id字段
+          id: this.$route.query.id, // 修改接口需要一个从日报列表传过来的id字段
         },
       });
     },
   },
   mounted() {
     this.getInfo();
-    this.$login();
   },
 };
 </script>
@@ -125,7 +124,7 @@ export default {
     display: flex;
     align-items: center;
     .sendBtn{
-      width: 50%;
+      width: 70%;
       color: #ffffff;
       height: 2rem;
       line-height: 2rem;

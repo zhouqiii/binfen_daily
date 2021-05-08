@@ -11,8 +11,8 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Login',
-    name: 'Login',
+    path: '/SignIn',
+    name: 'SignIn',
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue'),
   },
   {
@@ -59,13 +59,25 @@ const routes = [
     name: 'ChangeExtention',
     component: () => import(/* webpackChunkName: "exchangepage" */ '../views/ExtentionDaily/ChangeExtention.vue'),
   }, {
-    path: '/ExtentionEnd',
-    name: 'ExtentionEnd',
-    component: () => import(/* webpackChunkName: "extentionend" */ '../views/ExtentionDaily/ExtentionEnd.vue'),
+    path: '/SeeVacation',
+    name: 'SeeVacation',
+    component: () => import(/* webpackChunkName: "seevacationpage" */ '../views/Vacation/SeeVacation.vue'),
   }, {
-    path: '/DailyEnd',
-    name: 'DailyEnd',
-    component: () => import(/* webpackChunkName: "dailyend" */ '../views/Daily/DailyEnd.vue'),
+    path: '/VacationDetail',
+    name: 'VacationDetail',
+    component: () => import(/* webpackChunkName: "vacationdetailpage" */ '../views/Vacation/VacationDetail.vue'),
+  }, {
+    path: '/WriteVacation',
+    name: 'WriteVacation',
+    component: () => import(/* webpackChunkName: "writevacationpage" */ '../views/Vacation/WriteVacation.vue'),
+  }, {
+    path: '/CommissionDetail',
+    name: 'CommissionDetail',
+    component: () => import(/* webpackChunkName: "commissiondetailpage" */ '../views/Commission/CommissionDetail.vue'),
+  }, {
+    path: '/ApplyEnd',
+    name: 'ApplyEnd',
+    component: () => import(/* webpackChunkName: "applyendpage" */ '../views/CommonPage/ApplyEnd.vue'),
   }, {
     path: '/ChangeAccount',
     name: 'ChangeAccount',

@@ -113,8 +113,5 @@ export default {
       clearInterval(this.Loop);
     },
   },
-  mounted() {
-    // this.$login();
-  },
 };
 </script>

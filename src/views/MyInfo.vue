@@ -23,21 +23,21 @@
               <div class="box_frame-row" @click="routeItem('/SeeDaily')">
                 <div class="flex-row">
                   <svg-icon iconClass="ribao"></svg-icon>
-                  <div>查看日报</div>
+                  <div>我的日报</div>
                 </div>
                 <svg-icon iconClass="right"></svg-icon>
               </div>
               <div class="box_frame-row" @click="routeItem('/SeeExtention')">
                 <div class="flex-row">
                   <svg-icon iconClass="yanchi"></svg-icon>
-                  <div>查看延迟申请</div>
+                  <div>我的延迟申请</div>
                 </div>
                 <svg-icon iconClass="right"></svg-icon>
               </div>
-              <div class="box_frame-row">
+              <div class="box_frame-row" @click="routeItem('/SeeVacation')">
                 <div class="flex-row">
                   <svg-icon iconClass="qingjia"></svg-icon>
-                  <div>查看请假</div>
+                  <div>我的休假申请</div>
                 </div>
                 <svg-icon iconClass="right"></svg-icon>
               </div>
@@ -79,7 +79,6 @@ export default {
     },
   },
   mounted() {
-    this.$login();
     this.username = this.storage.get('username');
   },
 };

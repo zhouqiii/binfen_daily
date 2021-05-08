@@ -112,6 +112,7 @@
 </template>
 <script>
 import SvgIcon from '../../components/SvgIcon.vue';
+import '../../assets/css/style/seeDaily.less';
 
 let count = 0;
 let startTimeCheck = '';
@@ -252,111 +253,8 @@ export default {
     window.removeEventListener('scroll', this.handleScroll, true);
   },
   mounted() {
-    this.$login();
     this.resetParams('', '');
     window.addEventListener('scroll', this.handleScroll, true);
   },
 };
 </script>
-<style lang="less" scoped>
-.home_padd{
-    .daily_seebox{
-        padding-top: 2rem;
-        .daily_seedate{
-            height: 2rem;
-            line-height: 2rem;
-            font-size: .9rem;
-            font-weight: 400;
-        }
-        .daily_seecontent{
-            background: #ffffff;
-            margin-left:.9rem;
-            margin-right: .5rem;
-            padding: .5rem .5rem 1.2rem .9rem;
-            border-radius:1rem;
-            .box_frame-row{
-                height: 2rem;
-                line-height: 2rem;
-                .daily_seecontent_week{
-                    font-size: 1rem;
-                }
-                .daily_seecontent_state{
-                    font-size: .9rem;
-                    color: #858585;
-                }
-            }
-            .date{
-                line-height: 1.5rem;
-                height: 1.5rem;
-                font-size: .7rem;
-                color: black;
-            }
-            .text{
-                line-height: 1.5rem;
-                height: 1.5rem;
-                font-size: .8rem;
-                color: #5a5959;
-            }
-        }
-    }
-}
-.home_pop{
-    .contentBox{
-        padding-top: 1rem;
-        .ruleForm{
-            background: #ffffff;
-        }
-        .timeSelect_btn{
-            margin-top: 6rem;
-            height: 2rem;
-            line-height: 2rem;
-            width: 100%;
-            font-size: .875rem;
-            text-align: center;
-            .timeSelect_btn_cancel{
-                width: 30%;
-                color: inherit;
-                background: #ffffff;
-                border-radius:10% ;
-            }
-            .timeSelect_btn_confirm{
-                width: 30%;
-                background: #0099ff;
-                color: #ffffff;
-                border-radius:10% ;
-            }
-        }
-    }
-}
-.home_edit{
-    position: fixed;
-    right: 0;
-    top: 50%;
-    width: 12%;
-    text-align: center;
-    div{
-         margin-top: .5rem;
-         width: 2.4rem;
-         height: 2.4rem;
-         line-height: 2.4rem;
-         background: #ffffff;
-         -moz-border-radius: 1.2rem;
-         -webkit-border-radius: 1.2rem;
-         border-radius: 12rem;
-         border: 1px solid #333333;
-    }
-
-}
-.refresh_text{
-    margin-left: .5rem;
-    color: #333333;
-}
-.van-cell{
-    line-height: 3rem;
-    height: 3rem;
-}
-.van-cell__right-icon{
-    height: 3rem;
-    line-height: 3rem;
-}
-</style>

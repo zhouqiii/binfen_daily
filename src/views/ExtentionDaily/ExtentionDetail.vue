@@ -2,8 +2,8 @@
     <div class="box">
         <nav-bar-top title="延迟申请详情"></nav-bar-top>
         <div class="home">
-            <div class="home_detail_date box_frame-row">
-                <span>申请日期</span>
+            <div class="home_detail_date box_frame-row" v-show="ifRefuse">
+                <span>拒绝原因：</span>
                 <span>{{getdate}}</span>
             </div>
             <div class="home_detail_content">
@@ -16,12 +16,16 @@
                         <span>任务</span>
                         <span class="textEllipsis" >{{commision}}</span>
                     </div>
+                     <div class="formItem box_frame-row">
+                        <span>申请日期</span>
+                        <span>{{date}}</span>
+                    </div>
                     <div class="formItem box_frame-row">
-                        <span>起始时间</span>
+                        <span>延迟申请起始时间</span>
                         <span>{{workHourStart}}</span>
                     </div>
                     <div class="formItem box_frame-row">
-                        <span>截止时间</span>
+                        <span>延迟申请截止时间</span>
                         <span>{{workHourEnd}}</span>
                     </div>
                     <div class="box_frame">
@@ -35,9 +39,9 @@
                 </div>
             </div>
         </div>
-        <div class="change_btn">
+        <!-- <div class="change_btn">
           <div class="sendBtn" @click="changeBtn">修改延迟申请</div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -48,29 +52,23 @@ export default {
   name: 'ExtentionDetail',
   data() {
     return {
-      getdate: '4月25日',
+      getdate: '加班时间有误，重新填写',
       projectTeam: '缤纷生活',
       commision: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
       workHourStart: '6:30',
       workHourEnd: '6:30',
       workContent: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
+      date: '2021-4-22',
+      ifRefuse: false,
     };
   },
   methods: {
-    routeItem(path) {
-      const obj = {};
-      obj.projectTeam = this.projectTeam;
-      obj.commision = this.commision;
-      obj.workContent = this.workContent;
-      obj.workHourEnd = this.workHourEnd;
-      obj.workHourStart = this.workHourStart;
-      this.$router.push({
-        path,
-        query: {
-          date: JSON.stringify(this.getdate),
-          data: JSON.stringify(obj),
-        },
-      });
+    getInfo() {
+      if (this.$route.query.refuse > 0) { // 有拒绝状态
+        this.ifRefuse = true;
+      } else {
+        this.ifRefuse = false;
+      }
     },
     changeBtn() {
       this.show = false;
@@ -86,7 +84,7 @@ export default {
     },
   },
   mounted() {
-    this.$login();
+    this.getInfo();
   },
 };
 </script>
@@ -134,7 +132,7 @@ export default {
     display: flex;
     align-items: center;
     .sendBtn{
-      width: 50%;
+      width: 70%;
       color: #ffffff;
       height: 2rem;
       line-height: 2rem;

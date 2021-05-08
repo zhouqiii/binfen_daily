@@ -174,7 +174,10 @@ export default {
               );
             } else {
               this.$router.push({
-                path: '/DailyEnd',
+                path: '/ApplyEnd',
+                query: {
+                  pageend: 0,
+                },
               });
             }
           })
@@ -184,7 +187,6 @@ export default {
     },
   },
   mounted() {
-    this.$login();
     this.getProject();// 为了添加信息框时查项目组
   },
 };

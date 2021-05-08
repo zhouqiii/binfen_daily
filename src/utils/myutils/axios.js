@@ -3,7 +3,7 @@ import axios from 'axios';
 // 引入Loading组件和添加dom的方法
 import Loading from '@/components/Loading.vue';
 import createDom from '@/utils/createDom';
-import { storage } from './storage';
+import storage from './storage';
 // import { callAppMethod } from '@/utils/commonApp';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 

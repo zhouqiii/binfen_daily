@@ -4,11 +4,11 @@
       <div class="dialog_content">
         <div class="text_rule"><div v-html="content"></div></div>
         <div class="dialog_btn flex_evenly">
-          <div class="applyBtn comfirmbtn" @click="remain" v-show="showcancelThe"
+          <!-- <div class="applyBtn comfirmbtn" @click="remain" v-show="showcancelThe"
             :style="thisstyle"
-          >取消</div>
+          >取消</div> -->
           <div class="applyBtn comfirmbtn" @click="remainApply"
-            :style="thisstyle" v-show="showBtn"
+             v-show="showBtn"
           >确定</div>
           <div class="applyBtn comfirmbtn" @click="remain" v-show="!showBtn">知道了</div>
         </div>
@@ -38,7 +38,7 @@ export default {
   methods: {
     remainApply() {
       this.remove();
-      router.push({ name: 'Login' });
+      router.push({ name: 'SignIn' });
     },
     remain() {
       this.remove();
@@ -48,13 +48,13 @@ export default {
   mounted() {
   },
   watch: {
-    showcancelThe: {
-      handler(newval) {
-        if (newval) {
-          this.thisstyle = 'width:30%';
-        }
-      },
-    },
+    // showcancelThe: {
+    //   handler(newval) {
+    //     if (newval) {
+    //       this.thisstyle = 'width:30%';
+    //     }
+    //   },
+    // },
   },
 
 };

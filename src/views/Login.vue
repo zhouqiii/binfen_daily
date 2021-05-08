@@ -61,7 +61,7 @@ const time = new Date().getTime() + 7 * 24 * 3600 * 1000;
 // const num = /^[0-9]*$/;// 判断字符串是否只为数字[0−9]∗]∗/
 
 export default {
-  name: 'Login',
+  name: 'SignIn',
   data() {
     return {
       phone: '', // 电话号码
@@ -172,8 +172,6 @@ export default {
         }
       },
     },
-  },
-  mounted() {
   },
 
 };

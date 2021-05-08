@@ -43,16 +43,15 @@
           </div>
         </div>
         <div class="submit_btn">
-          <div class="sendBtn" @click="sendData">提交申请</div>
+          <div class="sendBtn" @click="submitData">提交申请</div>
         </div>
     </div>
 </template>
 <script>
 import '../../assets/css/style/writeDaily.less';
-import createDom from '@/utils/createDom';
 import SvgIcon from '../../components/SvgIcon.vue';
 import WorkInfo from '../../components/MyComponents/WorkInfo.vue';
-// import { callAppMethod } from '@/utils/commonApp';
+import createDom from '../../utils/createDom';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
 let count = 0;
@@ -105,17 +104,61 @@ export default {
       count += 1;
       this.editList.push({ id: count });
     },
-    // 提交日报按钮
-    sendData() {
-      createDom(
-        DialogMessage,
-        {},
-        {
-          content: `<div style="text-align:center">暂未开放延迟申请！</div>
-                    `,
-          showBtn: false,
+    // 提交延迟申请按钮
+    submitData() {
+      const infoList = [];// 用来存放所有申请info
+      Array.prototype.forEach.call(this.$refs.child, (item) => {
+        const obj = {};
+        obj.taskId = parseInt(item.taskId, 10);// 任务id
+        obj.taskName = item.commision;// 任务名字
+        obj.projectId = item.projectId;// 项目组id
+        obj.projectName = item.projectTeam;// 项目组名字
+        obj.workerInfo = item.workContent;// 工作内容
+        obj.startTime = item.startTime;// 开始时间
+        obj.endTime = item.endTime;// 结束时间
+        infoList.push(obj);
+      });
+      // this.sendData(infoList);
+      this.$router.push({
+        path: '/ApplyEnd',
+        query: {
+          pageend: 1,
         },
-      );
+      });
+    },
+    // 提交延迟申请信息
+    sendData(data) {
+      this.requestAxios({
+        url: '/api/', // 修改提交延迟申请接口
+        data: {
+          workDate: this.startDate, // 修改字段
+          dailyDetailList: data,
+        },
+        method: 'post',
+      })
+        .then((res) => {
+          if (!res.success) {
+            createDom(
+              DialogMessage,
+              {},
+              {
+                content: `<div style="text-align:center">${res.message}</div>
+                          <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
+                          `,
+                showBtn: false, // 知道了
+              },
+            );
+          } else {
+            this.$router.push({
+              path: '/ApplyEnd',
+              query: {
+                pageend: 1,
+              },
+            });
+          }
+        })
+        .catch(() => {
+        });
     },
     // 长按删除的作用
     touchinUk(index) {
@@ -126,7 +169,6 @@ export default {
         }).then(() => {
           this.editList.splice(index, 1);
         }).catch(() => {
-          // on cancel
         });
       }, 1000);
     },
@@ -136,7 +178,6 @@ export default {
     },
   },
   mounted() {
-    this.$login();
     this.getProject();
   },
 };

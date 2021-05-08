@@ -16,9 +16,9 @@
                 <img src="../assets/icons/dailyDelay.png" alt="图片加载失败"/>
                 <p>延迟申请</p>
               </div>
-             <div >
+             <div @click="routeItem('/WriteVacation')">
                 <img src="../assets/icons/vacation.png" alt="图片加载失败"/>
-                <p>请假</p>
+                <p>休假申请</p>
               </div>
           </div>
           </div>
@@ -43,15 +43,16 @@ export default {
       this.$router.push(path);
     },
   },
-  mounted() {
-    this.$login();
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll, true);
   },
 };
 </script>
 <style lang="less" scoped>
 .home_select{
   position: relative;
-  z-index: 999;
+  z-index: 1;
   text-align: center;
   width: 95%;
   margin: auto;

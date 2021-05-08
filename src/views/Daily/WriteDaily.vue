@@ -87,11 +87,24 @@ export default {
         method: 'post',
       })
         .then((res) => {
-          if (res.data) {
-            Array.prototype.forEach.call(res.data, (item) => {
-              this.teamSelects.push(item.productName);
-              this.teamList.push(item.productId);
-            });
+          if (res.success) {
+            if (res.data) {
+              Array.prototype.forEach.call(res.data, (item) => {
+                this.teamSelects.push(item.productName);
+                this.teamList.push(item.productId);
+              });
+            }
+          } else {
+            createDom(
+              DialogMessage,
+              {},
+              {
+                content: `<div style="text-align:center">${res.message}</div>
+                          <div style="text-align:center">请重新登陆！</div>
+                        `,
+                showBtn: true,
+              },
+            );
           }
         })
         .catch(() => {
@@ -179,7 +192,10 @@ export default {
               );
             } else {
               this.$router.push({
-                path: '/DailyEnd',
+                path: '/ApplyEnd',
+                query: {
+                  pageend: 0,
+                },
               });
             }
           })
@@ -191,19 +207,8 @@ export default {
     touchinUk(index) {
       clearInterval(this.Loop); // 再次清空定时器，防止重复注册定时器
       this.Loop = setTimeout(() => {
-        // createDom(
-        //   DialogMessage,
-        //   {},
-        //   {
-        //     content: `
-        //               <div style="text-align:center;margin-top:.5rem">确定删除该任务？</div>
-        //             `,
-        //     showBtn: true,
-        //     showcancelThe: true, // 取消
-        //   },
-        // );
         this.$dialog.confirm({
-          message: '是否删除',
+          message: '是否删除?',
         }).then(() => {
           this.editList.splice(index, 1);
         }).catch(() => {
@@ -216,7 +221,6 @@ export default {
     },
   },
   mounted() {
-    this.$login();
     this.getProject();
     this.sendDate = this.formatDateSend(new Date());
   },

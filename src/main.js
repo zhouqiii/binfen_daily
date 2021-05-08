@@ -3,13 +3,13 @@ import
 {
   NavBar, Popup, Dialog, Icon, Tab, Tabs, Picker, Toast,
   PasswordInput, NumberKeyboard, Form, Field, Calendar, Image, DatetimePicker, PullRefresh,
-  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay,
+  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader,
 }
   from 'vant';
 
 import { requestAxios } from '@/utils/myutils/axios';
-import { requestLogin } from '@/utils/myutils/login';
-import { login, storage } from '@/utils/myutils/storage';
+import { requestLogin } from '@/utils/myutils/loginRequest';
+import storage from '@/utils/myutils/storage';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -43,7 +43,10 @@ Vue.use(NavBar)
   .use(RadioGroup)
   .use(Cell)
   .use(Overlay)
-  .use(Calendar);
+  .use(Calendar)
+  .use(Step)
+  .use(Steps)
+  .use(Uploader);
 
 // 组件自己封装的公用组件
 Vue.component('nav-bar-bottom', NavBarBottom);
@@ -53,7 +56,6 @@ Vue.component('nav-bar-top', NavBarTop);
 Vue.prototype.requestAxios = requestAxios;
 // 全局引入封装的axios
 Vue.prototype.requestLogin = requestLogin;
-Vue.prototype.$login = login;
 Vue.prototype.storage = storage;
 Vue.config.productionTip = false;
 
