@@ -32,6 +32,7 @@ const storage = {
         {
           content: `<div style="text-align:center">无账号信息，请先去登陆!</div>
                     `,
+          confirmBtn: true,
         },
       );
     }
@@ -54,6 +55,7 @@ const storage = {
           {
             content: `<div style="text-align:center">账号过期，请重新登陆!</div>
                      `,
+            confirmBtn: true,
           },
         );
       }

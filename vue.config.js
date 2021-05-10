@@ -4,7 +4,7 @@ const resolve = (dir) => path.join(__dirname, dir);
 module.exports = {
   publicPath: './',
   // 后续开发直接改为生产包名
-  outputDir: 'binfen_daily',
+  outputDir: 'Delivery2',
   productionSourceMap: false,
   css: {
     loaderOptions: {
@@ -46,16 +46,16 @@ module.exports = {
       });
   },
   devServer: {
-    proxy: {
-      '/api': {
-        target: 'https://alex188.cn/web',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-      },
-    },
+    // proxy: {
+    //   // '/api': {
+    //   //   target: 'https://alex188.cn/web',
+    //   //   changeOrigin: true,
+    //   //   ws: true,
+    //   //   pathRewrite: {
+    //   //     '^/api': '',
+    //   //   },
+    //   // },
+    // },
     // app是一个express的实例
 
     before(app) {

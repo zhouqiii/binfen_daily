@@ -10,7 +10,7 @@
         </div>
         <div class="login login_input">
             <div>
-                <div>手机号</div>
+                <div>用户名</div>
                 <van-field v-model="phone"
                     class="userinput"
                     placeholder="请输入手机号"
@@ -125,7 +125,7 @@ export default {
     // 登陆按钮
     sendLogin() {
       this.requestLogin({
-        url: '/api/admin/login',
+        url: '/admin/login',
         data: {
           password: this.pwd,
           username: this.phone,
@@ -141,6 +141,7 @@ export default {
                 content: `<div style="text-align:center">${res.message}</div>
                           <div style="text-align:center;margin-top:.5rem">请重新输入！</div>
                           `,
+                knowBtn: true,
               },
             );
           } else {

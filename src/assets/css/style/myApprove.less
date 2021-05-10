@@ -1,0 +1,107 @@
+.myapprovehome{
+    padding-bottom: 5rem;
+    font-size: .8rem;
+    .tab_select{
+        .van-tabs__wrap{
+            border-bottom: 1px solid #cccccc;
+        }
+        .van-tabs__nav{
+            background: inherit;
+            .van-tab{
+                color: #999999;
+            }
+            .van-tabs__line{
+                width: 5rem;
+                background-color: #333333;
+            }
+            .van-tab--active{
+                color: black;
+            }
+        }
+        .van-tabs__content{
+            height: 23rem;
+            overflow-y: hidden;
+            .van-tab__pane{
+                height: 100%;
+                overflow-y: auto;
+            }
+        }
+        .list_box{
+            background: rgba(242, 242, 242, 1);
+            border-radius: .2rem;
+            margin-top: .5rem;
+            padding: .3rem .5rem;
+            .item{
+                height: 1.4rem;
+                line-height: 1.4rem;
+            }
+            .span_title{
+                font-size: .9rem;
+            }
+            .span_imapprove{
+                width: 5rem;
+                background: #333333;
+                border-radius: 1rem;
+                text-align: center;
+               font-size: .875rem;
+               color: #ffffff;
+            }
+        }
+        .home_noContent{
+            .home_noContent_box{
+                padding: 20% 0;
+                text-align: center;
+                font-size: .8rem;
+                img{
+                    margin-bottom: 5%;
+                }
+            }
+        }
+    }
+}
+.home_edit{
+    position: fixed;
+    right: 0;
+    top: 60%;
+    width: 20%;
+    text-align: center;
+    z-index: 120;
+    font-size: .8rem;
+    div{
+         margin-top: .5rem;
+         width: 3.5rem;
+         height: 3.5rem;
+         line-height: 3.5rem;
+         background: #ffffff;
+         -moz-border-radius: 1.2rem;
+         -webkit-border-radius: 1.2rem;
+         border-radius: 12rem;
+         border: 1px solid #5a5959;
+    }
+
+}
+  /*vant时间线样式*/
+  .van-step__circle{
+    width: .8rem;
+    height: .8rem;
+    background-color: #d3d3d3;
+  }
+  .van-step__title{
+      color:#5a5959
+  }
+  .van-step__icon--active{
+      font-size: 1rem !important;
+  }
+  .van-steps--horizontal {
+      padding: 0 1rem;
+      background: inherit;
+      .van-step__circle-container{
+          background: inherit;
+      }
+      .van-step__line{
+          background-color: #d3d3d3;
+      }
+      .van-steps__items{
+          padding-bottom: .6rem;
+      }
+  }

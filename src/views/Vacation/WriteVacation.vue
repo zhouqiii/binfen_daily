@@ -251,7 +251,7 @@ export default {
     // 提交延迟申请信息
     sendData(data) {
       this.requestAxios({
-        url: '/api/', // 修改提交延迟申请接口
+        url: '', // 修改提交延迟申请接口
         data: {
           workDate: this.startDate, // 修改字段
           dailyDetailList: data,
@@ -267,7 +267,7 @@ export default {
                 content: `<div style="text-align:center">${res.message}</div>
                           <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
                           `,
-                showBtn: false, // 知道了
+                knowBtn: true, // 知道了
               },
             );
           } else {

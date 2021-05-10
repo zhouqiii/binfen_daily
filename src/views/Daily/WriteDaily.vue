@@ -83,7 +83,7 @@ export default {
   methods: {
     getProject() {
       this.requestAxios({
-        url: '/api/businessProduct/listAll',
+        url: '/businessProduct/listAll',
         method: 'post',
       })
         .then((res) => {
@@ -102,7 +102,7 @@ export default {
                 content: `<div style="text-align:center">${res.message}</div>
                           <div style="text-align:center">请重新登陆！</div>
                         `,
-                showBtn: true,
+                confirmBtn: true,
               },
             );
           }
@@ -156,7 +156,7 @@ export default {
           {
             content: `<div style="text-align:center">填写工时不足8小时，请检查工时</div>
                     `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       } else if (hour > 8) {
@@ -166,12 +166,12 @@ export default {
           {
             content: `<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>
                     `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       } else {
         this.requestAxios({
-          url: '/api/workDaily/save',
+          url: '/workDaily/save',
           data: {
             workDate: this.sendDate,
             dailyDetailList: infoList,
@@ -187,7 +187,7 @@ export default {
                   content: `<div style="text-align:center">${res.message}</div>
                           <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
                           `,
-                  showBtn: false, // 知道了
+                  knowBtn: true, // 知道了
                 },
               );
             } else {

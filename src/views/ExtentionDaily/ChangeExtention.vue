@@ -82,7 +82,7 @@ export default {
           {
             content: `<div style="text-align:center">填写工时不足8小时，请检查工时</div>
                     `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       } else if (hour > 8) {
@@ -92,7 +92,7 @@ export default {
           {
             content: `<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>
                     `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       }

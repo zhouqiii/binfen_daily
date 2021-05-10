@@ -155,7 +155,7 @@ export default {
       this.projectTeam = value;
       this.showPickerTeam = false;
       this.requestAxios({
-        url: '/api/businessTask/taskList',
+        url: '/businessTask/taskList',
         data: {
           productId: this.projectId,
         },

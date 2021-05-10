@@ -37,7 +37,7 @@
                         <div class="text">休假时段：{{item.workerHour}}</div>
                         <div class="daily_seecontent_stepline">
                           <van-steps active-color="#5a5959"
-                            :active="item.changestatus" active-icon="success"
+                            :active="item.changestatus"
                           >
                             <van-step v-for="(st,key) in item.state" :key="key">{{st}}</van-step>
                           </van-steps>

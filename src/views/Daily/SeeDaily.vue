@@ -139,7 +139,7 @@ export default {
     getListData(start, end) {
       count += 1;
       this.requestAxios({
-        url: '/api/workDaily/getListByPage',
+        url: '/workDaily/getListByPage',
         data: {
           pageNum: count,
           pageSize: 5,

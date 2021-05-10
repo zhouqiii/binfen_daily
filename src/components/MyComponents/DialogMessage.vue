@@ -4,13 +4,15 @@
       <div class="dialog_content">
         <div class="text_rule"><div v-html="content"></div></div>
         <div class="dialog_btn flex_evenly">
-          <!-- <div class="applyBtn comfirmbtn" @click="remain" v-show="showcancelThe"
-            :style="thisstyle"
-          >取消</div> -->
+          <!--给一键审批使用的按钮-->
+          <div v-show="selectBtn" class="btn_select flex_around">
+            <div class="selBtn selectCancel" @click="remain">取消</div>
+            <div class="selBtn selectConfirm" @click="sendData">确定</div>
+          </div>
           <div class="applyBtn comfirmbtn" @click="remainApply"
-             v-show="showBtn"
+             v-show="confirmBtn"
           >确定</div>
-          <div class="applyBtn comfirmbtn" @click="remain" v-show="!showBtn">知道了</div>
+          <div class="applyBtn comfirmbtn" @click="remain" v-show="knowBtn">知道了</div>
         </div>
       </div>
     </div>
@@ -28,7 +30,9 @@ export default {
       title: '',
       content: '',
       classNext: '',
-      showBtn: true,
+      confirmBtn: false, // 用哪个按钮，传哪个为true
+      knowBtn: false,
+      selectBtn: false,
       classScroll: '',
       showDelete: false,
       showcancelThe: false,
@@ -36,6 +40,18 @@ export default {
     };
   },
   methods: {
+    // 一键审批弹框确定按钮
+    sendData() {
+      this.remove();
+      router.push({
+        name: 'Commission',
+        params: { // 为了跳转到我的审核-我已审核
+          tabIndexGive: 1,
+          activeGive: 1,
+
+        },
+      });
+    },
     remainApply() {
       this.remove();
       router.push({ name: 'SignIn' });

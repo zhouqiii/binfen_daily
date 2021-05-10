@@ -80,7 +80,7 @@ export default {
             content: `<div style="text-align:center">两次密码输入不一致！</div>
                           
                           `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       } else if (this.oldPsw === this.newPsw) {
@@ -91,13 +91,13 @@ export default {
             content: `<div style="text-align:center">新密码不能与旧密码相同！</div>
                           
                           `,
-            showBtn: false,
+            knowBtn: true,
           },
         );
       } else {
         const name = this.storage.get('username');
         this.requestAxios({
-          url: '/api/admin/updatePassword',
+          url: '/admin/updatePassword',
           data: {
             newPassword: this.newPsw,
             oldPassword: this.oldPsw,
@@ -114,6 +114,7 @@ export default {
                   content: `<div style="text-align:center">密码已修改，请重新登陆！</div>
                           
                           `,
+                  confirmBtn: true,
                 },
               );
             } else {
@@ -124,7 +125,7 @@ export default {
                   content: `<div style="text-align:center">密码修改失败，请重试！</div>
                           
                           `,
-                  showBtn: false,
+                  knowBtn: true,
                 },
               );
             }

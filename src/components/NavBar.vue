@@ -8,12 +8,13 @@
     >
       <template #left>
         <slot name="back">
-          <img
-              v-show="navBg"
-              src="../assets/icons/icon_back@2x.png"
-              alt="图片加载失败"
+          <svg-icon
+              v-show="navIcon"
+              iconClass="left"
+              :class="{activeBg:!navBg}"
               class="back back_btn"
-          />
+          >
+          </svg-icon>
         </slot>
       </template>
       <template #right>
@@ -29,8 +30,10 @@
 ** onClickRight 右侧按钮点击
 */
 import { callAppMethod } from '../utils/commonApp';
+import SvgIcon from './SvgIcon.vue';
 
 export default {
+  components: { SvgIcon },
   name: 'NavBarBase',
   data() {
     return {
@@ -54,6 +57,10 @@ export default {
       default: 'rightClick',
     },
     navBg: {
+      type: Boolean,
+      default: true,
+    },
+    navIcon: {
       type: Boolean,
       default: true,
     },
@@ -83,6 +90,7 @@ export default {
 }
 .activeBg{
   background: rgba(102, 102, 102, 1);
+  color: #ffffff;
   .van-nav-bar__title{
     color: #ffffff;
 }

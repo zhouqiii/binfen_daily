@@ -53,7 +53,7 @@ export default {
   methods: {
     getInfo() {
       this.requestAxios({
-        url: `/api/workDaily/findParam/${JSON.parse(this.$route.query.id)}`,
+        url: `/workDaily/findParam/${JSON.parse(this.$route.query.id)}`,
         method: 'post',
       })
         .then((res) => {

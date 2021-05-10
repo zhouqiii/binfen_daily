@@ -1,18 +1,22 @@
 <template>
     <div>
-      <nav-bar-top title="任务" :navBg='navBg'></nav-bar-top>
+      <nav-bar-top title="任务" :navBg='navBg' :navIcon='navIcon'></nav-bar-top>
       <nav-bar-bottom></nav-bar-bottom>
       <div class="home">
         <!--头部我的任务我的审核-->
         <div class="commi_manager" v-show="ifManager">
           <div class="commi_manager_bg"></div>
           <div class="commi_manager_tab flex_around">
-            <div class="commi_manager_tabCon" @click="tabIndex=0" :class="{changeBg:tabIndex===0}">
+            <div class="commi_manager_tabCon" @click="tabIndexChange(0)"
+              :class="{changeBg:tabIndex===0}"
+            >
               <svg-icon iconClass="commirenwuTH" class="commi"></svg-icon>
               <div class="mytext">我的任务</div>
             </div>
             <div class="line"></div>
-            <div class="commi_manager_tabCon" @click="tabIndex=1" :class="{changeBg:tabIndex===1}">
+            <div class="commi_manager_tabCon" @click="tabIndexChange(1)"
+              :class="{changeBg:tabIndex===1}"
+            >
               <svg-icon iconClass="commishenpi" class="commi"></svg-icon>
               <div class="mytext">我的审核</div>
             </div>
@@ -26,7 +30,7 @@
           </div>
            <!--我的审核-->
           <div v-show="tabIndex===1">
-            11
+            <my-approve :approveTab="approveTab"></my-approve>
           </div>
         </div>
       </div>
@@ -36,16 +40,37 @@
 import '../assets/css/style/commission.less';
 import SvgIcon from '../components/SvgIcon.vue';
 import MyCommission from '../components/MyComponents/MyCommission.vue';
+import MyApprove from '../components/MyComponents/MyApprove.vue';
 
 export default {
-  components: { SvgIcon, MyCommission },
+  components: { SvgIcon, MyCommission, MyApprove },
   name: 'Commission',
   data() {
     return {
       navBg: false, // header背景色
+      navIcon: false, // header是否有向左icon
       tabIndex: 0, // 我的任务/我的审核切换添加背景色
-      ifManager: true,
+      ifManager: true, // 普通员工还是经理
+      approveTab: 0, // 是已审核还是待审核// 这里是为了从拒绝页面跳转过来使用
     };
+  },
+  methods: {
+    tabIndexChange(val) {
+      this.tabIndex = val;
+    },
+  },
+  mounted() {
+    const index = this.$route.params.tabIndexGive;// 这里是为了从拒绝页面跳转过来使用
+    if (index) {
+      this.tabIndexChange(index);
+    }
+    if (this.ifManager === false) { // 当是普通员工是，页面多展示一行任务数据
+      const tag = document.getElementsByClassName('van-tabs__content');
+      tag[0].style = 'height:30rem';
+    }
+  },
+  created() {
+    this.approveTab = this.$route.params.activeGive;// 这里是为了从拒绝页面跳转过来使用
   },
 };
 </script>

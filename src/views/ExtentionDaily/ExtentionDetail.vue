@@ -78,7 +78,7 @@ export default {
         {
           content: `<div style="text-align:center">暂不开放延迟申请修改页面！</div>
                     `,
-          showBtn: false,
+          knowBtn: true,
         },
       );
     },

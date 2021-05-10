@@ -8,7 +8,7 @@ import storage from './storage';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
 export const instance = axios.create({
-  baseURL: '', // process.env.NODE_ENV === 'development'?'https://alex188.cn/AppPrj1/cgi.do?txnId=2APO200001&dns=628&gtype=9&attest=-339418059&imei=124545':'/AppPrj',
+  baseURL: process.env.NODE_ENV === 'development' ? 'https://alex188.cn/web' : 'https://alex188.cn/web',
   timeout: 15000,
 });
 let ld;
@@ -33,6 +33,7 @@ instance.interceptors.response.use((response) => {
     {
       content: `<div style="text-align:center">请求异常！</div>
                     `,
+      knowBtn: true,
     },
   );
   return Promise.reject(response.data.message);
