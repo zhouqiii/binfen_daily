@@ -30,10 +30,24 @@
           </div>
            <!--我的审核-->
           <div v-show="tabIndex===1">
-            <my-approve :approveTab="approveTab"></my-approve>
+            <my-approve :approveTab="approveTab" ref="chaildApprove"
+              v-on:childByValue="allApproveAgree"
+            ></my-approve>
           </div>
         </div>
       </div>
+      <!--确定一键审批的弹框-->
+      <van-overlay :show="show" @click="show = false">
+        <div class="wrapper" @click.stop>
+          <div class="dialog_box">
+            <div class="btn_title">确定全部申请通过？</div>
+            <div class="btn_select flex_around">
+              <div class="selBtn selectCancel" @click="remain">取消</div>
+              <div class="selBtn selectConfirm" @click="changeData">确定</div>
+            </div>
+          </div>
+        </div>
+      </van-overlay>
     </div>
 </template>
 <script>
@@ -52,14 +66,32 @@ export default {
       tabIndex: 0, // 我的任务/我的审核切换添加背景色
       ifManager: true, // 普通员工还是经理
       approveTab: 0, // 是已审核还是待审核// 这里是为了从拒绝页面跳转过来使用
+      show: false, // 一键审批的遮罩
     };
   },
   methods: {
     tabIndexChange(val) {
       this.tabIndex = val;
     },
+    // 一键审批按钮
+    allApproveAgree(val) {
+      this.approveTab = val;// 保持approveTab和激活待审核还是已审核的active保持一致
+      this.show = true;
+    },
+    // 弹框的取消按钮
+    remain() {
+      this.show = false;
+    },
+    // 弹框的确定按钮
+    changeData() {
+      this.approveTab = 1;
+      this.show = false;
+    },
   },
   mounted() {
+    // console.log(this.$store.state.module3.tabIndex);
+    // this.$store.commit('changeTabIndex', 1);
+    // console.log(this.$store.state.module3.tabIndex);
     const index = this.$route.params.tabIndexGive;// 这里是为了从拒绝页面跳转过来使用
     if (index) {
       this.tabIndexChange(index);
@@ -70,7 +102,9 @@ export default {
     }
   },
   created() {
-    this.approveTab = this.$route.params.activeGive;// 这里是为了从拒绝页面跳转过来使用
+    if (this.$route.params.activeGive) {
+      this.approveTab = this.$route.params.activeGive;
+    }// 这里是为了从拒绝页面跳转过来使用
   },
 };
 </script>

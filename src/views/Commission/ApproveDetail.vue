@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="home_detail_btn flex_around">
+            <div class="home_detail_btn flex_around" v-show="ifAgreeBtn">
                 <div class="approve_btn refuse" @click="routeItem('/MyApproveRefuse')">
                     拒绝
                 </div>
@@ -63,6 +63,7 @@ export default {
       workHourEnd: '6:30',
       workContent: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
       date: '2021-4-22',
+      ifAgreeBtn: false,
     };
   },
   methods: {
@@ -85,6 +86,11 @@ export default {
   },
   mounted() {
     this.getInfo();
+    if (this.$route.query.data === '1') { // 我的审核-已审核跳转过来的
+      this.ifAgreeBtn = true;
+    } if (this.$route.query.data === '2') {
+      this.ifAgreeBtn = false;
+    }
   },
 };
 </script>

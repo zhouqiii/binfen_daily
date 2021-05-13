@@ -7,28 +7,28 @@
               <span>{{getdate}}</span>
           </div>
           <div class="home_detail_content">
-            <div class="ruleForm">
-              <div class="formItem">
+            <div class="ruleFormVacation">
+              <div class="formItemVacation">
                   <div class="vacation_detail_title">休假类型:</div>
                   <div class="vacation_detail_sectitle">{{type}}</div>
               </div>
-              <div class="formItem">
+              <div class="formItemVacation">
                   <div class="vacation_detail_title">休假日期:</div>
                   <div class="vacation_detail_sectitle">{{date}}</div>
               </div>
-                <div class="formItem">
+                <div class="formItemVacation">
                   <div class="vacation_detail_title">休假时段:</div>
                   <div class="vacation_detail_sectitle">{{time}}</div>
               </div>
-                <div class="formItem">
+                <div class="formItemVacation">
                   <div class="vacation_detail_title">休假原因:</div>
                   <div class="vacation_detail_sectitle">{{reason}}</div>
               </div>
-              <div class="formItem">
+              <div class="formItemVacation">
                   <div class="vacation_detail_title">工作交接:</div>
                   <div class="vacation_detail_sectitle">{{worker}}</div>
               </div>
-              <div class="formItem">
+              <div class="formItemVacation">
                 <div class="vacation_detail_title">图片上传:</div>
                 <div class="vacation_detail_img box_frame-row">
                     <div v-for="(item,index) in imgList" :key="index" class="imageDiv">

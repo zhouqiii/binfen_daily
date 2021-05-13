@@ -73,6 +73,7 @@
                         v-model="currentStart"
                         type="time"
                         title=" "
+                        :formatter="formatterTime"
                         @cancel='startTimeHM = false'
                         @confirm='onConfirmStartHM'
                     />
@@ -92,13 +93,14 @@
                         v-model="currentEnd"
                         type="time"
                         title=" "
+                        :formatter="formatterTime"
                         @cancel='endTimeHM = false'
                         @confirm='onConfirmEndHM'
                     />
                 </van-popup>
               </div>
             </div>
-            <div class="formItem">
+            <div>
               <div class="workTitle">今日工作</div>
               <van-field
                 class="textareaEdit"
@@ -127,18 +129,18 @@ export default {
       workHour: '', // 工作小时
       showPickerHour: false,
       hourSelects: ['2小时', '4小时', '6小时', '8小时'],
-      activeNames: ['0'],
+      activeNames: ['1'],
       commiList: [],
       radio: 0,
       commision: '',
       workContent: '',
       show: true,
       dailyShow: '', // 判断是日报还是延迟申请
-      startTime: '', // 开始时间
+      startTime: '18:30', // 开始时间
       startTimeHM: false, // 开始时间pop
       currentStart: '18:30', // pop默认时间
       currentEnd: '21:30', // pop默认时间
-      endTime: '',
+      endTime: '21:30',
       endTimeHM: false,
       projectId: '', // 项目id
       taskList: [], // 按顺序存放taskId
@@ -149,11 +151,9 @@ export default {
     };
   },
   methods: {
-    // 项目组确定按钮
-    onConfirmTeam(value, index) {
-      this.projectId = this.teamList[index];// 拿到projectId
+    defaultProject(value, index) {
+      this.projectId = this.teamList[index];
       this.projectTeam = value;
-      this.showPickerTeam = false;
       this.requestAxios({
         url: '/businessTask/taskList',
         data: {
@@ -163,6 +163,8 @@ export default {
       })
         .then((res) => {
           if (res.data.list.length > 0) {
+            this.commiList = [];
+            this.taskList = [];
             this.commiShow = true;
             Array.prototype.forEach.call(res.data.list, (item) => {
               this.commiList.push(item.taskName);
@@ -175,6 +177,20 @@ export default {
         })
         .catch(() => {
         });
+    },
+    // 格式化时分弹框：11时05分
+    formatterTime(type, val) {
+      if (type === 'hour') {
+        return `${val}时`;
+      } if (type === 'minute') {
+        return `${val}分`;
+      }
+      return val;
+    },
+    // 项目组确定按钮
+    onConfirmTeam(value, index) {
+      this.showPickerTeam = false;
+      this.defaultProject(value, index);
     },
     // 因为需要传任务id，把任务id按顺序存在了taskList里，所以根据index判断taskId
     getRadioIndex(index) {
@@ -206,6 +222,15 @@ export default {
     this.testDataGet = this.testData;
     this.dailyShow = this.daily;// 展示工时还是时间段选择
   },
+  watch: {
+    teamSelects: {
+      handler(val) {
+        if (val) {
+          this.defaultProject(this.teamSelectsChild[0], 0);
+        }
+      },
+    },
+  },
 
 };
 </script>
@@ -217,6 +242,9 @@ export default {
         padding: .5rem;
         .ruleForm{
           padding: 0;
+           .formItem{
+              border-bottom: 1px solid #d3d3d3;
+            }
           .workTitle{
             line-height: 2rem;
             line-height: 2rem;

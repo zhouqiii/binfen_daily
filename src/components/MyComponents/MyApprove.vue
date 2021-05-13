@@ -2,9 +2,14 @@
     <div>
         <!--我的审批-->
         <div class="myapprovehome">
-            <van-tabs v-model="active" sticky class="tab_select">
+            <van-tabs v-model="active" sticky class="tab_selectApprove" >
                 <!--我的审批-待审批-->
-                <van-tab title="待我审批">
+                <van-tab>
+                  <template v-slot:title>
+                    <div>待我审批</div>
+                    <van-badge :content="listUnFinishLen" max="99" color="#666666"></van-badge>
+                  </template>
+
                   <div v-for="(item,index) in approveListUnFinish"
                       :key="index"
                       class="list_box"
@@ -12,13 +17,22 @@
                   >
                     <div class="item box_frame-row">
                       <div class="span_title">{{item.title}}</div>
-                      <div class="span_imapprove" @click="routeItem('/ApproveDetail')">立即审批</div>
                     </div>
-                    <div class="item">调休类型：{{item.vacationtype}}</div>
-                    <div class="item">申请时间：{{item.date}}  {{item.time}}</div>
+                    <div class="anoitem box_frame-row">
+                      <div class="box_frame">
+                        <div class="item Span">调休类型：{{item.vacationtype}}</div>
+                        <div class="item Span">申请时间：{{item.date}}  {{item.time}}</div>
+                      </div>
+                      <div class="span_imapprove" @click="routeItem('/ApproveDetail','1')">
+                        立即审批
+                      </div>
+                    </div>
                     <div class="span_line">
                       <van-steps active-color="#5a5959"
-                        :active="item.status" active-icon="success"
+                        :active="item.status"
+                        inactive-icon="circle"
+                        :active-icon="activeIcon"
+                        :finish-icon="finishIcon"
                       >
                         <van-step>ta已申请</van-step>
                         <van-step>项目经理审批</van-step>
@@ -44,13 +58,18 @@
                   <div v-for="(item,index) in commiListUnFinish"
                     :key="index" class="list_box"
                     v-show="ifApproveListFinish"
+                    @click="routeItem('/ApproveDetail','2')"
                   >
-                    <div class="item box_frame-row">
+                    <div class="item">
                         <div class="span_title">{{item.title}}</div>
-                        <div class="span_imapprove">{{item.state}}</div>
                     </div>
-                    <div class="item">申请日期:{{item.date}}</div>
-                    <div class="item">申请时间:{{item.time}}</div>
+                    <div class="anoitem box_frame-row">
+                      <div class="box_frame">
+                        <div class="item Span">申请日期:{{item.date}}</div>
+                        <div class="item Span">申请时间:{{item.time}}</div>
+                      </div>
+                      <div class="span_imapprove">{{item.state}}</div>
+                    </div>
                   </div>
                   <div v-show="!ifApproveListFinish" class="home_noContent">
                     <div class="home_noContent_box">
@@ -65,8 +84,7 @@
 </template>
 <script>
 import '../../assets/css/style/myApprove.less';
-import createDom from '../../utils/createDom';
-import DialogMessage from './DialogMessage.vue';
+import circle from '../../assets/icons/circle.png';
 
 export default {
   name: 'MyApprove',
@@ -78,9 +96,10 @@ export default {
   },
   data() {
     return {
-      active: this.approveTab,
+      active: 0,
       ifApproveListFinish: true, // 待我审批是否有数据
       ifApproveListUnFinish: true, // 已完成列表是否有数据
+      listUnFinishLen: '',
       approveListUnFinish: [{
         title: '张三提交的延迟申请', vacationtype: '婚假', time: '18:30-21:30', date: '2021-04-29', status: '0',
       }, {
@@ -97,6 +116,8 @@ export default {
       }, {
         title: '李四提交的调休申请', date: '2021.05.02', time: '18:30-21:30', state: '拒绝',
       }],
+      activeIcon: circle,
+      finishIcon: circle,
     };
   },
   methods: {
@@ -112,21 +133,24 @@ export default {
         this.$router.push(path);
       }
     },
+    // 通知父组件显示一键审批弹框
     allApprove() {
-      createDom(
-        DialogMessage,
-        {},
-        {
-          content: `<div style="text-align:center">确定全部申请通过？</div>
-                          
-                          `,
-          selectBtn: true,
-        },
-      );
+      this.$emit('childByValue', this.active);
     },
+    // // 让active和approveTab保持一致
+    // onClickTab() {
+    //   this.approveTab = this.active;
+    // },
   },
   mounted() {
-
+    this.listUnFinishLen = this.approveListUnFinish.length;
+  },
+  watch: {
+    approveTab: {
+      handler(val) {
+        this.active = val;
+      },
+    },
   },
 };
 </script>

@@ -104,7 +104,7 @@ export default {
         this.$router.push({
           path,
           query: {
-            data: val,
+            data: JSON.stringify(val),
           },
         });
       } else {
@@ -159,6 +159,7 @@ font-size: .8rem;
         .list_box_text{
             font-size: .8rem;
             padding: 0 .5rem;
+            color: #999999;
             .dangerLow{
               color: #FFCC00;
             }

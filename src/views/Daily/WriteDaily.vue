@@ -21,6 +21,7 @@
                         type="month-day"
                         title=" "
                         :max-date="maxDate"
+                        :formatter="formatterMD"
                         @confirm='onConfirmEndTime'
                         @cancel='startTimePop = false'
                       />
@@ -38,7 +39,6 @@
                 @touchend.native="cleartime(index)"
               >
               </work-info>
-
               <!-- <div v-for="(item,index) in editList"
               :key="index">1{{item.id}}</div> -->
               <div class="home_editBox_iconAdd" @click="addeditbox">
@@ -59,7 +59,6 @@ import SvgIcon from '../../components/SvgIcon.vue';
 import WorkInfo from '../../components/MyComponents/WorkInfo.vue';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
-const date = `${new Date().getMonth() + 1}月${new Date().getDate()}日`;
 let count = 0;
 // const weekDay = `星期${'日一二三四五六'.charAt(new Date().getDay())}`;
 export default {
@@ -68,7 +67,7 @@ export default {
   data() {
     return {
       editList: [{ id: 0 }],
-      startDate: date,
+      startDate: '',
       Loop: '',
       startTimePop: false,
       maxDate: new Date(),
@@ -110,8 +109,25 @@ export default {
         .catch(() => {
         });
     },
+    // 格式化月日弹框：5月11日
+    formatterMD(type, val) {
+      if (type === 'month') {
+        return `${val}月`;
+      } if (type === 'day') {
+        return `${val}日`;
+      }
+      return val;
+    },
     formatDate(val) { // 格式化显示日期
-      return `${val.getMonth() + 1}月${val.getDate()}日`;
+      let month = val.getMonth() + 1;
+      let day = val.getDate();
+      if (month < 10) {
+        month = `0${month}`;
+      }
+      if (day < 10) {
+        day = `0${day}`;
+      }
+      return `${month}月${day}日`;
     },
     formatDateSend(val) { // 格式化时间为2019-05-04的格式
       const month = (parseInt(val.getMonth() + 1, 10)) < 10 ? `0${val.getMonth() + 1}` : (val.getMonth() + 1);
@@ -223,6 +239,7 @@ export default {
   mounted() {
     this.getProject();
     this.sendDate = this.formatDateSend(new Date());
+    this.startDate = this.formatDate(new Date());
   },
   watch: {
   },

@@ -1,0 +1,143 @@
+body{
+    overflow-y:auto
+}
+.home{
+    .commi_detail_box{
+      padding: .5rem;
+      .boxDiv{
+        background: rgba(242, 242, 242, 1);
+        border-radius: .2rem;
+        margin-top: .5rem;
+        padding: .5rem;
+      }
+      .coomi_detail_intro{
+        .item{
+              height: 1.5rem;
+              line-height: 1.5rem;
+          }
+        .list_box_task{
+            font-size: 1rem;
+            color: black;
+        }
+        .list_box_text{
+            font-size: .8rem;
+            padding: 0 .5rem;
+            color: #999999;
+            .dangerLow{
+              color: #FFCC00;
+            }
+            .dangerHigh{
+              color: red;
+            }
+            .dangerCen{
+              color:blue
+            }
+            .spanNext{
+                width: 50%;
+            }
+            .span{
+              width: 35%;
+            }
+        }
+      }
+      .coomi_detail_timeline{
+        .list_box_task{
+          .van-step__line{
+            background-color: #999999;
+            top: 1.5rem !important;
+            height: 85% !important;
+          }
+            .linestep_text{
+                .stepItem{
+                    font-size: .8rem;
+                    height: 1.5rem;
+                    line-height: 1.5rem;
+                    color: #999999;
+                }
+                .time{
+                    color: black;
+                }
+            }
+            .linestep_operate{
+                width: 20%;
+                text-align: center;
+                .waitApprove{
+                    height: 1.2rem;
+                    line-height: 1.2rem;
+                    background: #333333;
+                    border-radius: .5rem;
+                    width: 4rem;
+                    border-radius: .5rem;
+                    color: #ffffff;
+                  }
+                .waitApproveStuff{
+                    height: 1.2rem;
+                    line-height: 1.2rem;
+                    border-radius: .5rem;
+                    width: 4rem;
+                    font-size: .8rem;
+                }
+            }
+        }
+      }
+      .coomi_detail_people{
+          .peopel_title{
+            font-size: 1rem;
+            color: black;
+            height: 1.5rem;
+            line-height: 1.5rem;
+          }
+          .people_list{
+            padding: 0 1rem;
+            font-size: .8rem;
+            .peopel_list_item{
+                height: 2rem;
+                line-height: 2rem;
+                border-bottom: 1px solid #d3d3d3;
+                .role{
+                  color: #999999;
+                }
+            }
+          }
+      }
+    }
+  }
+  
+  /*vant时间线样式*/
+  .van-step__circle{
+    width: .7rem;
+    height: .7rem;
+    background-color: #d3d3d3;
+  }
+  .van-step__title{
+      color:#5a5959
+  }
+  // .van-step__icon--active{
+  //     font-size: 1rem !important;
+  // }
+  .van-steps--horizontal {
+      padding: .625rem 1rem 0;
+  }
+  .van-step--vertical{
+    padding:.3rem 0.625rem 0.8rem 0
+  }
+  .van-cell__title{
+    font-size: 1rem;
+    color: black;
+  }
+  .van-collapse-item__content{
+    background: inherit;
+}
+.van-steps{
+    background: inherit;
+}
+.van-cell{
+    border-bottom: 0;
+}
+.van-step__title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+

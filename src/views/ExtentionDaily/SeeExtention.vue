@@ -37,9 +37,12 @@
                         <div class="text">申请延迟工时：{{item.workerHour}}</div>
                         <div class="daily_seecontent_stepline">
                           <van-steps active-color="#5a5959"
-                            :active="item.changestatus" active-icon="success"
+                            :active="item.changestatus"
+                            inactive-icon="circle"
+                            :active-icon="activeIcon"
+                            :finish-icon="finishIcon"
                           >
-                            <van-step v-for="(st,key) in item.state" :key="key">{{st}}</van-step>
+                            <van-step v-for="(st,key) in item.state" :key="key"> {{st}}</van-step>
                           </van-steps>
                           <div class="bottom_text">
                             <span>我</span>
@@ -64,7 +67,7 @@
                     :style="{ width: '80%',height:'100%',background:'#d3d3d3' }"
                     get-container=".contentBox"
                 >
-                 <!--弹出层挂载的节点-->
+                 <!--弹出层挂载的节点--这里其实应该写成子组件，这样几个页面都可以复用，但是我第一遍写的时候忘了，有时间的话再改一下-->
                 <div class="contentBox">
                     <div class="ruleForm">
                         <div class="formItem">
@@ -82,6 +85,7 @@
                                     type="date"
                                     :max-date="maxDate"
                                     title=" "
+                                    :formatter="formatterD"
                                     @cancel="startTimePop = false"
                                     @confirm='onConfirmStartTime'
                                 />
@@ -102,6 +106,7 @@
                                     type="date"
                                     :max-date="maxDate"
                                     title=" "
+                                    :formatter="formatterD"
                                     @cancel="endTimePop = false"
                                     @confirm='onConfirmEndTime'
                                 />
@@ -127,7 +132,7 @@
                     </div>
                     <div class="timeSelect_btn flex_evenly">
                         <div class="timeSelect_btn_cancel" @click="resetCheck">重置</div>
-                        <div class="timeSelect_btn_confirm" @click="getSelectComm">确认</div>
+                        <div class="timeSelect_btn_confirm" @click="getSelectComm">确定</div>
                     </div>
                 </div>
                 </van-popup>
@@ -144,6 +149,7 @@
 <script>
 import SvgIcon from '../../components/SvgIcon.vue';
 import '../../assets/css/style/seeExtention.less';
+import circle from '../../assets/icons/circle.png';
 
 export default {
   components: { SvgIcon },
@@ -173,17 +179,33 @@ export default {
       passStatus: false,
       checkStatus: false,
       ifList: true,
+      activeIcon: circle,
+      finishIcon: circle,
 
     };
   },
   methods: {
     showTime() {
-      this.resetCheck();
+      // this.resetCheck();
       this.show = true;
     },
-
-    formatDate(date) { // 格式化身份张有效期时间为2019/05/04的格式
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    // 格式化月日弹框：2021年5月11日
+    formatterD(type, val) {
+      if (type === 'year') {
+        return `${val}年`;
+      }
+      if (type === 'month') {
+        return `${val}月`;
+      } if (type === 'day') {
+        return `${val}日`;
+      }
+      return val;
+    },
+    formatDate(val) { // 格式化身份张有效期时间为2019-05-04的格式
+      const month = (parseInt(val.getMonth() + 1, 10)) < 10 ? `0${val.getMonth() + 1}` : (val.getMonth() + 1);
+      const day = (parseInt(val.getDate(), 10)) < 10 ? `0${val.getDate()}` : (val.getDate());
+      const year = new Date().getFullYear();
+      return `${year}-${month}-${day}`;
     },
     // 开始时间确定按钮
     onConfirmStartTime(date) {

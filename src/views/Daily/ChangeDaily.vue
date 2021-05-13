@@ -152,7 +152,7 @@ export default {
         );
       } else {
         this.requestAxios({
-          url: '/api/workDaily/upd',
+          url: '/workDaily/upd',
           data: {
             createDate: this.date,
             dailyDetailList: infoList,
@@ -173,11 +173,9 @@ export default {
                 },
               );
             } else {
+              this.$store.state.module3.changedaily = 1;// 跳转至看日报之前修改changedaily=1，表明是从修改日报跳过去的
               this.$router.push({
-                path: '/ApplyEnd',
-                query: {
-                  pageend: 0,
-                },
+                path: '/SeeDaily',
               });
             }
           })

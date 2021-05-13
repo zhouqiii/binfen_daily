@@ -3,7 +3,7 @@ import
 {
   NavBar, Popup, Dialog, Icon, Tab, Tabs, Picker, Toast,
   PasswordInput, NumberKeyboard, Form, Field, Calendar, Image, DatetimePicker, PullRefresh,
-  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader,
+  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader, Badge,
 }
   from 'vant';
 
@@ -46,7 +46,8 @@ Vue.use(NavBar)
   .use(Calendar)
   .use(Step)
   .use(Steps)
-  .use(Uploader);
+  .use(Uploader)
+  .use(Badge);
 
 // 组件自己封装的公用组件
 Vue.component('nav-bar-bottom', NavBarBottom);

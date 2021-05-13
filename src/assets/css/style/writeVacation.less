@@ -3,26 +3,37 @@
     color: @fontColor;
     font-size: .875rem;
     .home_editBox{ 
-      padding: 1rem .5rem 4rem .5rem;
-      .home_editBox_time{
+      padding: .5rem .5rem 4rem .5rem;
+      .home_time_vacation{
         padding: 0 .5rem;
         height: 3.5rem;
         line-height: 3.5rem;
         background: #ffffff;
         border-radius: .1rem;
-        .edit_date{
+        .edit_date_vacation{
           margin: auto 0;
           width: 100%;
+          .van-cell{
+            border-bottom: 0;
+          }
         }
       }
-      .ruleForm{
+      .ruleFormVacation{
         padding: 0 .5rem; 
         background: #ffffff;
         border-radius: .1rem;
-        margin-top: 1rem;
-        .formItem{
+        margin-top: .5rem;
+        .formItemVacation{
             height: 3.5rem;
             line-height: 3.5rem;
+            .van-cell{
+              height: 3.5rem;
+              line-height: 3.5rem;
+            }
+            .van-cell__right-icon{
+              height: 3.5rem;
+              line-height: 3.5rem;
+            }
             .text_handover{
                 .van-field__body{
                     width: 100%;
@@ -38,9 +49,29 @@
             }
         }
         .imageItem{
-            .van-uploader__wrapper{
-                justify-content: space-between;
+          .van-uploader__wrapper{
+            justify-content: flex-start;
+            .van-uploader__preview{
+              margin: 0 2rem 1rem 0;
             }
+            }
+          // .van-uploader{
+          //   width: 100%;
+          //   .van-uploader__wrapper{
+          //     justify-content: flex-start;
+          //     .van-uploader__preview{
+          //       width: 30%;
+          //       .van-uploader__preview-image{
+          //         width: 100%;
+          //         height: inherit;
+          //       }
+          //     }
+          //     .van-uploader__upload{
+          //       width: 30%;
+          //       height: inherit;
+          //     }
+          // }
+          // }
         }
       }
       .textarea_box{
@@ -58,15 +89,12 @@
                     line-height: 1.3rem;
                     text-align: left;
                     overflow: auto;
+                    min-height: auto;
                 }
             }
         }
       }
     }
-  }
-  .van-cell,.van-cell__right-icon{
-      height: 3.5rem;
-      line-height: 3.5rem;
   }
   .submit_btn{
     position: fixed;

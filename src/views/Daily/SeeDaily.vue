@@ -69,6 +69,7 @@
                                     type="date"
                                     :max-date="maxDate"
                                     title=" "
+                                    :formatter="formatterD"
                                     @cancel='startTimePop = false'
                                     @confirm='onConfirmStartTime'
                                 />
@@ -89,6 +90,7 @@
                                     type="date"
                                     :max-date="maxDate"
                                     title=" "
+                                    :formatter="formatterD"
                                     @cancel='endTimePop = false'
                                     @confirm='onConfirmEndTime'
                                 />
@@ -96,8 +98,8 @@
                         </div>
                     </div>
                     <div class="timeSelect_btn flex_evenly">
-                        <div class="timeSelect_btn_cancel" @click="show=false">取消</div>
-                        <div class="timeSelect_btn_confirm" @click="getSelectComm">确认</div>
+                        <div class="timeSelect_btn_cancel" @click="resetCheck">重置</div>
+                        <div class="timeSelect_btn_confirm" @click="getSelectComm">确定</div>
                     </div>
                 </div>
                 </van-popup>
@@ -168,6 +170,24 @@ export default {
     // 显示弹框
     showTime() {
       this.show = true;
+    },
+    // 格式化月日弹框：2021年5月11日
+    formatterD(type, val) {
+      if (type === 'year') {
+        return `${val}年`;
+      }
+      if (type === 'month') {
+        return `${val}月`;
+      } if (type === 'day') {
+        return `${val}日`;
+      }
+      return val;
+    },
+    // 重置按钮
+    resetCheck() {
+      this.startDate = '';
+      this.endDate = '';
+      this.currentDate = new Date();
     },
     // 格式化日期
     formatDateSend(val) { // 将中国标准时间格式化时间为2019-05-04的格式
@@ -255,6 +275,10 @@ export default {
   mounted() {
     this.resetParams('', '');
     window.addEventListener('scroll', this.handleScroll, true);
+    if (this.$store.state.module3.changedaily === 1) {
+      this.$toast('日报修改成功');
+      this.$store.state.module3.changedaily = 0;
+    }
   },
 };
 </script>

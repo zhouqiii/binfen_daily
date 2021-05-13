@@ -5,7 +5,7 @@
           <div class="home_editBox">
               <div class="home_editBox_time box_frame-row">
                 <div>填写日期</div>
-                <div class="edit_date">
+                <div class="edit_date_delay">
                   <!-- <div class="edit_date_week">{{weekdayshow}}</div> -->
                     <van-field
                         class="getTime"
@@ -20,6 +20,7 @@
                         v-model="currentDate"
                         type="month-day"
                         title=" "
+                        :formatter="formatterMD"
                         :max-date="maxDate"
                         @confirm='onConfirmEndTime'
                         @cancel="startTimePop = false"
@@ -37,9 +38,9 @@
                 @touchend.native="cleartime(index)"
               >
               </work-info>
-              <div class="home_editBox_iconAdd" @click="addeditbox">
+              <!-- <div class="home_editBox_iconAdd" @click="addeditbox">
                 <svg-icon iconClass="tianjia" class="iconBig"></svg-icon>
-              </div>
+              </div> -->
           </div>
         </div>
         <div class="submit_btn">
@@ -49,21 +50,19 @@
 </template>
 <script>
 import '../../assets/css/style/writeDaily.less';
-import SvgIcon from '../../components/SvgIcon.vue';
 import WorkInfo from '../../components/MyComponents/WorkInfo.vue';
 import createDom from '../../utils/createDom';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
 let count = 0;
-const date = `${new Date().getMonth() + 1}月${new Date().getDate() + 1}日`;
 // const weekDay = `星期${'日一二三四五六'.charAt(new Date().getDay())}`;
 export default {
-  components: { SvgIcon, WorkInfo },
+  components: { WorkInfo },
   name: 'WriteExtention',
   data() {
     return {
       editList: [{ id: 0 }],
-      startDate: date,
+      startDate: '',
       Loop: '',
       startTimePop: false,
       maxDate: new Date(),
@@ -90,8 +89,25 @@ export default {
         .catch(() => {
         });
     },
+    // 格式化月日弹框：5月11日
+    formatterMD(type, val) {
+      if (type === 'month') {
+        return `${val}月`;
+      } if (type === 'day') {
+        return `${val}日`;
+      }
+      return val;
+    },
     formatDate(val) { // 格式化身份张有效期时间为2019/05/04的格式
-      return `${val.getMonth() + 1}月${val.getDate()}日`;
+      let month = val.getMonth() + 1;
+      let day = val.getDate();
+      if (month < 10) {
+        month = `0${month}`;
+      }
+      if (day < 10) {
+        day = `0${day}`;
+      }
+      return `${month}月${day}日`;
     },
     // 结束时间确定按钮
     onConfirmEndTime(val) {
@@ -179,6 +195,7 @@ export default {
   },
   mounted() {
     this.getProject();
+    this.startDate = this.formatDate(new Date());
   },
 };
 </script>

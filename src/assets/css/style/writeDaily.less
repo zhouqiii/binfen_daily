@@ -2,7 +2,10 @@
 .home{
     color: @fontColor;
     font-size: .875rem;
-    .home_editBox{ 
+    .home_editBox{
+      .van-cell{
+        border: 0;
+      }
       padding: .5rem .5rem 4rem .5rem;
       .home_editBox_time{
         padding: .5rem;
@@ -11,6 +14,22 @@
         background: #ffffff;
         border-radius: .2rem;
         .edit_date{
+          margin: auto 0;
+          .edit_date_week{
+            float: right;
+            margin-right: 10%;
+          }
+          .getTime{
+            border: 0 !important;
+            .van-cell__right-icon{
+              color: @fontColor;
+            }
+          }
+          div:nth-last-child(1){
+            font-size: .8rem;
+          }
+        }
+        .edit_date_delay{
           margin: auto 0;
           .edit_date_week{
             float: right;

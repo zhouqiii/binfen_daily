@@ -2,7 +2,7 @@
     <div class="box">
         <nav-bar-top title="延迟申请详情"></nav-bar-top>
         <div class="home">
-            <div class="home_detail_date box_frame-row" v-show="ifRefuse">
+            <div class="home_detail_date" v-show="ifRefuse">
                 <span>拒绝原因：</span>
                 <span>{{getdate}}</span>
             </div>

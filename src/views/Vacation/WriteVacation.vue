@@ -3,8 +3,8 @@
         <nav-bar-top title="休假申请"></nav-bar-top>
         <div class="home">
           <div class="home_editBox">
-              <div class="home_editBox_time box_frame-row">
-                <div class="edit_date">
+              <div class="home_time_vacation box_frame-row">
+                <div class="edit_date_vacation">
                     <van-field
                         class="getTime"
                         v-model="vacationType"
@@ -24,8 +24,8 @@
                     </van-popup>
                 </div>
               </div>
-              <div class="ruleForm">
-                <div class="formItem">
+              <div class="ruleFormVacation">
+                <div class="formItemVacation">
                     <van-field
                         v-model="startDate"
                         is-link
@@ -45,7 +45,7 @@
                         />
                     </van-popup>
                 </div>
-                <div class="formItem">
+                <div class="formItemVacation">
                     <van-field
                         v-model="endDate"
                         is-link
@@ -66,8 +66,8 @@
                     </van-popup>
                 </div>
               </div>
-              <div class="ruleForm" v-show="ifOneDay">
-                <div class="formItem">
+              <div class="ruleFormVacation" v-show="ifOneDay">
+                <div class="formItemVacation">
                     <van-field
                         v-model="startTime"
                         is-link
@@ -85,7 +85,7 @@
                         />
                     </van-popup>
                 </div>
-              <div class="formItem">
+              <div class="formItemVacation">
                 <van-field
                     v-model="endTime"
                     is-link
@@ -104,7 +104,7 @@
                 </van-popup>
               </div>
             </div>
-            <div class="ruleForm textarea_box">
+            <div class="ruleFormVacation textarea_box">
                 <div class="textarea_title">休假原因：</div>
                 <van-field
                     v-model="reason"
@@ -115,8 +115,8 @@
                     placeholder="请输入原因"
                 />
             </div>
-            <div class="ruleForm">
-                <div class="formItem">
+            <div class="ruleFormVacation">
+                <div class="formItemVacation">
                     <van-field
                         class="text_handover"
                         v-model="handOver"
@@ -125,8 +125,8 @@
                     />
                 </div>
             </div>
-            <div class="ruleForm" v-show="ifUpload">
-                <div class="formItem">
+            <div class="ruleFormVacation" v-show="ifUpload">
+                <div class="formItemVacation">
                     <div class="textarea_title box_frame-row">
                         <div>图片上传</div>
                         <!-- <div>
@@ -245,7 +245,10 @@ export default {
       });
       // this.sendData(infoList);
       this.$router.push({
-        path: '/VacationEnd',
+        path: '/ApplyEnd',
+        query: {
+          pageend: 2,
+        },
       });
     },
     // 提交延迟申请信息
