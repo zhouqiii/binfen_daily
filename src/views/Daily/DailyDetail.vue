@@ -9,10 +9,6 @@
             <div class="home_detail_content" v-for="(item,index) in dayListInfo" :key="index">
                 <div class="ruleForm">
                     <div class="formItem box_frame-row">
-                        <span>项目组</span>
-                        <span>{{item.projectName}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
                         <span>任务</span>
                         <span class="textEllipsis" >{{item.taskName}}</span>
                     </div>
@@ -53,12 +49,12 @@ export default {
   methods: {
     getInfo() {
       this.requestAxios({
-        url: `/workDaily/findParam/${JSON.parse(this.$route.query.id)}`,
+        url: `/api/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`, // `/api/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`,
         method: 'post',
       })
         .then((res) => {
-          if (res.data) {
-            this.dayListInfo = res.data;
+          if (res.data.records) {
+            this.dayListInfo = res.data.records;// 处理
           }
         })
         .catch(() => {

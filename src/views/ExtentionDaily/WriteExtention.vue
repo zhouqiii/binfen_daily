@@ -28,23 +28,21 @@
                     </van-popup>
                 </div>
               </div>
-              <work-info ref="child" v-for="(item,index) in editList"
+              <work-info ref="child" v-for="item in editList"
                 :testData="item.id"
                 :key="item.id"
                 :daily="daily"
-                :teamSelects='teamSelects'
-                :teamList='teamList'
-                @touchstart.native="touchinUk(index)"
-                @touchend.native="cleartime(index)"
+                :commiList='commiList'
+                :taskList='taskList'
+                v-on:checkInput='checkInput'
               >
               </work-info>
-              <!-- <div class="home_editBox_iconAdd" @click="addeditbox">
-                <svg-icon iconClass="tianjia" class="iconBig"></svg-icon>
-              </div> -->
           </div>
         </div>
         <div class="submit_btn">
-          <div class="sendBtn" @click="submitData">提交申请</div>
+          <div class="sendBtn" @click="submitData"
+            :disabled="disabledCommit"
+            :style="thisStyle">提交申请</div>
         </div>
     </div>
 </template>
@@ -67,22 +65,28 @@ export default {
       startTimePop: false,
       maxDate: new Date(),
       currentDate: new Date(),
-      teamSelects: [], // 所有项目
-      teamList: [], // 项目productId
+      commiList: [], // 任务列表
+      taskList: [], // 任务id
       daily: false, // 显示工时还是时间
+      disabledCommit: true, // 默认不可提交
+      thisStyle: '',
     };
   },
   methods: {
-    getProject() {
+    // 获取该user任务
+    defaultProject() {
       this.requestAxios({
-        url: '/businessProduct/listAll',
+        url: '/api/businessTask/business-task/getListTaskByUser',
+        data: {},
         method: 'post',
       })
         .then((res) => {
-          if (res.data) {
+          if (res.data.length > 0) {
+            this.commiList = [];
+            this.taskList = [];
             Array.prototype.forEach.call(res.data, (item) => {
-              this.teamSelects.push(item.productName);
-              this.teamList.push(item.productId);
+              this.commiList.push(item.taskName);
+              this.taskList.push(item.taskId);
             });
           }
         })
@@ -119,6 +123,25 @@ export default {
     addeditbox() {
       count += 1;
       this.editList.push({ id: count });
+      this.$nextTick(() => {
+        this.checkInput();
+      });
+    },
+    // 只有所有的工作内容有文字提交才高亮
+    checkInput() {
+      let flag = true;
+      this.$refs.child.forEach((item) => {
+        if (!item.workContent || !item.endTime || !item.startTime) {
+          flag = false;
+        }
+      });
+      if (flag) { // flag=true说明工作内容不为空
+        this.disabledCommit = false;
+        this.thisStyle = 'background:rgb(102, 102, 102)';
+      } else {
+        this.disabledCommit = true;
+        this.thisStyle = 'background:#d3d3d3';
+      }
     },
     // 提交延迟申请按钮
     submitData() {
@@ -134,13 +157,7 @@ export default {
         obj.endTime = item.endTime;// 结束时间
         infoList.push(obj);
       });
-      // this.sendData(infoList);
-      this.$router.push({
-        path: '/ApplyEnd',
-        query: {
-          pageend: 1,
-        },
-      });
+      this.$router.push({ path: '/ApplyEnd', query: { pageend: 1 } });
     },
     // 提交延迟申请信息
     sendData(data) {
@@ -155,46 +172,18 @@ export default {
         .then((res) => {
           if (!res.success) {
             createDom(
-              DialogMessage,
-              {},
-              {
-                content: `<div style="text-align:center">${res.message}</div>
-                          <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
-                          `,
-                knowBtn: true, // 知道了
-              },
+              DialogMessage, {}, { content: `<div style="text-align:center">${res.message}</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div> `, knowBtn: true },
             );
           } else {
-            this.$router.push({
-              path: '/ApplyEnd',
-              query: {
-                pageend: 1,
-              },
-            });
+            this.$router.push({ path: '/ApplyEnd', query: { pageend: 1 } });
           }
         })
         .catch(() => {
         });
     },
-    // 长按删除的作用
-    touchinUk(index) {
-      clearInterval(this.Loop); // 再次清空定时器，防止重复注册定时器
-      this.Loop = setTimeout(() => {
-        this.$dialog.confirm({
-          message: '是否删除?',
-        }).then(() => {
-          this.editList.splice(index, 1);
-        }).catch(() => {
-        });
-      }, 1000);
-    },
-    cleartime() {
-      // 这个方法主要是用来将每次手指移出之后将计时器清零
-      clearInterval(this.Loop);
-    },
   },
   mounted() {
-    this.getProject();
+    this.defaultProject();// 获取任务
     this.startDate = this.formatDate(new Date());
   },
 };

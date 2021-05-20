@@ -13,7 +13,7 @@
                 <div>用户名</div>
                 <van-field v-model="phone"
                     class="userinput"
-                    placeholder="请输入手机号"
+                    placeholder="请输入账号"
                     :error-message="err.phoneErr"
                     v-on:input="getData"
                     @blur="checkPhone"
@@ -83,7 +83,7 @@ export default {
     // 手机号校验只能是11位数字
     checkPhone() {
       if (!this.phone) {
-        this.err.phoneErr = '请填写手机号！';
+        this.err.phoneErr = '请输入账号！';
         return false;
       }
       // if (!num.test(this.phone)) {
@@ -125,7 +125,7 @@ export default {
     // 登陆按钮
     sendLogin() {
       this.requestLogin({
-        url: '/admin/login',
+        url: '/api/personnelInfo/personnel-info/login',
         data: {
           password: this.pwd,
           username: this.phone,

@@ -2,6 +2,7 @@
     <div class="box">
         <nav-bar-top title="日报" @rightClick="showTime">
             <template v-slot:right>
+                <svg-icon iconClass="deletelist"></svg-icon>
                 <svg-icon iconClass="timelou"></svg-icon>
             </template>
         </nav-bar-top>
@@ -138,21 +139,22 @@ export default {
   },
   methods: {
     // 获取列表数据
-    getListData(start, end) {
+    getListData(start, end) { // start, end
       count += 1;
+      console.log(count);
       this.requestAxios({
-        url: '/workDaily/getListByPage',
+        url: '/api/workDaily/work-daily/getListByPage', // /api/workDaily/work-daily/getListByPage
         data: {
           pageNum: count,
           pageSize: 5,
           startDate: start,
           endDate: end,
         },
-        method: 'post',
+        method: 'post', // post
       })
         .then((res) => {
-          if (res.data.list) {
-            Array.prototype.forEach.call(res.data.list, (item) => {
+          if (res.data.records) {
+            Array.prototype.forEach.call(res.data.records, (item) => {
               if (item.status === '0') {
                 this.$set(item, 'status', '已提交');
               }
@@ -199,10 +201,6 @@ export default {
     // 格式化日期
     formatDateShow(val) { // 将时间2019-05-04格式化为2019年5月4日的格式
       const value = val.split('-');
-      // const today = this.formatDateSend(new Date());
-      // if (today === val) {
-      //   return '今天';
-      // }
       return `${value[0]}年${value[1]}月${value[2]}日`;
     },
     // 开始时间确定按钮
@@ -218,8 +216,8 @@ export default {
     // 通过时间筛选看日报列表
     getSelectComm() {
       this.show = false;
-      this.resetParams(this.startDate, this.endDate);
       this.commiList = [];
+      this.resetParams(this.startDate, this.endDate);
     },
     // onRefresh刷新列表异步获取数据
     onRefresh() {

@@ -2,7 +2,7 @@
     <div>
       <div class="home_editBox_content" >
         <div class="ruleForm">
-            <div class="formItem">
+            <!-- <div class="formItem">
               <van-field
                 v-model="projectTeam"
                 is-link
@@ -11,7 +11,7 @@
                 placeholder="请选择"
                 @click="showPickerTeam = true"
               />
-              <van-popup v-model="showPickerTeam" round position="bottom">
+              <van-popup v-model="showPickerTeam" round position="bottom" @close="getWorkContent">
                 <van-picker
                     show-toolbar
                     :columns="teamSelectsChild"
@@ -19,14 +19,14 @@
                     @confirm="onConfirmTeam"
                 />
               </van-popup>
-            </div>
-            <div class="formItem" v-show="commiShow">
+            </div> -->
+            <div class="formItem">
               <van-collapse v-model="activeNames">
                 <van-collapse-item title="任务" name="1">
                   <template #value>
                     {{commision}}
                   </template>
-                  <div v-for="(item,index) in commiList" :key="index">
+                  <div v-for="(item,index) in commiListThe" :key="index">
                     <div>
                       <van-radio-group v-model="radio">
                         <van-cell :title="item" clickable >
@@ -49,7 +49,7 @@
                 placeholder="请选择"
                 @click="showPickerHour = true"
               />
-              <van-popup v-model="showPickerHour" round position="bottom">
+              <van-popup v-model="showPickerHour" round position="bottom" @close="getWorkContent">
                 <van-picker
                     show-toolbar
                     :columns="hourSelects"
@@ -68,7 +68,7 @@
                     placeholder="请选择"
                     @click="startTimeHM = true"
                 />
-                <van-popup v-model="startTimeHM" position="bottom">
+                <van-popup v-model="startTimeHM" position="bottom" @close="getWorkContent">
                     <van-datetime-picker
                         v-model="currentStart"
                         type="time"
@@ -88,7 +88,7 @@
                     placeholder="请选择"
                     @click="endTimeHM  = true"
                 />
-                <van-popup v-model="endTimeHM" position="bottom">
+                <van-popup v-model="endTimeHM" position="bottom" @close="getWorkContent">
                     <van-datetime-picker
                         v-model="currentEnd"
                         type="time"
@@ -108,6 +108,7 @@
                 v-model="workContent"
                 rows="2"
                 type="textarea"
+                @input="getWorkContent"
                 placeholder="请输入工作内容(最少10个字)"
               />
             </div>
@@ -119,20 +120,16 @@
 
 export default {
   name: 'WorkInfo',
-  props: ['daily', 'teamSelects', 'teamList', 'testData'],
+  props: ['daily', 'commiList', 'taskList'],
   data() {
     return {
-      projectTeam: '', // 项目组
-      showPickerTeam: false, // 项目组picker
-      teamSelectsChild: this.teamSelects,
-      teamListChild: this.teamList, // 按顺序存所有项目id
       workHour: '', // 工作小时
       showPickerHour: false,
       hourSelects: ['2小时', '4小时', '6小时', '8小时'],
       activeNames: ['1'],
-      commiList: [],
-      radio: 0,
+      commiListThe: [],
       commision: '',
+      radio: 0,
       workContent: '',
       show: true,
       dailyShow: '', // 判断是日报还是延迟申请
@@ -143,41 +140,12 @@ export default {
       endTime: '21:30',
       endTimeHM: false,
       projectId: '', // 项目id
-      taskList: [], // 按顺序存放taskId
+      taskListThe: [], // 按顺序存放taskId
       taskId: '', // 任务id
-      commiShow: false,
-      testDataGet: '',
 
     };
   },
   methods: {
-    defaultProject(value, index) {
-      this.projectId = this.teamList[index];
-      this.projectTeam = value;
-      this.requestAxios({
-        url: '/businessTask/taskList',
-        data: {
-          productId: this.projectId,
-        },
-        method: 'post',
-      })
-        .then((res) => {
-          if (res.data.list.length > 0) {
-            this.commiList = [];
-            this.taskList = [];
-            this.commiShow = true;
-            Array.prototype.forEach.call(res.data.list, (item) => {
-              this.commiList.push(item.taskName);
-              this.taskList.push(item.taskId);
-            });
-            this.radio = 0;// 设置默认选中第一个任务
-            this.commision = this.commiList[0];
-            this.taskId = this.taskList[0];
-          }
-        })
-        .catch(() => {
-        });
-    },
     // 格式化时分弹框：11时05分
     formatterTime(type, val) {
       if (type === 'hour') {
@@ -187,15 +155,10 @@ export default {
       }
       return val;
     },
-    // 项目组确定按钮
-    onConfirmTeam(value, index) {
-      this.showPickerTeam = false;
-      this.defaultProject(value, index);
-    },
     // 因为需要传任务id，把任务id按顺序存在了taskList里，所以根据index判断taskId
     getRadioIndex(index) {
+      this.taskId = this.taskListThe[index];
       this.commision = this.commiList[index];
-      this.taskId = this.taskList[index];
     },
     // 工时确定按钮
     onConfirmHour(val) {
@@ -212,22 +175,30 @@ export default {
       this.endTime = val;
       this.endTimeHM = false;
     },
-
     sendFlag(val) {
       this.flagToParent = val;
       return this.flagToParent;
     },
+    // 工作内容不为空才可以提交
+    getWorkContent() {
+      this.$emit('checkInput');
+    },
+    // 默认第一个任务
+    assignTask() {
+      this.commiListThe = this.commiList;
+      this.taskListThe = this.taskList;
+      this.taskId = this.taskListThe[0];
+      this.commision = this.commiList[0];
+    },
   },
   mounted() {
-    this.testDataGet = this.testData;
     this.dailyShow = this.daily;// 展示工时还是时间段选择
+    this.assignTask();
   },
   watch: {
-    teamSelects: {
-      handler(val) {
-        if (val) {
-          this.defaultProject(this.teamSelectsChild[0], 0);
-        }
+    commiList: {
+      handler() {
+        this.assignTask();
       },
     },
   },

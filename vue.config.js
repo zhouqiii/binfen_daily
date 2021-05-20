@@ -46,16 +46,16 @@ module.exports = {
       });
   },
   devServer: {
-    // proxy: {
-    //   // '/api': {
-    //   //   target: 'https://alex188.cn/web',
-    //   //   changeOrigin: true,
-    //   //   ws: true,
-    //   //   pathRewrite: {
-    //   //     '^/api': '',
-    //   //   },
-    //   // },
-    // },
+    proxy: {
+      '/api': {
+        target: 'https://alex188.cn/jf2app',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': '',
+        },
+      },
+    },
     // app是一个express的实例
 
     before(app) {

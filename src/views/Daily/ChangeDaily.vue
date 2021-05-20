@@ -10,11 +10,14 @@
                     <div class="getTime">{{date}}</div>
                 </div>
               </div>
-              <change-work-info  :data="data" ref="childTop" daily="true"></change-work-info>
+              <change-work-info  :data="data" ref="childTop" daily="true"
+                v-on:checkInput="checkInput"
+              ></change-work-info>
               <work-info ref="child" v-for="(item,index) in editList"
                 :key="item.id" daily="true"
-                :teamSelects='teamSelects'
-                :teamList='teamList'
+                :commiList='commiList'
+                :taskList='taskList'
+                v-on:checkInput="checkInput"
                 @touchstart.native="touchinUk(index)"
                 @touchend.native="cleartime(index)"
               ></work-info>
@@ -24,7 +27,9 @@
           </div>
         </div>
         <div class="submit_btn">
-          <div class="sendBtn" @click="sendData">提交日报</div>
+          <div class="sendBtn" @click="sendData"
+            :disabled="disabledCommit"
+            :style="thisStyle">提交日报</div>
         </div>
     </div>
 </template>
@@ -51,21 +56,27 @@ export default {
       startTimePop: false,
       maxDate: new Date(),
       currentDate: new Date(),
-      teamSelects: [], // 所有项目列表
-      teamList: [], // 所有项目按顺序对应项目id
+      commiList: [], // 任务列表
+      taskList: [], // 任务id
+      disabledCommit: true,
+      thisStyle: '',
     };
   },
   methods: {
-    getProject() {
+    // 获取该user任务
+    defaultProject() {
       this.requestAxios({
-        url: '/businessProduct/listAll',
+        url: '/api/businessTask/business-task/getListTaskByUser',
+        data: {},
         method: 'post',
       })
         .then((res) => {
-          if (res.data) {
+          if (res.data.length > 0) {
+            this.commiList = [];
+            this.taskList = [];
             Array.prototype.forEach.call(res.data, (item) => {
-              this.teamSelects.push(item.productName);
-              this.teamList.push(item.productId);
+              this.commiList.push(item.taskName);
+              this.taskList.push(item.taskId);
             });
           }
         })
@@ -74,13 +85,42 @@ export default {
     },
     // 添加填写box
     addeditbox() {
-      if (this.teamSelects.length === 0) {
-        count += 1;
-        this.editList.push({ id: count });
-        this.getProject();
+      count += 1;
+      this.editList.push({ id: count });
+      this.$nextTick(() => {
+        this.checkInput();
+      });
+    },
+    // 只有所有的工作内容有文字提交才高亮
+    checkInput() {
+      let flag = true;
+      const data = [];
+      const childData = this.$refs.child;
+      const childTopData = this.$refs.childTop;
+      if (childTopData) {
+        childTopData.forEach((item) => {
+          data.push(item.workContent);
+          data.push(item.workHour);
+        });
+      }
+      if (childData) {
+        childData.forEach((item) => {
+          data.push(item.workContent);
+          data.push(item.workHour);
+        });
+      }
+      data.forEach((item) => {
+        if (!item) {
+          flag = false;
+        }
+      });
+      if (flag) { // flag=true说明工作内容不为空
+        this.disabledCommit = false;
+        this.thisStyle = 'background:rgb(102, 102, 102)';
       } else {
-        count += 1;
-        this.editList.push({ id: count });
+        console.log(2);
+        this.disabledCommit = true;
+        this.thisStyle = 'background:#d3d3d3';
       }
     },
     // 长按删除的作用
@@ -110,8 +150,6 @@ export default {
         const obj = {};
         obj.taskId = parseInt(item.taskId, 10);
         obj.taskName = item.taskName;
-        obj.projectId = item.projectId;
-        obj.projectName = item.projectName;
         obj.workerLength = time;
         obj.workerInfo = item.workerInfo;
         infoList.push(obj);
@@ -121,10 +159,8 @@ export default {
           const time = parseInt(item.workHour.substring(0, 1), 10);
           hour += time;
           const obj = {};
-          obj.taskId = parseInt(item.taskId, 10);
+          obj.taskId = item.taskId;
           obj.taskName = item.commision;
-          obj.projectId = item.projectId;
-          obj.projectName = item.projectTeam;
           obj.workerLength = time;
           obj.workerInfo = item.workContent;
           infoList.push(obj);
@@ -185,7 +221,7 @@ export default {
     },
   },
   mounted() {
-    this.getProject();// 为了添加信息框时查项目组
+    this.defaultProject();// 为了添加信息框时查项目组
   },
 };
 </script>

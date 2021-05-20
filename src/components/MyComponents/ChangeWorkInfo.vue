@@ -8,10 +8,6 @@
 
         <div class="ruleForm">
             <div class="formItem box_frame-row">
-                <div>项目组</div>
-                <div>{{item.projectName}}</div>
-            </div>
-            <div class="formItem box_frame-row">
                 <div>任务</div>
                 <div class="textEllipsis">{{item.taskName}}</div>
             </div>
@@ -25,7 +21,7 @@
                 placeholder="请选择"
 
               />
-              <van-popup v-model="showPickerHour" round position="bottom">
+              <van-popup v-model="showPickerHour" round position="bottom" @close="getWorkContent">
                 <van-picker
                     show-toolbar
                     :columns="hourSelects"
@@ -44,7 +40,7 @@
                     placeholder="请选择"
                     @click="startTimeHM = true"
                 />
-                <van-popup v-model="startTimeHM" position="bottom">
+                <van-popup v-model="startTimeHM" position="bottom" @close="getWorkContent">
                     <van-datetime-picker
                         v-model="currentStart"
                         type="time"
@@ -62,7 +58,7 @@
                     placeholder="请选择"
                     @click="endTimeHM  = true"
                 />
-                <van-popup v-model="endTimeHM" position="bottom">
+                <van-popup v-model="endTimeHM" position="bottom" @close="getWorkContent">
                     <van-datetime-picker
                         v-model="currentEnd"
                         type="time"
@@ -80,6 +76,7 @@
                 v-model="item.workerInfo"
                 rows="2"
                 type="textarea"
+                @input="getWorkContent"
                 placeholder="请输入工作内容(最少10个字)"
               />
             </div>
@@ -134,6 +131,10 @@ export default {
     onConfirmEndHM(val) {
       this.endTime = val;
       this.endTimeHM = false;
+    },
+    // 工作内容不为空才可以提交
+    getWorkContent() {
+      this.$emit('checkInput');
     },
     // 长按删除的作用
     touchinUk(index) {

@@ -29,18 +29,16 @@
                 </div>
               </div>
               <work-info v-for="(item,index) in editList"
-               :testData="item.id"
                 :key="item.id"
                 ref="child"
                 :daily="daily"
-                :teamSelects='teamSelects'
-                :teamList='teamList'
+                :commiList='commiList'
+                :taskList='taskList'
+                v-on:checkInput='checkInput'
                 @touchstart.native="touchinUk(index)"
                 @touchend.native="cleartime(index)"
               >
               </work-info>
-              <!-- <div v-for="(item,index) in editList"
-              :key="index">1{{item.id}}</div> -->
               <div class="home_editBox_iconAdd" @click="addeditbox">
                 <svg-icon iconClass="tianjia" class="iconBig"></svg-icon>
               </div>
@@ -48,7 +46,10 @@
           </div>
         </div>
         <div class="submit_btn">
-          <div class="sendBtn" @click="sendData">提交日报</div>
+          <button class="sendBtn"  @click="sendData"
+            :disabled="disabledCommit"
+            :style="thisStyle"
+          >提交日报</button>
         </div>
     </div>
 </template>
@@ -72,38 +73,31 @@ export default {
       startTimePop: false,
       maxDate: new Date(),
       currentDate: new Date(),
-      teamSelects: [], // 所有项目
-      teamList: [], // 项目productId
       sendDate: '', // 接口使用的填写日期格式
       daily: true, // 显示工时还是时间
+      thisStyle: '',
+      disabledCommit: true, // 默认不可提交
+      commiList: [], // 任务列表
+      taskList: [], // 任务id
 
     };
   },
   methods: {
-    getProject() {
+    // 获取该user任务
+    defaultProject() {
       this.requestAxios({
-        url: '/businessProduct/listAll',
+        url: '/api/businessTask/business-task/getListTaskByUser',
+        data: {},
         method: 'post',
       })
         .then((res) => {
-          if (res.success) {
-            if (res.data) {
-              Array.prototype.forEach.call(res.data, (item) => {
-                this.teamSelects.push(item.productName);
-                this.teamList.push(item.productId);
-              });
-            }
-          } else {
-            createDom(
-              DialogMessage,
-              {},
-              {
-                content: `<div style="text-align:center">${res.message}</div>
-                          <div style="text-align:center">请重新登陆！</div>
-                        `,
-                confirmBtn: true,
-              },
-            );
+          if (res.data.length > 0) {
+            this.commiList = [];
+            this.taskList = [];
+            Array.prototype.forEach.call(res.data, (item) => {
+              this.commiList.push(item.taskName);
+              this.taskList.push(item.taskId);
+            });
           }
         })
         .catch(() => {
@@ -147,8 +141,26 @@ export default {
     addeditbox() {
       count += 1;
       this.editList.push({ id: count });
+      this.$nextTick(() => {
+        this.checkInput();
+      });
     },
-
+    // 只有所有的工作内容有文字提交才高亮
+    checkInput() {
+      let flag = true;
+      this.$refs.child.forEach((item) => {
+        if (!item.workContent || !item.workHour) {
+          flag = false;
+        }
+      });
+      if (flag) { // flag=true说明工作内容不为空
+        this.disabledCommit = false;
+        this.thisStyle = 'background:rgb(102, 102, 102)';
+      } else {
+        this.disabledCommit = true;
+        this.thisStyle = 'background:#d3d3d3';
+      }
+    },
     // 提交日报按钮
     sendData() {
       const infoList = [];// 用来存放所有日报info
@@ -157,67 +169,49 @@ export default {
         const time = parseInt(item.workHour.substring(0, 1), 10);
         hour += time;
         const obj = {};
-        obj.taskId = parseInt(item.taskId, 10);
-        obj.taskName = item.commision;
-        obj.projectId = item.projectId;
-        obj.projectName = item.projectTeam;
+        obj.taskId = item.taskId;
+        obj.taskName = item.commiList[item.radio];
         obj.workerLength = parseInt(item.workHour.substring(0, 1), 10);
         obj.workerInfo = item.workContent;
         infoList.push(obj);
       });
       if (hour < 8) {
         createDom(
-          DialogMessage,
-          {},
-          {
-            content: `<div style="text-align:center">填写工时不足8小时，请检查工时</div>
-                    `,
-            knowBtn: true,
-          },
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时不足8小时，请检查工时</div>', knowBtn: true },
         );
       } else if (hour > 8) {
         createDom(
-          DialogMessage,
-          {},
-          {
-            content: `<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>
-                    `,
-            knowBtn: true,
-          },
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>', knowBtn: true },
         );
       } else {
         this.requestAxios({
-          url: '/workDaily/save',
+          url: '/api/workDaily/work-daily/save',
           data: {
             workDate: this.sendDate,
+            createPerson: this.storage.get('username'),
+            createTime: this.formatTime(new Date()),
             dailyDetailList: infoList,
           },
           method: 'post',
         })
           .then((res) => {
             if (!res.success) {
-              createDom(
-                DialogMessage,
-                {},
-                {
-                  content: `<div style="text-align:center">${res.message}</div>
-                          <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
-                          `,
-                  knowBtn: true, // 知道了
-                },
-              );
+              createDom(DialogMessage, {}, { content: `<div style="text-align:center">${res.message}</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div>`, knowBtn: true });// 知道了
             } else {
-              this.$router.push({
-                path: '/ApplyEnd',
-                query: {
-                  pageend: 0,
-                },
-              });
+              this.$router.push({ path: '/ApplyEnd', query: { pageend: 0 } });
             }
-          })
-          .catch(() => {
-          });
+          }).catch(() => {});
       }
+    },
+    // 格式化时间hh:mm:ss
+    formatTime(val) {
+      let hour = val.getHours();
+      let minute = val.getMinutes();
+      let second = val.getSeconds();
+      hour = parseInt(hour, 10) < 10 ? `0${hour}` : hour;
+      minute = parseInt(minute, 10) < 10 ? `0${minute}` : minute;
+      second = parseInt(second, 10) < 10 ? `0${second}` : second;
+      return `${hour}:${minute}:${second}`;
     },
     // 长按删除的作用
     touchinUk(index) {
@@ -227,19 +221,17 @@ export default {
           message: '是否删除?',
         }).then(() => {
           this.editList.splice(index, 1);
-        }).catch(() => {
-        });
+        }).catch(() => {});
       }, 1000);
     },
     cleartime() {
-      // 这个方法主要是用来将每次手指移出之后将计时器清零
-      clearInterval(this.Loop);
+      clearInterval(this.Loop);// 这个方法主要是用来将每次手指移出之后将计时器清零
     },
   },
   mounted() {
-    this.getProject();
     this.sendDate = this.formatDateSend(new Date());
     this.startDate = this.formatDate(new Date());
+    this.defaultProject();// 获取任务
   },
   watch: {
   },
