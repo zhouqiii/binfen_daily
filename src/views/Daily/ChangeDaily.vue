@@ -98,13 +98,13 @@ export default {
       const childData = this.$refs.child;
       const childTopData = this.$refs.childTop;
       if (childTopData) {
-        childTopData.forEach((item) => {
+        Array.prototype.forEach.call(childTopData, (item) => {
           data.push(item.workContent);
           data.push(item.workHour);
         });
       }
       if (childData) {
-        childData.forEach((item) => {
+        Array.prototype.forEach.call(childData, (item) => {
           data.push(item.workContent);
           data.push(item.workHour);
         });
