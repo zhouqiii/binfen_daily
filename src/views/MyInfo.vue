@@ -6,7 +6,7 @@
           <div class="home_img">
             <swiper-card :images="image"></swiper-card>
           </div>
-          <div class="home_padd">
+          <div class="home_padd" style="width: 85%;">
             <!--1-->
             <div class="home_topselect framebox flex_start">
               <div class="home_icon">

@@ -7,7 +7,7 @@ import createDom from '@/utils/createDom';
 import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
 export const instance = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? ' ' : 'https://alex188.cn/jf2app',
+  baseURL: process.env.NODE_ENV === 'development' ? '' : 'https://alex188.cn/jf2app',
   timeout: 15000,
 });
 let ld;

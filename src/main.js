@@ -3,7 +3,8 @@ import
 {
   NavBar, Popup, Dialog, Icon, Tab, Tabs, Picker, Toast,
   PasswordInput, NumberKeyboard, Form, Field, Calendar, Image, DatetimePicker, PullRefresh,
-  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader, Badge,
+  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader,
+  Badge, Checkbox, CheckboxGroup,
 }
   from 'vant';
 
@@ -16,6 +17,7 @@ import store from './store';
 import './assets/css/style/common.less';
 import NavBarBottom from './components/MyComponents/NavBar.vue';
 import NavBarTop from './components/NavBar.vue';
+import NoContent from './components/MyComponents/NoContent.vue';
 
 // 引入自动化引入icons/svg文件夹下所有svg的js文件
 import '@/assets/icons';
@@ -47,11 +49,14 @@ Vue.use(NavBar)
   .use(Step)
   .use(Steps)
   .use(Uploader)
-  .use(Badge);
+  .use(Badge)
+  .use(Checkbox)
+  .use(CheckboxGroup);
 
 // 组件自己封装的公用组件
 Vue.component('nav-bar-bottom', NavBarBottom);
 Vue.component('nav-bar-top', NavBarTop);
+Vue.component('no-content', NoContent);
 
 // 全局引入封装的axios
 Vue.prototype.requestAxios = requestAxios;

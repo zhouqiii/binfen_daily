@@ -6,7 +6,6 @@
               <div class="home_editBox_time box_frame-row">
                 <div>填写日期</div>
                 <div class="edit_date">
-                  <!-- <div class="edit_date_week">{{weekdayshow}}</div> -->
                     <div class="getTime">{{date}}</div>
                 </div>
               </div>
@@ -27,7 +26,7 @@
           </div>
         </div>
         <div class="submit_btn">
-          <div class="sendBtn" @click="sendData"
+          <div class="sendBtnDefault" @click="sendData"
             :disabled="disabledCommit"
             :style="thisStyle">提交日报</div>
         </div>
@@ -58,7 +57,7 @@ export default {
       currentDate: new Date(),
       commiList: [], // 任务列表
       taskList: [], // 任务id
-      disabledCommit: true,
+      disabledCommit: false,
       thisStyle: '',
     };
   },
@@ -66,7 +65,7 @@ export default {
     // 获取该user任务
     defaultProject() {
       this.requestAxios({
-        url: '/api/businessTask/business-task/getListTaskByUser',
+        url: '/businessTask/business-task/getListTaskByUser',
         data: {},
         method: 'post',
       })
@@ -95,30 +94,31 @@ export default {
     checkInput() {
       let flag = true;
       const data = [];
-      const childData = this.$refs.child;
-      const childTopData = this.$refs.childTop;
-      if (childTopData) {
-        Array.prototype.forEach.call(childTopData, (item) => {
-          data.push(item.workContent);
-          data.push(item.workHour);
+      const childDataTop = this.$refs.childTop.data;
+      if (childDataTop) {
+        Array.prototype.forEach.call(childDataTop, (item) => {
+          data.push(item.workerInfo);
+          data.push(item.workerLength);
         });
       }
+      const childData = this.$refs.child;
       if (childData) {
         Array.prototype.forEach.call(childData, (item) => {
           data.push(item.workContent);
           data.push(item.workHour);
         });
       }
-      data.forEach((item) => {
-        if (!item) {
-          flag = false;
-        }
-      });
+      if (data) {
+        data.forEach((item) => {
+          if (!item) {
+            flag = false;
+          }
+        });
+      }
       if (flag) { // flag=true说明工作内容不为空
         this.disabledCommit = false;
         this.thisStyle = 'background:rgb(102, 102, 102)';
       } else {
-        console.log(2);
         this.disabledCommit = true;
         this.thisStyle = 'background:#d3d3d3';
       }
@@ -131,6 +131,7 @@ export default {
           message: '是否删除',
         }).then(() => {
           this.editList.splice(index, 1);
+          this.checkInput();
         }).catch(() => {
         });
       }, 1000);
@@ -168,29 +169,17 @@ export default {
       }
       if (hour < 8) {
         createDom(
-          DialogMessage,
-          {},
-          {
-            content: `<div style="text-align:center">填写工时不足8小时，请检查工时</div>
-                    `,
-            knowBtn: true,
-          },
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时不足8小时，请检查工时</div>', knowBtn: true },
         );
       } else if (hour > 8) {
         createDom(
-          DialogMessage,
-          {},
-          {
-            content: `<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>
-                    `,
-            knowBtn: true,
-          },
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>', knowBtn: true },
         );
       } else {
         this.requestAxios({
-          url: '/workDaily/upd',
+          url: '/workDaily/work-daily/upd',
           data: {
-            createDate: this.date,
+            createDate: JSON.parse(this.$route.query.formatDate),
             dailyDetailList: infoList,
             id: JSON.parse(this.$route.query.id),
           },
@@ -199,14 +188,7 @@ export default {
           .then((res) => {
             if (!res.success) {
               createDom(
-                DialogMessage,
-                {},
-                {
-                  content: `<div style="text-align:center">${res.message}</div>
-                          <div style="text-align:center;margin-top:.5rem">请重新提交！</div>
-                          `,
-                  knowBtn: true, // 知道了
-                },
+                DialogMessage, {}, { content: `<div style="text-align:center">${res.message}</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div>`, knowBtn: true },
               );
             } else {
               this.$store.state.module3.changedaily = 1;// 跳转至看日报之前修改changedaily=1，表明是从修改日报跳过去的

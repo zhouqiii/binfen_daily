@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["commissiondetailpage"],{7670:function(e,n,i){"use strict";i.r(n);var t=function(){var e=this,n=e.$createElement,i=e._self._c||n;return i("div")},s=[],a={name:"CommissionDetail"},l=a,o=i("2877"),c=Object(o["a"])(l,t,s,!1,null,null,null);n["default"]=c.exports}}]);

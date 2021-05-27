@@ -86,7 +86,7 @@ export default {
     // 获取该user任务
     defaultProject() {
       this.requestAxios({
-        url: '/api/businessTask/business-task/getListTaskByUser',
+        url: '/businessTask/business-task/getListTaskByUser',
         data: {},
         method: 'post',
       })
@@ -163,6 +163,7 @@ export default {
     },
     // 提交日报按钮
     sendData() {
+      let flag = true;
       const infoList = [];// 用来存放所有日报info
       let hour = 0;
       Array.prototype.forEach.call(this.$refs.child, (item) => {
@@ -173,19 +174,26 @@ export default {
         obj.taskName = item.commiList[item.radio];
         obj.workerLength = parseInt(item.workHour.substring(0, 1), 10);
         obj.workerInfo = item.workContent;
+        if (obj.workerInfo.length < 10) {
+          flag = false;
+        }
         infoList.push(obj);
       });
-      if (hour < 8) {
+      if (!flag) {
         createDom(
-          DialogMessage, {}, { content: '<div style="text-align:center">填写工时不足8小时，请检查工时</div>', knowBtn: true },
+          DialogMessage, {}, { content: '<div style="text-align:center">工作内容最少为10个字，请检查！</div>', knowBtn: true },
+        );
+      } else if (hour < 8) {
+        createDom(
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时不足8小时，请检查工时!</div>', knowBtn: true },
         );
       } else if (hour > 8) {
         createDom(
-          DialogMessage, {}, { content: '<div style="text-align:center">填写工时已超 8 小时,请检查工时</div>', knowBtn: true },
+          DialogMessage, {}, { content: '<div style="text-align:center">填写工时已超 8 小时,请检查工时!</div>', knowBtn: true },
         );
       } else {
         this.requestAxios({
-          url: '/api/workDaily/work-daily/save',
+          url: '/workDaily/work-daily/save',
           data: {
             workDate: this.sendDate,
             createPerson: this.storage.get('username'),

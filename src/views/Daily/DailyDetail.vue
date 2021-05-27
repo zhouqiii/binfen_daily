@@ -49,12 +49,12 @@ export default {
   methods: {
     getInfo() {
       this.requestAxios({
-        url: `/api/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`, // `/api/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`,
+        url: `/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`, // `/workDaily/work-daily/findParam/${JSON.parse(this.$route.query.id)}`,
         method: 'post',
       })
         .then((res) => {
-          if (res.data.records) {
-            this.dayListInfo = res.data.records;// 处理
+          if (res.data) {
+            this.dayListInfo = res.data;// 处理
           }
         })
         .catch(() => {
@@ -67,6 +67,7 @@ export default {
           date: JSON.stringify(this.getdate), // 带给修改页面的默认date
           data: JSON.stringify(this.dayListInfo), // 把这一页的数据带到修改页面
           id: this.$route.query.id, // 修改接口需要一个从日报列表传过来的id字段
+          formatDate: this.$route.query.formatDate,
         },
       });
     },

@@ -1,9 +1,14 @@
 <template>
     <div class="box">
-        <nav-bar-top title="休假申请" @rightClick="showTime">
-            <template v-slot:right>
-                <svg-icon iconClass="timelou"></svg-icon>
-            </template>
+        <nav-bar-top title="休假申请">
+          <template v-slot:right>
+            <div>
+              <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>
+            </div>
+            <div style="margin-left:10px">
+              <svg-icon iconClass="timelou"  @click="showTime"></svg-icon>
+            </div>
+          </template>
         </nav-bar-top>
         <div class="home">
             <!--刷新部分只为申请列表-->
@@ -26,12 +31,19 @@
                 <span class="refresh_text">刷新</span>
               </template>
               <!--延迟申请列表-->
-              <div class="home_padd"  v-show="ifList">
-                <div v-for="(item,index) in commiList" :key="index" class="daily_seebox"
-                    @click="routeItem('/VacationDetail',index)"
+              <no-content showNocontent='2' v-show="ifNoContent"></no-content>
+              <div class="home_padd"  v-show="!ifNoContent">
+                 <van-checkbox-group v-model="result" icon-size="25" ref="checkboxGroup"
+                  @change="getCheckIndex"
+                  class="checkBoxGroup"
                 >
-                    <div class="daily_seedate">{{item.date}}  {{item.time}}</div>
-                    <div class="daily_seecontent">
+                  <div v-for="(item,index) in commiList" :key="index" class="box_frame-row">
+                    <div v-show="showDelete" class="checkBoxSel">
+                      <van-checkbox :name="item.id" @></van-checkbox>
+                    </div>
+                    <div class="daily_seebox"  @click="routeItem('/VacationDetail',index)">
+                      <div class="daily_seedate">{{item.date}}  {{item.time}}</div>
+                      <div class="daily_seecontent">
                         <div class="vacationText">{{item.taskName}}</div>
                         <div class="text">休假日期：{{item.date}}</div>
                         <div class="text">休假时段：{{item.workerHour}}</div>
@@ -58,15 +70,10 @@
                             <span>经理审批</span>
                           </div>
                         </div>
+                      </div>
                     </div>
-                </div>
-              </div>
-              <div v-show="!ifList" class="home_noContent">
-                <div class="home_noContent_box">
-                  <img src="../../assets/icons/noDelayDaily.png"/>
-                  <div>休假申请内容为空</div>
-                  <div>请填写当日延迟申请哦~</div>
-                </div>
+                  </div>
+                </van-checkbox-group>
               </div>
             </van-pull-refresh>
             <!--右侧弹出层-->
@@ -171,6 +178,15 @@
                   <svg-icon iconClass="bu" @click="routeItem('/WriteVacation')"></svg-icon>
                 </div>
             </div>
+            <!--删除全选-->
+            <div class="home_del" v-show="showDelete">
+              <div class="box_frame-row">
+                <div class="delcheck"  @click="checkAllBtn">
+                  <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
+                </div>
+                <div class="del">删除</div>
+              </div>
+            </div>
         </div>
     </div>
 </template>
@@ -185,15 +201,15 @@ export default {
   data() {
     return {
       commiList: [{
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '审批中', '审批中'], taskName: '事假', workerHour: '8:30~10:30', status: '0', id: '1', changestatus: '0',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '审批中', '审批中'], taskName: '事假', workerHour: '8:30~10:30', status: '0', id: '2', changestatus: '0',
       }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '1', id: '1', changestatus: '1',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '1', id: '11', changestatus: '1',
       }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '拒绝', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '-1', id: '1', changestatus: '1',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '拒绝', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '-1', id: '66', changestatus: '1',
       }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '拒绝'], taskName: '病假', workerHour: '8:30~10:30', status: '-2', id: '1', changestatus: '2',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '拒绝'], taskName: '病假', workerHour: '8:30~10:30', status: '-2', id: '25', changestatus: '2',
       }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '已通过'], taskName: '年假', workerHour: '8:30~10:30', status: '2', id: '1', changestatus: '2',
+        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '已通过'], taskName: '年假', workerHour: '8:30~10:30', status: '2', id: '89', changestatus: '2',
       }],
       isLoading: false,
       show: false, // 右侧弹出框
@@ -206,12 +222,15 @@ export default {
       applyStatus: false, // 3个筛选状态
       passStatus: false,
       checkStatus: false,
+      showDelete: false,
+      checkedAll: false,
       ifList: true, // 休假列表是否为空
       pickVacationType: false, // 休假类型选项
       vacationType: '', // 休假类型
       vacationSelects: ['年假', '事假', '婚假', '产假', '陪产假', '病假', '丧假', '流产假'],
       activeIcon: circle,
       finishIcon: circle,
+      result: [],
 
     };
   },
@@ -282,6 +301,18 @@ export default {
         this.isLoading = false;
       }, 1000);
     },
+    // 删除框选择改变时触发
+    getCheckIndex() {
+      this.checkedAll = (this.result.length === this.commiList.length);
+    },
+    // 全选框
+    checkAllBtn() {
+      if (this.checkedAll) {
+        this.$refs.checkboxGroup.toggleAll(false);
+      } else {
+        this.$refs.checkboxGroup.toggleAll(true);
+      }
+    },
     // 去写页面
     routeItem(path, val) {
       if (val >= 0) {
@@ -300,6 +331,14 @@ export default {
       } else {
         this.$router.push(path);
       }
+    },
+  },
+  computed: {
+    ifNoContent() {
+      if (this.commiList.length === 0) {
+        this.$nextTick(() => true);
+      }
+      return false;
     },
   },
 };

@@ -1,14 +1,20 @@
 <template>
-    <div class="box">
-        <nav-bar-top title="日报" @rightClick="showTime">
+    <div class="box" style="height: 100%;">
+        <nav-bar-top title="日报">
             <template v-slot:right>
-                <svg-icon iconClass="deletelist"></svg-icon>
-                <svg-icon iconClass="timelou"></svg-icon>
+                <div>
+                  <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>
+                </div>
+                <div style="margin-left:10px">
+                  <svg-icon iconClass="timelou"  @click="show = true"></svg-icon>
+                </div>
             </template>
         </nav-bar-top>
         <div class="home">
             <!--刷新部分只为日报列表-->
-            <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+            <van-pull-refresh v-model="isLoading" @refresh="onRefresh"
+              style="min-height:100%;background:#e4e4e4"
+            >
               <!--下拉提示-->
               <template #pulling="props">
                 <svg-icon iconClass="Loading"
@@ -26,24 +32,34 @@
                 <svg-icon iconClass="shuaxin"></svg-icon>
                 <span class="refresh_text">刷新</span>
               </template>
+              <no-content showNocontent='0' v-show="ifNoContent"></no-content>
               <!--日报列表-->
-              <div class="home_padd">
-                <div v-for="(item,index) in commiList" :key="index" class="daily_seebox"
-                    @click="routeItem('/DailyDetail',index)"
+              <div class="home_padd" v-show="!ifNoContent">
+                <van-checkbox-group v-model="result" icon-size="25" ref="checkboxGroup"
+                  @change="getCheckIndex"
+                  class="checkBoxGroup"
                 >
-                    <div class="daily_seedate"> {{item.workDate}} {{item.time}}</div>
-                    <div class="daily_seecontent">
-                        <div class="box_frame-row">
-                            <span class="daily_seecontent_week" >填报日期:{{item.workDate}}</span>
-                            <span class="daily_seecontent_state">{{item.status}}</span>
-                        </div>
-                        <!-- <div class="date"><span>{{item.date}}</span></div> -->
-                        <div class="text textEllipsis" style="width:90%">任务：{{item.taskName}}</div>
-                        <div class="text textEllipsis" style="width:90%">
-                          今日工作：{{item.workerInfo}}
-                        </div>
+                  <div v-for="(item,index) in commiList" :key="index" class="box_frame-row">
+                    <div v-show="showDelete" class="checkBoxSel">
+                      <van-checkbox :name="item.id" @></van-checkbox>
                     </div>
-                </div>
+                    <div class="daily_seebox"  @click="routeItem('/DailyDetail',index)">
+                      <div class="daily_seedate"> {{item.workDate}} {{item.time}}</div>
+                      <div class="daily_seecontent">
+                          <div class="box_frame-row">
+                              <span class="daily_seecontent_week" >填报日期：{{item.workDate}}</span>
+                              <span class="daily_seecontent_state">{{item.status}}</span>
+                          </div>
+                          <div class="text textEllipsis">
+                            任务：{{item.taskName}}
+                          </div>
+                          <div class="text textEllipsis">
+                            今日工作：{{item.workerInfo}}
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </van-checkbox-group>
               </div>
             </van-pull-refresh>
             <!--右侧弹出层-->
@@ -108,7 +124,15 @@
             <!--固定的编辑图标-->
             <div class="home_edit box_frame">
                 <div><svg-icon iconClass="bu" @click="routeItem('/WriteDaily')"></svg-icon></div>
-                <!-- <div><svg-icon iconClass="xie"></svg-icon></div> -->
+            </div>
+            <!--删除全选-->
+            <div class="home_del" v-show="showDelete">
+              <div class="box_frame-row">
+                <div class="delcheck"  @click="checkAllBtn">
+                  <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
+                </div>
+                <div class="del" @click="delDaily">删除</div>
+              </div>
             </div>
         </div>
     </div>
@@ -117,9 +141,10 @@
 import SvgIcon from '../../components/SvgIcon.vue';
 import '../../assets/css/style/seeDaily.less';
 
-let count = 0;
+let count = 1;
 let startTimeCheck = '';
 let endTimeCheck = '';
+const formatDateList = [];
 export default {
   components: { SvgIcon },
   name: 'SeeDaily',
@@ -135,15 +160,17 @@ export default {
       maxDate: new Date(),
       startTimePop: false, // 开始时间弹出框
       endTimePop: false, // 结束时间弹出框
+      showDelete: false,
+      result: [],
+      checkedAll: false,
+      isTrue: false,
     };
   },
   methods: {
     // 获取列表数据
     getListData(start, end) { // start, end
-      count += 1;
-      console.log(count);
       this.requestAxios({
-        url: '/api/workDaily/work-daily/getListByPage', // /api/workDaily/work-daily/getListByPage
+        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
         data: {
           pageNum: count,
           pageSize: 5,
@@ -159,19 +186,46 @@ export default {
                 this.$set(item, 'status', '已提交');
               }
               if (item.workDate) {
+                formatDateList.push(item.workDate);
                 this.$set(item, 'workDate', this.formatDateShow(item.workDate));
               }
               this.commiList.push(item);
             });
           }
+          this.isTrue = true;
         })
-        .catch(() => {
-
-        });
+        .catch(() => {});
     },
-    // 显示弹框
-    showTime() {
-      this.show = true;
+    // 删除选中日报
+    delDaily() {
+      this.requestAxios({
+        url: '/workDaily/work-daily/del', //
+        data: {
+          ids: this.result,
+        },
+        method: 'delete', // post
+      }).then((res) => {
+        if (res.success) {
+          this.$toast('删除成功');
+          count = 1;
+          this.commiList = [];
+          this.getListData('', '');
+        } else {
+          this.$toast('删除失败，请重试！');
+        }
+      }).catch(() => {});
+    },
+    // 全选框
+    checkAllBtn() {
+      if (this.checkedAll) {
+        this.$refs.checkboxGroup.toggleAll(false);
+      } else {
+        this.$refs.checkboxGroup.toggleAll(true);
+      }
+    },
+    // 删除框选择改变时触发
+    getCheckIndex() {
+      this.checkedAll = (this.result.length === this.commiList.length);
     },
     // 格式化月日弹框：2021年5月11日
     formatterD(type, val) {
@@ -223,14 +277,13 @@ export default {
     onRefresh() {
       setTimeout(() => {
         this.commiList = [];
-        count = 0;// 重新分页，把count重设为0
         this.isLoading = false;
         this.resetParams('', '');
       }, 1000);
     },
     // 封装重置参数，并且在一次调用参数
     resetParams(start, end) {
-      count = 0;// 重新分页，把count重设为0
+      count = 1;// 重新分页，把count重设为0
       startTimeCheck = start;// 重设全局时间
       endTimeCheck = end;
       this.getListData(startTimeCheck, endTimeCheck);
@@ -243,6 +296,7 @@ export default {
           query: {
             id: JSON.stringify(this.commiList[val].id), // 携带id给日报详情页面，详情页面根据id查接口数据
             date: JSON.stringify(this.commiList[val].workDate), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date
+            formatDate: JSON.stringify(formatDateList[val]), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date
           },
         });
       } else {
@@ -259,24 +313,39 @@ export default {
       // 滚动条到底部的条件
       if (Math.ceil(scrollTop) + windowHeight === scrollHeight) {
         // 加载数据
-        // that.loadMore();
-        this.getListData(startTimeCheck, endTimeCheck);
+        if (this.isTrue) {
+          this.isTrue = false;
+          count += 1;
+          setTimeout(() => {
+            this.getListData(startTimeCheck, endTimeCheck);
+          }, 500);
+        }
       }
     },
-  },
-  created() {
   },
   // 清除监听的滚动事件
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll, true);
   },
+  created() {
+  },
   mounted() {
-    this.resetParams('', '');
-    window.addEventListener('scroll', this.handleScroll, true);
-    if (this.$store.state.module3.changedaily === 1) {
-      this.$toast('日报修改成功');
-      this.$store.state.module3.changedaily = 0;
-    }
+    this.$nextTick(() => {
+      this.resetParams('', '');
+      window.addEventListener('scroll', this.handleScroll, true);
+      if (this.$store.state.module3.changedaily === 1) {
+        this.$toast('日报修改成功');
+        this.$store.state.module3.changedaily = 0;
+      }
+    });
+  },
+  computed: {
+    ifNoContent() {
+      if (this.commiList.length === 0) {
+        this.$nextTick(() => true);
+      }
+      return false;
+    },
   },
 };
 </script>

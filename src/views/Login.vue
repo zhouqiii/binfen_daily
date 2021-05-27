@@ -15,8 +15,8 @@
                     class="userinput"
                     placeholder="请输入账号"
                     :error-message="err.phoneErr"
-                    v-on:input="getData"
                     @blur="checkPhone"
+                    autocomplete="new-password"
                 />
             </div>
             <div style="margin-top:2rem">
@@ -27,7 +27,7 @@
                     v-model="pwd"
                     placeholder="请输入密码"
                     class="pwdinput"
-                     v-on:input="getData"
+                    autocomplete="new-password"
                 >
                     <img slot="right-icon" v-if='eye'
                         @click="changeSeen"
@@ -44,7 +44,6 @@
         </div>
         <div class="login login_btn">
             <button class="login_btn_button"
-                :disabled="btnAgree"
                 :style="thisStyle"
                 @click="sendLogin"
             >登陆</button>
@@ -72,7 +71,6 @@ export default {
       code: '',
       seen: 'password',
       btnAgree: true,
-      flag: false, // flag对应输入框的校验,校验正确flag里该对应属性修改为true,此时登录按钮可点击
       eye: true,
       err: {
         phoneErr: '', // 电话号码错误提示
@@ -102,18 +100,16 @@ export default {
       //   this.err.phoneErr = '';
       //   if (this.pwd.length >= 6) {
       //     this.flag = true;// 此时手机号和密码符合要求
-      //   } else {
-      //     this.flag = false;
       //   }
-      // } else {
-      //   this.flag = false;
       // }
       const username = this.phone.toString().split(' ').join('');
       const password = this.pwd.toString().split(' ').join('');
       if (username && password) {
-        this.flag = true;
+        this.thisStyle = 'background: #0c0808a1';
+        this.btnAgree = false;
       } else {
-        this.flag = false;
+        this.thisStyle = 'background: #d3d3d3';
+        this.btnAgree = true;
       }
     },
     // 密码是否可见
@@ -124,11 +120,13 @@ export default {
     },
     // 登陆按钮
     sendLogin() {
+      const username = this.phone.toString().split(' ').join('');
+      const password = this.pwd.toString().split(' ').join('');
       this.requestLogin({
-        url: '/api/personnelInfo/personnel-info/login',
+        url: '/personnelInfo/personnel-info/login',
         data: {
-          password: this.pwd,
-          username: this.phone,
+          password,
+          username,
         },
         method: 'post',
       })
@@ -145,8 +143,8 @@ export default {
               },
             );
           } else {
-            this.storage.set('username', this.phone, time);
-            this.storage.set('password', this.pwd, time);
+            this.storage.set('username', username, time);
+            this.storage.set('password', password, time);
             const token = res.data.tokenHead + res.data.token;
             this.storage.set('loginToken', token, time);
             this.$router.push({
@@ -156,22 +154,6 @@ export default {
         })
         .catch(() => {
         });
-    },
-  },
-  watch: {
-    // 监听flag变化，这里flag对应输入框的校验
-    // 输入框校验正确，flag属性改为true，
-    // 所有的输入框值校验正确，那么flag才为true，此时可以点击同意按钮
-    flag: {
-      handler(newVal) {
-        if (newVal) {
-          this.thisStyle = 'background: #0c0808a1';
-          this.btnAgree = false;
-        } else {
-          this.thisStyle = 'background: #d3d3d3';
-          this.btnAgree = true;
-        }
-      },
     },
   },
 

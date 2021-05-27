@@ -76,7 +76,7 @@ export default {
     // 获取该user任务
     defaultProject() {
       this.requestAxios({
-        url: '/api/businessTask/business-task/getListTaskByUser',
+        url: '/businessTask/business-task/getListTaskByUser',
         data: {},
         method: 'post',
       })

@@ -5,7 +5,6 @@
         @touchstart="touchinUk(index)"
         @touchend="cleartime(index)"
       >
-
         <div class="ruleForm">
             <div class="formItem box_frame-row">
                 <div>任务</div>
@@ -134,7 +133,7 @@ export default {
     },
     // 工作内容不为空才可以提交
     getWorkContent() {
-      this.$emit('checkInput');
+      this.$emit('checkInput', this.dataList);
     },
     // 长按删除的作用
     touchinUk(index) {

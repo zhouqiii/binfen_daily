@@ -1,9 +1,14 @@
 <template>
     <div class="box">
-        <nav-bar-top title="延迟申请" @rightClick="showTime">
-            <template v-slot:right>
-                <svg-icon iconClass="timelou"></svg-icon>
-            </template>
+        <nav-bar-top title="延迟申请">
+          <template v-slot:right>
+            <div>
+              <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>
+            </div>
+            <div style="margin-left:10px">
+              <svg-icon iconClass="timelou"  @click="show = true"></svg-icon>
+            </div>
+          </template>
         </nav-bar-top>
         <div class="home">
             <!--刷新部分只为申请列表-->
@@ -26,12 +31,19 @@
                 <span class="refresh_text">刷新</span>
               </template>
               <!--延迟申请列表-->
-              <div class="home_padd"  v-show="ifList">
-                <div v-for="(item,index) in commiList" :key="index" class="daily_seebox"
-                    @click="routeItem('/ExtentionDetail',index)"
+              <no-content showNocontent='1' v-show="ifNoContent"></no-content>
+              <div class="home_padd"  v-show="!ifNoContent">
+                <van-checkbox-group v-model="result" icon-size="25" ref="checkboxGroup"
+                  @change="getCheckIndex"
+                  class="checkBoxGroup"
                 >
-                    <div class="daily_seedate">{{item.date}} {{item.time}}</div>
-                    <div class="daily_seecontent">
+                  <div v-for="(item,index) in commiList" :key="index" class="box_frame-row">
+                    <div v-show="showDelete" class="checkBoxSel">
+                      <van-checkbox :name="item.id" @></van-checkbox>
+                    </div>
+                    <div class="daily_seebox"  @click="routeItem('/ExtentionDetail',index)">
+                      <div class="daily_seedate">{{item.date}} {{item.time}}</div>
+                      <div class="daily_seecontent">
                         <div class="text textEllipsis" style="width:90%">任务：{{item.taskName}}</div>
                         <div class="text">申请日期：{{item.date}}</div>
                         <div class="text">申请延迟工时：{{item.workerHour}}</div>
@@ -50,15 +62,10 @@
                             <span>经理审批</span>
                           </div>
                         </div>
+                      </div>
                     </div>
-                </div>
-              </div>
-              <div v-show="!ifList" class="home_noContent">
-                <div class="home_noContent_box">
-                  <img src="../../assets/icons/noDelayDaily.png"/>
-                  <div>延期申请内容为空</div>
-                  <div>请填写当日延迟申请哦~</div>
-                </div>
+                  </div>
+                </van-checkbox-group>
               </div>
             </van-pull-refresh>
             <!--右侧弹出层-->
@@ -143,6 +150,15 @@
                   <svg-icon iconClass="bu" @click="routeItem('/WriteExtention')"></svg-icon>
                 </div>
             </div>
+             <!--删除全选-->
+            <div class="home_del" v-show="showDelete">
+              <div class="box_frame-row">
+                <div class="delcheck"  @click="checkAllBtn">
+                  <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
+                </div>
+                <div class="del">删除</div>
+              </div>
+            </div>
         </div>
     </div>
 </template>
@@ -159,13 +175,13 @@ export default {
       commiList: [{
         time: '7:30', date: '2021-4-30', state: ['已申请', '审批中', '审批中'], taskName: '海外分行功能优化细化001-百姓', workerHour: '3小时', status: '0', id: '1', changestatus: '0',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '审批中'], taskName: '海外分行功能优化细化001-百姓', workerHour: '3小时', status: '1', id: '1', changestatus: '1',
+        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '审批中'], taskName: '海外分行功能优化细化001-百姓', workerHour: '3小时', status: '1', id: '3', changestatus: '1',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '拒绝', '审批中'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-1', id: '1', changestatus: '1',
+        time: '7:30', date: '2021-4-30', state: ['已申请', '拒绝', '审批中'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-1', id: '33', changestatus: '1',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '拒绝'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-2', id: '1', changestatus: '2',
+        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '拒绝'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '-2', id: '2', changestatus: '2',
       }, {
-        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '已通过'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '2', id: '1', changestatus: '2',
+        time: '7:30', date: '2021-4-30', state: ['已申请', '已通过', '已通过'], taskName: '2.X16 乘车乘车码原型设计3码原型设计3.X16 乘车码原型设计', workerHour: '3小时', status: '2', id: '9', changestatus: '2',
       }],
       isLoading: false,
       show: false, // 右侧弹出框
@@ -178,17 +194,15 @@ export default {
       applyStatus: false,
       passStatus: false,
       checkStatus: false,
-      ifList: true,
+      showDelete: false,
       activeIcon: circle,
       finishIcon: circle,
+      checkedAll: false,
+      result: [],
 
     };
   },
   methods: {
-    showTime() {
-      // this.resetCheck();
-      this.show = true;
-    },
     // 格式化月日弹框：2021年5月11日
     formatterD(type, val) {
       if (type === 'year') {
@@ -262,6 +276,26 @@ export default {
       } else {
         this.$router.push(path);
       }
+    },
+    // 删除框选择改变时触发
+    getCheckIndex() {
+      this.checkedAll = (this.result.length === this.commiList.length);
+    },
+    // 全选框
+    checkAllBtn() {
+      if (this.checkedAll) {
+        this.$refs.checkboxGroup.toggleAll(false);
+      } else {
+        this.$refs.checkboxGroup.toggleAll(true);
+      }
+    },
+  },
+  computed: {
+    ifNoContent() {
+      if (this.commiList.length === 0) {
+        this.$nextTick(() => true);
+      }
+      return false;
     },
   },
 };

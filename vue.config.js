@@ -47,12 +47,12 @@ module.exports = {
   },
   devServer: {
     proxy: {
-      '/api': {
+      '/': {
         target: 'https://alex188.cn/jf2app',
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': '',
+          '^/': '',
         },
       },
     },
