@@ -150,6 +150,7 @@ export default {
   name: 'SeeDaily',
   data() {
     return {
+      ifNoContent: false,
       commiList: [],
       isLoading: false,
       show: false, // 右侧弹出框
@@ -339,12 +340,13 @@ export default {
       }
     });
   },
-  computed: {
-    ifNoContent() {
-      if (this.commiList.length === 0) {
-        this.$nextTick(() => true);
+  watch: {
+    commiList(newval) {
+      if (newval.length === 0) {
+        this.ifNoContent = true;
+      } else {
+        this.ifNoContent = false;
       }
-      return false;
     },
   },
 };

@@ -116,7 +116,7 @@ export default {
 </script>
 <style lang="less" >
 .mycommi{
-padding-bottom: 5rem;
+padding-bottom: 5.5rem;
 font-size: .8rem;
 }
 .tab_select{
@@ -142,6 +142,7 @@ font-size: .8rem;
         .van-tab__pane{
             height: 100%;
             overflow-y: auto;
+            padding-bottom: 1rem;
         }
     }
     .list_box{

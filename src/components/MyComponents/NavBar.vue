@@ -53,6 +53,7 @@ export default {
         width: 100%;
         height: 3rem;
         z-index: 105;
+        background: #ffffff;
         .item{
           text-align: center;
           width:33.3%;

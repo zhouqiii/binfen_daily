@@ -16,6 +16,7 @@
                     placeholder="请输入账号"
                     :error-message="err.phoneErr"
                     @blur="checkPhone"
+                    v-on:input="getData"
                     autocomplete="new-password"
                 />
             </div>
@@ -28,6 +29,7 @@
                     placeholder="请输入密码"
                     class="pwdinput"
                     autocomplete="new-password"
+                    v-on:input="getData"
                 >
                     <img slot="right-icon" v-if='eye'
                         @click="changeSeen"
@@ -44,7 +46,8 @@
         </div>
         <div class="login login_btn">
             <button class="login_btn_button"
-                :style="thisStyle"
+                :style="changeStyle"
+                :disabled="btnAgree"
                 @click="sendLogin"
             >登陆</button>
         </div>
@@ -66,7 +69,7 @@ export default {
       phone: '', // 电话号码
       pwd: '', // 密码
       type: 'password',
-      thisStyle: '',
+      changeStyle: '',
       src: logo,
       code: '',
       seen: 'password',
@@ -81,7 +84,7 @@ export default {
     // 手机号校验只能是11位数字
     checkPhone() {
       if (!this.phone) {
-        this.err.phoneErr = '请输入账号！';
+        this.err.phoneErr = '请输入用户名！';
         return false;
       }
       // if (!num.test(this.phone)) {
@@ -105,10 +108,10 @@ export default {
       const username = this.phone.toString().split(' ').join('');
       const password = this.pwd.toString().split(' ').join('');
       if (username && password) {
-        this.thisStyle = 'background: #0c0808a1';
+        this.changeStyle = 'background: rgba(12, 8, 8, 0.63)';
         this.btnAgree = false;
       } else {
-        this.thisStyle = 'background: #d3d3d3';
+        this.changeStyle = 'background: #d3d3d3';
         this.btnAgree = true;
       }
     },

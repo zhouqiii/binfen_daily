@@ -8,6 +8,6 @@ module.exports = {
       libraryDirectory: 'es',
       style: (name) => `${name}/style/less`,
       // style: true
-    }, 'vant']
+    }, 'vant'],
   ],
 };

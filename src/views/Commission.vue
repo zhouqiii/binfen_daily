@@ -88,10 +88,11 @@ export default {
       this.show = false;
     },
   },
+  beforeDestroy() {
+    document.body.style.overflowY = 'auto';
+    document.body.style.position = '';
+  },
   mounted() {
-    // console.log(this.$store.state.module3.tabIndex);
-    // this.$store.commit('changeTabIndex', 1);
-    // console.log(this.$store.state.module3.tabIndex);
     const index = this.$route.params.tabIndexGive;// 这里是为了从拒绝页面跳转过来使用
     if (index) {
       this.tabIndexChange(index);
@@ -105,6 +106,10 @@ export default {
     if (this.$route.params.activeGive) {
       this.approveTab = this.$route.params.activeGive;
     }// 这里是为了从拒绝页面跳转过来使用
+    this.$nextTick(() => {
+      document.body.style.overflowY = 'hidden';
+      document.body.style.position = 'fixed';
+    });
   },
 };
 </script>
