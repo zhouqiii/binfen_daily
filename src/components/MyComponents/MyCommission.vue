@@ -119,7 +119,6 @@ export default {
 padding-bottom: 5.5rem;
 font-size: .8rem;
 }
-.tab_select{
     .van-tabs__wrap{
       border-bottom: 1px solid #cccccc;
     }
@@ -189,6 +188,5 @@ font-size: .8rem;
 
       }
     }
-}
 
 </style>

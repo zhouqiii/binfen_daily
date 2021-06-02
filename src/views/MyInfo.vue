@@ -4,7 +4,7 @@
         <nav-bar-bottom></nav-bar-bottom>
         <div class="home">
           <div class="home_img">
-            <swiper-card :images="image"></swiper-card>
+            <img :src="image"/>
           </div>
           <div class="home_padd" style="width: 85%;">
             <!--1-->
@@ -59,18 +59,17 @@
     </div>
 </template>
 <script>
-import SwiperCard from '../components/MyComponents/SwiperCard.vue';
 import SvgIcon from '../components/SvgIcon.vue';
 import '../assets/css/style/myinfo.less';
-import pic from '../assets/icons/swiper.png';
+import pic from '../assets/icons/pictest3.jpg';
 
 export default {
-  components: { SwiperCard, SvgIcon },
+  components: { SvgIcon },
   name: 'MyInfo',
   data() {
     return {
       username: '',
-      image: [pic, pic],
+      image: pic,
     };
   },
   methods: {

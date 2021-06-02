@@ -185,6 +185,8 @@ export default {
             Array.prototype.forEach.call(res.data.records, (item) => {
               if (item.status === '0') {
                 this.$set(item, 'status', '已提交');
+              } else {
+                this.$set(item, 'status', '已作废');
               }
               if (item.workDate) {
                 formatDateList.push(item.workDate);

@@ -230,6 +230,7 @@ export default {
       vacationSelects: ['年假', '事假', '婚假', '产假', '陪产假', '病假', '丧假', '流产假'],
       activeIcon: circle,
       finishIcon: circle,
+      ifNoContent: false,
       result: [],
 
     };
@@ -333,12 +334,13 @@ export default {
       }
     },
   },
-  computed: {
-    ifNoContent() {
-      if (this.commiList.length === 0) {
-        this.$nextTick(() => true);
+  watch: {
+    commiList(newval) {
+      if (newval.length === 0) {
+        this.ifNoContent = true;
+      } else {
+        this.ifNoContent = false;
       }
-      return false;
     },
   },
 };

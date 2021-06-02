@@ -198,6 +198,7 @@ export default {
       activeIcon: circle,
       finishIcon: circle,
       checkedAll: false,
+      ifNoContent: false,
       result: [],
 
     };
@@ -290,12 +291,13 @@ export default {
       }
     },
   },
-  computed: {
-    ifNoContent() {
-      if (this.commiList.length === 0) {
-        this.$nextTick(() => true);
+  watch: {
+    commiList(newval) {
+      if (newval.length === 0) {
+        this.ifNoContent = true;
+      } else {
+        this.ifNoContent = false;
       }
-      return false;
     },
   },
 };
