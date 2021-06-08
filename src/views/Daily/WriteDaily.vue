@@ -204,7 +204,7 @@ export default {
         })
           .then((res) => {
             if (!res.success) {
-              createDom(DialogMessage, {}, { content: `<div style="text-align:center">${res.message}</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div>`, knowBtn: true });// 知道了
+              createDom(DialogMessage, {}, { content: '<div style="text-align:center">保存失败！</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div>', knowBtn: true });// 知道了
             } else {
               this.$router.push({ path: '/ApplyEnd', query: { pageend: 0 } });
             }

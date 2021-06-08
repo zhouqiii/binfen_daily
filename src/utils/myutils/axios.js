@@ -25,17 +25,41 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use((response) => {
   ld.hide();
   if (response.status === 200) {
-    return Promise.resolve(response.data);
+    if (!response.data.success) {
+      if (response.data.code === -100) { // 未登录
+        createDom(
+          DialogMessage,
+          {},
+          {
+            content: `<div style="text-align:center">${response.data.message}！</div>
+                      <div style="text-align:center">请先去登陆！</div>`,
+            confirmBtn: true,
+          },
+        );
+      } else if (response.data.message) {
+        createDom(
+          DialogMessage,
+          {},
+          {
+            content: `<div style="text-align:center">${response.data.message}！</div>`,
+            knowBtn: true,
+          },
+        );
+      }
+    } else {
+      return Promise.resolve(response.data);
+    }
+  } else {
+    createDom(
+      DialogMessage,
+      {},
+      {
+        content: `<div style="text-align:center">请求异常！</div>
+                      `,
+        knowBtn: true,
+      },
+    );
   }
-  createDom(
-    DialogMessage,
-    {},
-    {
-      content: `<div style="text-align:center">请求异常！</div>
-                    `,
-      knowBtn: true,
-    },
-  );
   return Promise.reject(response.data.message);
 }, (error) => {
   ld.hide();

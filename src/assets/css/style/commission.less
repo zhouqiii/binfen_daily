@@ -1,5 +1,6 @@
 
 .home{
+    padding-bottom: 4rem;
     font-size: .875rem;
     .commi_manager{
         .commi_manager_bg{
@@ -36,7 +37,6 @@
            .line{
                border-right: 1px solid #999999;
                height: 100%;
-               
            }
         }
     }
@@ -47,6 +47,63 @@
 .van-overlay{
     z-index: 150;
 }
+.submit_btn{
+    position: fixed;
+    z-index: 150;
+    bottom:0px;
+    background-color: #ffffff;
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    .sendBtn{
+      width: 70%;
+      color: #ffffff;
+      height: 2rem;
+      line-height: 2rem;
+      background: rgba(12, 8, 8, 0.63);
+      border-radius:.5rem ;
+      margin: auto;
+      text-align: center;
+      font-size: .875rem;
+
+    }
+  }
+.home_pop{
+    .contentBox{
+        .selInput{
+            .van-cell__right-icon{
+                line-height: 1.375rem !important;
+                color: inherit;
+            }
+        }
+        .timeInput{
+            .van-cell__right-icon{
+                line-height: 1.6rem !important;
+                color: inherit;
+            }
+        }
+    }
+}
+.home_edit{
+    position: fixed;
+    right: 1rem;
+    top: 50%;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    background: #ffffff;
+    -moz-border-radius: 1.2rem;
+    -webkit-border-radius: 1.2rem;
+    border-radius:1.5rem;
+    border: 1px solid #333333;
+    font-size: .8rem;
+    .box_frame{
+        align-items: center;
+        margin-top: .3rem;
+    }
+}
+
 .wrapper {
     display: flex;
     align-items: center;
@@ -80,5 +137,16 @@
             color: #ffffff;
             }
         }
+    }
+  }
+  /*给历史审核的筛选条件的输入框使的*/
+  .approveInput{
+    .van-cell__value{
+      .van-field__body{
+        .van-field__control{
+          text-align: left;
+          padding: 0 1rem;
+        }
+      }
     }
   }

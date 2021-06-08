@@ -41,7 +41,7 @@
                 >
                   <div v-for="(item,index) in commiList" :key="index" class="box_frame-row">
                     <div v-show="showDelete" class="checkBoxSel">
-                      <van-checkbox :name="item.id" @></van-checkbox>
+                      <van-checkbox :name="item.id"></van-checkbox>
                     </div>
                     <div class="daily_seebox"  @click="routeItem('/DailyDetail',index)">
                       <div class="daily_seedate"> {{item.workDate}} {{item.time}}</div>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar-top title="审批详情" :navBg='navBg'></nav-bar-top>
+        <nav-bar-top :title="title" :navBg='navBg'></nav-bar-top>
         <div class="home">
             <div class="home_detail_content">
                 <div class="ruleForm">
@@ -64,6 +64,7 @@ export default {
       workContent: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
       date: '2021-4-22',
       ifAgreeBtn: false,
+      title: '',
     };
   },
   methods: {
@@ -86,10 +87,12 @@ export default {
   },
   mounted() {
     this.getInfo();
-    if (this.$route.query.data === '1') { // 我的审核-已审核跳转过来的
+    if (this.$route.query.data === '1') { // 我的审核-历史审核跳转过来的
       this.ifAgreeBtn = true;
+      this.title = '审批详情';
     } if (this.$route.query.data === '2') {
       this.ifAgreeBtn = false;
+      this.title = '历史审批详情';
     }
   },
 };
@@ -162,7 +165,6 @@ export default {
       margin: auto;
       text-align: center;
       font-size: .875rem;
-
     }
   }
 </style>

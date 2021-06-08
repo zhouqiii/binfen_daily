@@ -1,6 +1,6 @@
 <template>
     <div>
-      <nav-bar-top title="任务详情" :navBg='navBg'></nav-bar-top>
+      <nav-bar-top :title="title" :navBg='navBg'></nav-bar-top>
       <div class="home">
         <div class="commi_detail_box">
           <!--任务详情头box-->
@@ -102,9 +102,11 @@ import circle from '../../assets/icons/circle.png';
 
 export default {
   components: { SvgIcon },
+  props: ['routeGuide'],
   name: 'CommissionDetail',
   data() {
     return {
+      title: '',
       navBg: false, // header背景色
       manager: false, // 任务时间节点是经理的样式还是普通员工的样式
       activeNames: ['1'],
@@ -166,9 +168,19 @@ export default {
     },
 
   },
+  created() {
+    this.$nextTick(() => {
+      const data = JSON.parse(this.$route.query.data);
+      this.giveData(data);
+      const id = JSON.parse(this.$route.query.id);
+      if (id === '1') {
+        this.title = '历史任务详情';
+      } else {
+        this.title = '任务详情';
+      }
+    });
+  },
   mounted() {
-    const data = JSON.parse(this.$route.query.data);
-    this.giveData(data);
   },
 };
 </script>

@@ -18,7 +18,7 @@
           </div>
           <div class="item" @click="clickItem('/MyInfo')"
             :class="{active: $route.path==='/MyInfo'}"
-            style="padding-top:.3rem"
+            style="padding-top:.2rem"
           >
             <svg-icon iconClass="wodeT" style="width:1.5rem;height:1.35rem"></svg-icon>
             <p>我的</p>

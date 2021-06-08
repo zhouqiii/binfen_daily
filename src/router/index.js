@@ -18,7 +18,19 @@ const routes = [
   {
     path: '/Commission',
     name: 'Commission',
-    component: () => import(/* webpackChunkName: "commissionpage" */ '../views/Commission.vue'),
+    component: () => import(/* webpackChunkName: "commissionpage" */ '../views/Commission/Commission.vue'),
+  }, {
+    path: '/HistoryCommission',
+    name: 'HistoryCommission',
+    component: () => import(/* webpackChunkName: "commissionpage" */ '../views/Commission/HistoryCommission.vue'),
+  }, {
+    path: '/Approve',
+    name: 'Approve',
+    component: () => import(/* webpackChunkName: "approvepage" */ '../views/Commission/Approve.vue'),
+  }, {
+    path: '/ApproveHistory',
+    name: 'ApproveHistory',
+    component: () => import(/* webpackChunkName: "approvehistorypage" */ '../views/Commission/ApproveHistory.vue'),
   },
   {
     path: '/MyInfo',
