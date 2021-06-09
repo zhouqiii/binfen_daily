@@ -41,18 +41,6 @@
             <div>审批</div>
           </div>
       </div>
-      <!--确定一键审批的弹框-->
-      <!-- <van-overlay :show="show" @click="show = false">
-        <div class="wrapper" @click.stop>
-          <div class="dialog_box">
-            <div class="btn_title">确定全部申请通过？</div>
-            <div class="btn_select flex_around">
-              <div class="selBtn selectCancel" @click="remain">取消</div>
-              <div class="selBtn selectConfirm" @click="changeData">确定</div>
-            </div>
-          </div>
-        </div>
-      </van-overlay> -->
     </div>
 </template>
 <script>

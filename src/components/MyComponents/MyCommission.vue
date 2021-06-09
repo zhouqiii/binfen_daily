@@ -179,7 +179,6 @@ export default {
 </script>
 <style lang="less" >
 .mycommi{
-padding-bottom: 3rem;
 font-size: .8rem;
 }
     .van-tabs__wrap{
@@ -208,7 +207,6 @@ font-size: .8rem;
         }
     }
     .checkBoxGroup{
-      padding-bottom:3.5rem;
       .van-checkbox__icon--checked .van-icon{
           color: inherit;
           background-color: #ffffff;
