@@ -1,6 +1,6 @@
 <template>
     <div class="box" style="height: 100%;">
-        <nav-bar-top title="日报">
+        <nav-bar-top title="日报" type='MyInfo'>
             <template v-slot:right>
                 <div>
                   <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>
@@ -192,8 +192,9 @@ export default {
                 formatDateList.push(item.workDate);
                 this.$set(item, 'workDate', this.formatDateShow(item.workDate));
               }
-              this.commiList.push(item);
+              return item;
             });
+            this.commiList = res.data.records;
           }
           this.isTrue = true;
         })
@@ -211,7 +212,6 @@ export default {
         if (res.success) {
           this.$toast('删除成功');
           count = 1;
-          this.commiList = [];
           this.getListData('', '');
         } else {
           this.$toast('删除失败，请重试！');
@@ -273,13 +273,14 @@ export default {
     // 通过时间筛选看日报列表
     getSelectComm() {
       this.show = false;
-      this.commiList = [];
       this.resetParams(this.startDate, this.endDate);
+      this.checkedAll = false;// 当通过时间筛选更新列表时，将所有对应的删除框置为默认不选中状态
+      this.result = [];
+      this.showDelete = false;
     },
     // onRefresh刷新列表异步获取数据
     onRefresh() {
       setTimeout(() => {
-        this.commiList = [];
         this.isLoading = false;
         this.resetParams('', '');
       }, 1000);
@@ -297,6 +298,7 @@ export default {
         this.$router.push({
           path,
           query: {
+            change: JSON.stringify(this.commiList[val].status), // 状态是已提交还是已作废，作废不可修改
             id: JSON.stringify(this.commiList[val].id), // 携带id给日报详情页面，详情页面根据id查接口数据
             date: JSON.stringify(this.commiList[val].workDate), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date
             formatDate: JSON.stringify(formatDateList[val]), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date

@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <nav-bar-top title="休假申请">
+        <nav-bar-top title="休假申请" type='MyInfo'>
           <template v-slot:right>
             <div>
               <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>

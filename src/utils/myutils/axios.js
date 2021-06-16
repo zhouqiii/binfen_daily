@@ -32,7 +32,7 @@ instance.interceptors.response.use((response) => {
           {},
           {
             content: `<div style="text-align:center">${response.data.message}！</div>
-                      <div style="text-align:center">请先去登陆！</div>`,
+                      <div style="text-align:center">请先去登录！</div>`,
             confirmBtn: true,
           },
         );

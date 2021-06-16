@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="change_btn">
+        <div class="change_btn" v-show="ifChange==='已提交'">
           <div class="sendBtn" @click="routeItem('/ChangeDaily')">修改日报</div>
         </div>
     </div>
@@ -44,6 +44,7 @@ export default {
       workerLength: '',
       workerInfo: '',
       dayListInfo: [],
+      ifChange: JSON.parse(this.$route.query.change),
     };
   },
   methods: {

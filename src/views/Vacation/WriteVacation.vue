@@ -17,6 +17,7 @@
                     <van-popup v-model="pickVacationType" round position="bottom">
                         <van-picker
                             show-toolbar
+                            allow-html
                             :columns="vacationSelects"
                             @cancel="pickVacationType = false"
                             @confirm="onConfirmVacation"

@@ -2,51 +2,57 @@
     <div>
         <nav-bar-top :title="title" :navBg='navBg'></nav-bar-top>
         <div class="home">
-            <div class="home_detail_content">
-                <div class="ruleForm">
-                    <div class="formItem box_frame-row">
-                        <span>姓名</span>
-                        <span>{{name}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>任务</span>
-                        <span class="textEllipsis" >{{commision}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>项目组</span>
-                        <span class="textEllipsis" >{{projectTeam}}</span>
-                    </div>
-                     <div class="formItem box_frame-row">
-                        <span>申请日期</span>
-                        <span>{{date}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>延迟申请起始时间</span>
-                        <span>{{workHourStart}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>延迟申请截止时间</span>
-                        <span>{{workHourEnd}}</span>
-                    </div>
-                    <div class="box_frame">
-                        <div class="formItem">
-                            <span>工作内容</span>
-                        </div>
-                        <div class="home_detail_workContent">
-                            {{workContent}}
-                        </div>
-                    </div>
-                </div>
+          <div v-show="ifRefuse">
+            <div class="home_detail_date">
+                <span>拒绝原因：</span>
+                <span>{{getdate}}</span>
             </div>
-            <div class="home_detail_btn flex_around" v-show="ifAgreeBtn">
-                <div class="approve_btn refuse" @click="routeItem('/MyApproveRefuse')">
-                    拒绝
+          </div>
+          <div class="home_detail_content">
+            <div class="ruleForm">
+                <div class="formItem box_frame-row">
+                    <span>姓名</span>
+                    <span>{{name}}</span>
                 </div>
-                <div class="approve_btn agree" @click="routeItemCommi('Commission')">
-                    同意
+                <div class="formItem box_frame-row">
+                    <span>任务</span>
+                    <span class="textEllipsis" >{{commision}}</span>
+                </div>
+                <div class="formItem box_frame-row">
+                    <span>项目组</span>
+                    <span class="textEllipsis" >{{projectTeam}}</span>
+                </div>
+                  <div class="formItem box_frame-row">
+                    <span>申请日期</span>
+                    <span>{{date}}</span>
+                </div>
+                <div class="formItem box_frame-row">
+                    <span>延迟申请起始时间</span>
+                    <span>{{workHourStart}}</span>
+                </div>
+                <div class="formItem box_frame-row">
+                    <span>延迟申请截止时间</span>
+                    <span>{{workHourEnd}}</span>
+                </div>
+                <div class="box_frame">
+                    <div class="formItem">
+                        <span>工作内容</span>
+                    </div>
+                    <div class="home_detail_workContent">
+                        {{workContent}}
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="home_detail_btn flex_around" v-show="ifAgreeBtn">
+            <div class="approve_btn refuse" @click="routeItem('/MyApproveRefuse')">
+                拒绝
+            </div>
+            <div class="approve_btn agree" @click="routeItemCommi('ApproveHistory')">
+                同意
+            </div>
+        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -65,6 +71,7 @@ export default {
       date: '2021-4-22',
       ifAgreeBtn: false,
       title: '',
+      ifRefuse: false,
     };
   },
   methods: {
@@ -74,15 +81,18 @@ export default {
     routeItem(path) {
       this.$router.push(path);
     },
-    routeItemCommi(path) {
-      this.$router.push({
-        name: path,
-        params: { // 为了跳转到我的审核-未审核
-          tabIndexGive: 1,
-          activeGive: 1,
-
-        },
-      });
+    routeItemCommi(name) {
+      this.requestAxios({
+        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
+        data: {},
+        method: 'post', // post
+      })
+        .then((res) => {
+          if (res.code === 200) {
+            this.$router.push(name);
+          }
+        })
+        .catch(() => {});
     },
   },
   mounted() {
@@ -93,6 +103,11 @@ export default {
     } if (this.$route.query.data === '2') {
       this.ifAgreeBtn = false;
       this.title = '历史审批详情';
+      if (JSON.parse(this.$route.query.state) === '拒绝') {
+        this.ifRefuse = true;
+      } else {
+        this.ifRefuse = false;
+      }
     }
   },
 };
@@ -106,7 +121,7 @@ export default {
         padding: .5rem;
         height: 2.5rem;
         line-height: 2.5rem;
-        background: #ffffff;
+        background: #f2f2f2;
         border-radius: .2rem;
       }
      .home_detail_content{

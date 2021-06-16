@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav-bar-top title="首页" :type='type'></nav-bar-top>
+        <nav-bar-top title="首页" :navIcon='navIcon'></nav-bar-top>
         <nav-bar-bottom></nav-bar-bottom>
         <div class="home">
           <div>
@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       type: '0',
+      navIcon: false,
       image: [pic, pic],
       textList: ['通知！关于公司内部沟通平台统一迁移至企业微信', '端午节放假通知及离京信息登记', '关于个人疫苗接种登记信息消息'],
       fileList: [{ title: 'X16需求说明X16需求说明X16需求说明X16需求说明X16需求说明', time: '2020.6.1', content: '测试下载:X16文档内容' }, { title: 'X17需求说明', time: '2021.2.10', content: '测试下载:X17文档内容1' }, { title: 'X17需求说明', time: '2021.2.10', content: '测试下载:X17文档内容2' }],

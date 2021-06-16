@@ -72,10 +72,12 @@ export default {
     onClickLeft() {
       if (this.type === '1') {
         this.$router.go(-1);
-      } else if (this.type === '0') {
+      } if (this.type === '0') {
         callAppMethod({
           callName: 'lastGoBack',
         });
+      } if (this.type === 'MyInfo') {
+        this.$router.push({ path: '/MyInfo' });
       }
     },
   },

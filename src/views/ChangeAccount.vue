@@ -111,7 +111,7 @@ export default {
                 DialogMessage,
                 {},
                 {
-                  content: `<div style="text-align:center">密码已修改，请重新登陆！</div>
+                  content: `<div style="text-align:center">密码已修改，请重新登录！</div>
                           
                           `,
                   confirmBtn: true,

@@ -30,7 +30,7 @@ const storage = {
         DialogMessage,
         {},
         {
-          content: `<div style="text-align:center">无账号信息，请先去登陆!</div>
+          content: `<div style="text-align:center">无账号信息，请先去登录!</div>
                     `,
           confirmBtn: true,
         },
@@ -53,7 +53,7 @@ const storage = {
           DialogMessage,
           {},
           {
-            content: `<div style="text-align:center">账号过期，请重新登陆!</div>
+            content: `<div style="text-align:center">账号过期，请重新登录!</div>
                      `,
             confirmBtn: true,
           },

@@ -48,7 +48,7 @@
               <div class="box_frame-row" @click="routeItem('/ChangeAccount')">
                 <div class="flex-row">
                   <svg-icon iconClass="change"></svg-icon>
-                  <div>修改登陆密码</div>
+                  <div>修改登录密码</div>
                 </div>
                 <svg-icon iconClass="right"></svg-icon>
               </div>

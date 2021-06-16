@@ -154,7 +154,7 @@
           </div>
           <div class="timeSelect_btn flex_evenly">
               <div class="timeSelect_btn_cancel" @click="resetApprove">重置</div>
-              <div class="timeSelect_btn_confirm">确定</div>
+              <div class="timeSelect_btn_confirm" @click="getSelectApprove">确定</div>
           </div>
         </div>
     </div>
@@ -260,9 +260,41 @@ export default {
     },
     // 通过时间筛选看日报列表
     getSelectComm() {
-    //   this.show = false;
-    //   this.commiList = [];
-    //   this.resetParams(this.startDate, this.endDate);
+      const obj = {
+        taskName: this.domListSelect[0].content,
+        batch: this.domListSelect[1].content,
+        riskLevel: this.domListSelect[2].content,
+        taskStartTime: this.domListTime[0].startTime,
+        taskEndTime: this.domListTime[0].endTime,
+        testStartTime: this.domListTime[1].startTime,
+        testEndTime: this.domListTime[1].endTime,
+        versionStartTime: this.domListTime[2].startTime,
+        versionEndTime: this.domListTime[2].endTime,
+        productStartTime: this.domListTime[3].startTime,
+        productEndTime: this.domListTime[3].endTime,
+      };
+      this.$emit('queryList', obj);
+    },
+    getSelectApprove() {
+      const apprType = [];// 审批类型选择
+      const apprStatus = [];// 审批状态选择
+      if (this.delay) {
+        apprType.push('0');
+      } if (this.vacation) {
+        apprType.push('1');
+      } if (this.agree) {
+        apprStatus.push('0');
+      } if (this.delay) {
+        apprStatus.push('1');
+      }
+      const obj = {
+        taskName: this.domListInput[0].content,
+        approvalType: apprType,
+        approvalStatus: apprStatus,
+        approvalStartTime: this.domListTimeApprove[0].startTime,
+        approvalEndTime: this.domListTimeApprove[0].endTime,
+      };
+      this.$emit('queryList', obj);
     },
     indexSelectConfirm(val) {
       this.selectIndex = val;
@@ -279,12 +311,12 @@ export default {
       this.domListSelect[this.selectIndex].content = val;
       this.domListSelect[this.selectIndex].contentPicker = false;
     },
-    // 筛选条件弹出层确定按钮--历史审核
+    // 筛选条件弹出层确定按钮--历史审核开始时间
     onConfirmAppStrt(val) {
       this.domListTimeApprove[this.approveIndex].startTime = `${this.formatDate(val)}`;
       this.domListTimeApprove[this.approveIndex].startTimePicker = false;
     },
-    // 筛选条件弹出层确定按钮--历史审核
+    // 筛选条件弹出层确定按钮--历史审核结束时间
     onConfirmAppEnd(val) {
       this.domListTimeApprove[this.approveIndex].endTime = `${this.formatDate(val)}`;
       this.domListTimeApprove[this.approveIndex].endTimePicker = false;
@@ -319,7 +351,7 @@ export default {
                 background: #ffffff;
             }
             .select_title{
-                line-height: 2rem;
+                line-height: 2.5rem;
             }
             .box_frame-row{
               .condition_choose{
@@ -350,7 +382,7 @@ export default {
         }
     }
     .timeSelect_btn{
-        margin-top: 6rem;
+        margin-top: 4rem;
         height: 2rem;
         line-height: 2rem;
         width: 100%;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height:100%">
       <nav-bar-top title="历史任务" :navBg='navBg' :navIcon='navIcon'>
         <template v-slot:right>
           <div>
@@ -14,7 +14,14 @@
         <!--任务列表部分-->
         <div class="commi_alllist">
           <!--routeGuide用来区分是从任务到任务详情还是从历史任务到历史任务详情 1表示历史任务详情 0表示任务详情-->
-          <my-commission :data="commiList" routeGuide="1" :showDelete='showDelete'></my-commission>
+          <my-commission
+            :data="commiList"
+            routeGuide="1"
+            :showDelete='showDelete'
+            @refreshList='refreshList'
+            @deleteTask='deleteTask'
+            ref="taskList"
+          ></my-commission>
         </div>
       </div>
       <div class="home_pop">
@@ -22,7 +29,7 @@
           :style="{ width: '80%',height:'100%',background:'#d3d3d3' }"
           get-container=".contentBox"
         >
-          <screen-bullet></screen-bullet>
+          <screen-bullet @queryList="changeList"></screen-bullet>
         </van-popup>
       </div>
     </div>
@@ -45,52 +52,54 @@ export default {
       showBullet: false, // 一键审批的遮罩
       showDelete: false,
       commiList: [{
-        taskName: '海外分行功能优化细化001-百姓对账 APP', batch: 'X16', type: '项目类', risk: '无', date: '2021.04.02', lever: 0, id: '31',
-      }, {
-        taskName: '海外分行功能优化细化002-百姓对账 APP', batch: 'X17', type: '项目类', risk: '中', date: '2021.05.02', lever: 2, id: '22',
-      }, {
         taskName: '海外分行功能优化细化003-百姓对账 APP', batch: 'X16', type: '项目类', risk: '低', date: '2021.04.02', lever: 1, id: '28',
       }, {
         taskName: '海外分行功能优化细化004-百姓对账 APP', batch: 'X17', type: '项目类', risk: '高', date: '2021.05.02', lever: 3, id: '51',
+      }, {
+        taskName: '海外分行功能优化细化001-百姓对账 APP', batch: 'X16', type: '项目类', risk: '无', date: '2021.04.02', lever: 0, id: '31',
       }],
     };
   },
   methods: {
-    tabIndexChange(val) {
-      this.tabIndex = val;
-    },
-    // 一键审批按钮
-    allApproveAgree(val) {
-      this.approveTab = val;// 保持approveTab和激活待审核还是已审核的active保持一致
-      this.show = true;
-    },
-    // 弹框的取消按钮
-    remain() {
-      this.show = false;
-    },
-    // 弹框的确定按钮
-    changeData() {
-      this.approveTab = 1;
-      this.show = false;
+    // 获取列表数据
+    getListData(obj) {
+      this.requestAxios({
+        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
+        data: obj,
+        method: 'post', // post
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch(() => {});
     },
     routeItem(path) {
       this.$router.push(path);
     },
+    // 侧边弹出框确定按钮
+    changeList(val) {
+      const checkDefault = this.$refs.taskList;
+      this.showDelete = false;
+      checkDefault.checkedAll = false;// 当通过时间筛选更新列表时，将所有对应的删除框置为默认不选中状态
+      checkDefault.result = [];
+      this.showBullet = false;
+      this.getListData(val);
+    },
+    // 下拉刷新函数
+    refreshList() {
+      this.getListData({});
+    },
+    // 删除某些任务的函数
+    deleteTask(val) {
+      console.log(val);
+    },
   },
   mounted() {
-    const index = this.$route.params.tabIndexGive;// 这里是为了从拒绝页面跳转过来使用
-    if (index) {
-      this.tabIndexChange(index);
-    }
-    if (this.ifManager === false) { // 当是普通员工是，页面多展示一行任务数据
-      const tag = document.getElementsByClassName('van-tabs__content');
-      tag[0].style = 'height:30rem';
-    }
   },
   created() {
-    if (this.$route.params.activeGive) {
-      this.approveTab = this.$route.params.activeGive;
-    }// 这里是为了从拒绝页面跳转过来使用
+    this.$nextTick(() => {
+      this.getListData({});
+    });
   },
 };
 </script>

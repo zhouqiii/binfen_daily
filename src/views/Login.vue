@@ -6,14 +6,14 @@
                     <template v-slot:error>加载失败</template>
                 </van-image>
             </div>
-            <div>欢迎登陆</div>
+            <div>欢迎登录</div>
         </div>
         <div class="login login_input">
             <div>
                 <div>用户名</div>
                 <van-field v-model="phone"
                     class="userinput"
-                    placeholder="请输入账号"
+                    placeholder="请输入用户名"
                     :error-message="err.phoneErr"
                     @blur="checkPhone"
                     v-on:input="getData"
@@ -49,7 +49,7 @@
                 :style="changeStyle"
                 :disabled="btnAgree"
                 @click="sendLogin"
-            >登陆</button>
+            >登录</button>
         </div>
     </div>
 </template>

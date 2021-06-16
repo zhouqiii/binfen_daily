@@ -1,7 +1,8 @@
 <template>
-    <div>
+    <div style="height:100%">
       <van-pull-refresh v-model="isLoading" @refresh="onRefresh"
         style="min-height:100%;"
+        class="refresh_box"
       >
         <!--下拉提示-->
         <template #pulling="props">
@@ -20,10 +21,8 @@
           <svg-icon iconClass="shuaxin"></svg-icon>
           <span class="refresh_text">刷新</span>
         </template>
-        <!--我的任务-->
+        <!--任务-->
         <div class="mycommi" v-show="ifCommiListFinish">
-          <!-- <van-tabs v-model="active" sticky class="tab_select">
-              <van-tab title="待完成任务"> -->
           <van-checkbox-group v-model="result" icon-size="25" ref="checkboxGroup"
             @change="getCheckIndex"
             class="checkBoxGroup"
@@ -60,42 +59,9 @@
               <div class="delcheck"  @click="checkAllBtn">
                 <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
               </div>
-              <div class="del">删除</div>
+              <div class="del" @click="delList">删除</div>
             </div>
           </div>
-                <!-- </van-tab>
-                <van-tab title="已完成任务">
-                  <div v-for="(item,index) in commiListUnFinish"
-                    :key="index" class="list_box"
-                    v-show="ifCommiListUnFinish"
-                  >
-                    <div class="item list_box_task">{{item.taskName}}</div>
-                    <div class="item list_box_text box_frame-row">
-                      <span class="spanNext">任务下达:{{item.date}}</span>
-                      <span class="spanNext">功能测试版本:{{item.date}}</span>
-                    </div>
-                    <div class="item list_box_text box_frame-row">
-                      <span class="spanNext">正式版本::{{item.date}}</span>
-                      <span class="span">投产:{{item.date}}</span>
-                    </div>
-                    <div class="item list_box_text box_frame-row">
-                      <span>批次:{{item.batch}}</span>
-                      <span :class="{
-                          dangerLow:item.lever===1,
-                          dangerHigh:item.lever===3,
-                          dangerCen:item.lever===2
-                          }" class="span">风险:{{item.risk}}
-                      </span>
-                    </div>
-                  </div>
-                  <div v-show="!ifCommiListUnFinish" class="home_noContent">
-                    <div class="home_noContent_box">
-                      <img src="../../assets/icons/noDelayDaily.png"/>
-                      <div>没有已完成的任务，继续加油哦~</div>
-                    </div>
-                  </div>
-                </van-tab>
-            </van-tabs> -->
         </div>
       </van-pull-refresh>
       <div v-show="!ifCommiListFinish" class="home_noContent">
@@ -153,9 +119,13 @@ export default {
     onRefresh() {
       this.isLoading = true;
       setTimeout(() => {
-        console.log('refresh');
         this.isLoading = false;
+        this.$emit('refreshList');
       }, 1000);
+    },
+    // 删除
+    delList() {
+      this.$emit('deleteTask', this.result);
     },
   },
   created() {
@@ -177,9 +147,10 @@ export default {
   },
 };
 </script>
-<style lang="less" >
+<style lang="less">
 .mycommi{
 font-size: .8rem;
+padding-bottom: 5rem;
 }
     .van-tabs__wrap{
       border-bottom: 1px solid #cccccc;
@@ -221,12 +192,12 @@ font-size: .8rem;
       .list_box{
         background: rgba(242, 242, 242, 1);
         border-radius: .2rem;
-        margin-top: .5rem;
+        margin-top: 1rem;
         padding: .5rem;
         width: 100%;
         .item{
-            height: 1.5rem;
-            line-height: 1.5rem;
+            height: 1.7rem;
+            line-height: 1.7rem;
         }
         .list_box_task{
             font-size: 1rem;
@@ -284,7 +255,7 @@ font-size: .8rem;
 }
     .home_noContent{
       .home_noContent_box{
-          padding: 20% 0;
+          padding: 40% 0;
           text-align: center;
           font-size: .8rem;
           img{

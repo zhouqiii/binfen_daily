@@ -56,13 +56,19 @@ export default {
     },
     // 拒绝原因确定按钮
     sendReason() {
-      this.$router.push({
-        name: 'Commission',
-        params: { // 为了跳转到我的审核-未审核
-          tabIndexGive: 1,
-          activeGive: 1,
-        },
-      });
+      this.requestAxios({
+        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
+        data: {},
+        method: 'post', // post
+      })
+        .then((res) => {
+          if (res.code === 200) {
+            this.$router.push({
+              name: 'ApproveHistory',
+            });
+          }
+        })
+        .catch(() => {});
     },
   },
   watch: {
