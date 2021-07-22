@@ -1,43 +1,82 @@
-.home{
-    .login{
-        margin-top: 3rem;
+
+.login_home {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  .bg-image('../../assets/imgs/login/lg_back');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .login {
+    // margin-top: 3rem;
+  }
+  .login_title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    .login_title_img {
+      width: 40%;
+      margin: auto;
     }
-    .login_title{
-        width: 100%;
-        text-align: center;
-        font-size: 1.2rem;
-        .login_title_img{
-            width: 40%;
-            margin: auto;
-        }
+  }
+  .login_input {
+    // margin-left: 2rem;
+    // margin-right: 2rem;
+    font-size: 0.9rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 45%;
+    background: #f0f3fa;
+    padding-top: 150px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    .login_input_box{
+      margin-top: @mar20;
     }
-    .login_input{
-        margin-left:2rem;
-        margin-right:2rem;
-        font-size: .9rem;
-        .pwdinput{
-            .van-field__control{
-                text-align: left;
-            }
-        }
-        .userinput{
-            .van-field__control{
-                text-align: left;
-            }
-        }
+    .item {
+      text-align: center;
+      align-items: center;
+      .user_img_name,.user_img_pass,.user_img_see,.user_img_nosee{
+        height: @icon20;
+        width: @icon20;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+      .user_img_name{
+        .bg-image('../../assets/imgs/login/lg_name');
+      }
+      .user_img_pass{
+        .bg-image('../../assets/imgs/login/lg_pass');
+      }
+      .user_img_see{
+        .bg-image('../../assets/imgs/login/lg_nosee');
+      }
+      .user_img_nosee{
+        .bg-image('../../assets/imgs/login/lg_see');
+      }
     }
-    .login_btn{
-         width: 15rem;
-         margin: 3rem auto 0 auto;
-        .login_btn_button{
-            width: 100%;
-            height: 2.5rem;
-            line-height: 2.5rem;
-            background: #d3d3d3;
-            border-radius: 2rem;
-            font-size: .9rem;
-            text-align: center;
-            color: #fff;
-        }
+    .pwdinput,
+    .userinput {
+      width: 650px;
+      height: 100px;
+      padding: @pad15;
+      margin: 0 auto;
     }
+  }
+  .login_btn {
+    width: 650px;
+    height: 102px;
+    margin: @mar20 auto;
+    .login_btn_button {
+      width: 100%;
+      height: 100%;
+      // line-height: 2.5rem;
+      background: rgba(#2f80ed, 0.6);
+      border-radius: 20px;
+      font-size: @font16;
+      text-align: center;
+      color: @fontCWhite;
+    }
+  }
 }

@@ -1,206 +1,269 @@
-.home_padd{
-    .checkBoxGroup{
-        padding-bottom:3.5rem;
-        .van-checkbox__icon--checked .van-icon{
-            color: inherit;
-            background-color: #ffffff;
-            border-color: inherit;
-        }
-        .van-checkbox__icon .van-icon{
-            background: #ffffff;
-        }
-        .daily_seebox{
-            width: 90%;
-            padding-top: 2rem;
-            .daily_seedate{
-                height: 2rem;
-                line-height: 2rem;
-                font-size: .9rem;
-                font-weight: 400;
+.box {
+  .nav_bar_top {
+    .navbar {
+      .van-nav-bar {
+        .van-nav-bar__content {
+          .van-nav-bar__right {
+            .img {
+              width: 48px;
+              height: 48px;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+              &:nth-of-type(1) {
+                margin-right: 48px;
+              }
             }
-            .daily_seecontent{
-                background: #ffffff;
-                margin-left:.9rem;
-                margin-right: .5rem;
-                padding: .5rem .5rem 1.2rem .9rem;
-                border-radius:1rem;
-                .daily_seecontent_stepline{
-                    .bottom_text{
-                        display: flex;
-                        flex-direction:row;
-                        justify-content: space-between;
-                        font-size: .75rem;
-                        padding: 0 0 0 1rem;
-                    }
-                }
-                .box_frame-row{
-                    height: 2rem;
-                    line-height: 2rem;
-                    .daily_seecontent_week{
-                        font-size: 1rem;
-                    }
-                    .daily_seecontent_state{
-                        font-size: .9rem;
-                        color: #858585;
-                    }
-                }
-                .date{
-                    line-height: 1.5rem;
-                    height: 1.5rem;
-                    font-size: .7rem;
-                    color: black;
-                }
-                .text{
-                    line-height: 1.5rem;
-                    height: 1.5rem;
-                    font-size: .8rem;
-                    color: #5a5959;
-                }
-                .content{
-                        overflow: hidden;
-                    text-overflow:ellipsis;
-                    white-space: nowrap;
-                    width: 80%;
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
-.home_noContent{
-    .home_noContent_box{
-        padding: 50% 0;
-        text-align: center;
-        font-size: .8rem;
-        img{
-            margin-bottom: 5%;
-        }
-
+.home_padd {
+  .checkBoxGroup {
+    .van-checkbox__icon--checked .van-icon {
+      color: inherit;
+      background-color: #ffffff;
+      border-color: inherit;
     }
-}
-.home_pop{
-    .contentBox{
-        font-size: .8rem;
-        padding-top: 1rem;
-        .ruleForm{
-            background: #ffffff;
-        }
-        .timeSelect_btn{
-            margin-top: 6rem;
-            height: 2rem;
-            line-height: 2rem;
-            width: 100%;
-            text-align: center;
-            .timeSelect_btn_cancel{
-                width:25%;
-                color: inherit;
-                background: #ffffff;
-                border-radius:.3rem ;
-            }
-            .timeSelect_btn_confirm{
-                width: 25%;
-                background: rgba(22, 155, 213, 1);
-                color: #ffffff;
-                border-radius:.3rem ;
-            }
-        }
-        .statusSelect_btn{
-            margin-top: 1rem;
-            background: #ffffff;
-            padding: 0 1rem;
-            .checktitle{
-                height: 3rem;
-                line-height: 3rem;
-            }
-            .statusCheckBtn{
-                height: 3rem;
-                div{
-                    width: 25%;
-                    background: #d3d3d3;
-                    border-radius: 1rem;
-                    text-align: center;
-                    height: 1.3rem;
-                    line-height: 1.3rem;
-                }
-                .bgColor{
-                    background: #666666;
-                    color: #ffffff;
-                }
-            }
-        }
+    .van-checkbox__icon .van-icon {
+      background: #ffffff;
     }
+    .daily_seebox {
+      width: 100%;
+      .daily_seedate {
+        height: 104px;
+        line-height: 104px;
+        font-size:@font14;
+        font-weight: 500;
+        color: @fontC82;
+      }
+      .checkBoxSel{
+        margin-right: @mar16;
+      }
+      .daily_seecontent {
+        width: 100%;
+        background: #ffffff;
+        padding: @pad16 @pad20 @pad10 @pad20;
+        border-radius: 32px;
+        display: grid;
+        .daily_seecontent_week {
+          font-size: @font16;
+          color: @fontColor;
+          margin-bottom: @mar16;
+          font-weight: 700;
+        }
+        .text{
+          font-weight: 500;
+          font-size: @font13;
+          color: @fontC82;
+          margin-bottom: @mar10;
+        }
+        .daily_seecontent_stepline {
+          .bottom_text {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            padding: 0 0 0 1rem;
+          }
+        }
+        .box_frame-row {
+          height: 2rem;
+          line-height: 2rem;
+          .daily_seecontent_state {
+            font-size: 0.9rem;
+            color: #858585;
+          }
+        }
+        .date {
+          line-height: 1.5rem;
+          height: 1.5rem;
+          font-size: 0.7rem;
+          color: black;
+        }
+        .content {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 80%;
+        }
+      }
+    }
+  }
 }
-.home_edit{
-    position: fixed;
-    right: 0;
-    top: 50%;
-    width: 12%;
+.home_noContent {
+  .home_noContent_box {
+    padding: 50% 0;
     text-align: center;
-    div{
-         margin-top: .5rem;
-         width: 2.4rem;
-         height: 2.4rem;
-         line-height: 2.4rem;
-         background: #ffffff;
-         -moz-border-radius: 1.2rem;
-         -webkit-border-radius: 1.2rem;
-         border-radius: 12rem;
-         border: 1px solid #333333;
+    font-size: 0.8rem;
+    img {
+      margin-bottom: 5%;
     }
-
+  }
 }
-.home_del{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3rem;
-    z-index: 105;
-    background: #f2f2f2;
-    line-height: 3rem;
-    font-size: .9rem;
-    .box_frame-row{
+.home_pop {
+  .van-popup {
+    width: 670px;
+  }
+  .contentBox {
+    height: 100vh;
+    position: relative;
+    .mainTitle {
+      background: #ffffff;
+      padding: 80px 32px 0 32px;
+      font-size: @font16;
+      font-weight: 700;
+      color: @fontColor;
+    }
+    .ruleForm {
+      background: #ffffff;
+      .start_time_and_end_time {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        .delcheck{
-            margin-left: 20px;
+        padding-top: 28px;
+        .start_time,
+        .end_time {
+          font-size: @font14;
+          color: @fontColor;
+          font-weight: 500;
+          text-align: center;
+          width: 50%;
         }
-        .del{
-            margin-right: 20px;
+      }
+      .short_line {
+        width: 20px;
+        height: 2px;
+        background: @fontC4D4;
+        margin: 0 auto;
+      }
+      .formItems {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .daily_timesel {
+          width: 50%;
         }
-        .van-checkbox__icon--checked .van-icon{
-            color: inherit;
-            background-color: #ffffff;
-            border-color: inherit;
+      }
+      .vacation_type{
+        font-size: @font14;
+        color: @fontC4D4;
+        font-weight: 500;
+      }
+    }
+    .statusSelect_btn {
+      margin-top: 1rem;
+      background: #ffffff;
+      padding: 0 @pad16 @pad16 @pad16;
+      .checktitle {
+        font-size: @font16;
+        font-weight: 700;
+        color: @fontColor;
+        margin-top: @mar16;
+        margin-bottom: 28px;
+      }
+      .statusCheckBtn {
+        padding: 0 16px;
+        div {
+          font-weight: 500;
+          font-size: @font14;
+          color: @fontC4D4;
+          width: 170px;
+          background: #efefef;
+          border-radius: 8px;
+          height: 72px;
+          box-sizing: border-box;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
-        .van-checkbox__icon .van-icon{
-            background: #ffffff;
+        .bgColor {
+          background: rgba(47,128,237,0.20);
+          border: 1px solid @fontC2F8;
+          border-radius: 8px;
+          color: @fontC2F8;
         }
-
-   }
+      }
+    }
+  }
 }
-.refresh_text{
-    margin-left: .5rem;
-    color: #333333;
+.blank{
+  margin:24px @pad20 48px @pad16;
+  height: 122px;
 }
-.van-cell{
-    line-height: 3rem;
-    height: 3rem;
+.home_edit {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  width: 156px;
+  text-align: center;
+  z-index: 2;
+  div {
+    margin-top: 0.5rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    line-height: 2.4rem;
+    background: #ffffff;
+    -moz-border-radius: 1.2rem;
+    -webkit-border-radius: 1.2rem;
+    border-radius: 12rem;
+    border: 1px solid #333333;
+  }
 }
-.van-cell__right-icon{
-    height: 3rem;
-    line-height: 3rem;
+.home_del {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 105;
+  background: #ffffff;
+  font-size: @font16;
+  font-weight: 500;
+  color: @fontC4D4;
+  .box_frame-row {
+    margin:24px @pad20 48px @pad16;
+    align-items: center;
+    height: 102px;
+    line-height: 102px;
+    .del {
+      width: 262px;
+      text-align: center;
+      background: @fontC2F8;
+      color: @fontCWhite;
+      border-radius: 20px;
+      font-size: @font16;
+      font-weight: 700;
+    }
+    .check_all_text{
+      margin-left: 24px;
+    }
+    .van-checkbox__icon--checked .van-icon {
+      color: inherit;
+      background-color: #ffffff;
+      border-color: inherit;
+    }
+    .van-checkbox__icon .van-icon {
+      background: #ffffff;
+    }
+  }
+}
+.refresh_text {
+  margin-left: 0.5rem;
+  color: #333333;
+}
+.van-cell {
+  line-height: 3rem;
+  height: 3rem;
+}
+.van-cell__right-icon {
+  height: 3rem;
+  line-height: 3rem;
 }
 /*vant时间线样式*/
-.van-step__circle{
-  width: .7rem;
-  height: .7rem;
-  background-color: #d3d3d3;
-}
-.van-step__title{
-    color:#5a5959
-}
-// .van-step__icon--active{
-//     font-size: 1rem !important;
-// }
+
 .van-steps--horizontal {
-    padding: .625rem 1rem 0;
+  padding: 0 !important;
 }

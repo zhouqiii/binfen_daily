@@ -6,9 +6,9 @@
 
 storage.js 封装了带有有效期的缓存
 
-request.js 封装了项目常用的拦截器及基本配置
+axios.js 封装了项目常用的拦截器及基本配置
 
-commonBase.js 定义常用数据处理函数
+loginRequest.js 封装了登陆的接口，他不需要token，所以我单独写了它的request
 
 commonApp.js 定义常用与app交互的函数
 
@@ -22,6 +22,7 @@ nav-bar-top 顶部导航
 
 
 样式:
+在css/style里是每个页面单独的样式 按需引入
 
 var.less 定义变量
 
@@ -30,7 +31,7 @@ theme.less 自定义主题
 mixin.less 混合器
 
 index.less 全局样式
-在mystyle里是每个页面单独的样式
+
 
 ## Project setup
 

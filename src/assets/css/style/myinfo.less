@@ -1,61 +1,143 @@
-.framebox{
-    text-align: center;
-    font-size: .8rem;
-    border-radius: .3rem;
-    background: #ffffff;
+.box {
+  background: #f9fafc;
+
+  .home {
+      .home_img {
+
+          // background: #2f80ed;
+          .title,
+          .bg {
+              background: #2f80ed;
+          }
+
+          .title {
+              color: #FCFCFF;
+              height: 150px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-weight: bold;
+              font-size: 36px;
+              line-height: normal;
+              letter-spacing: 0px;
+
+          }
+
+          .bg {
+              height: 100px;
+          }
+      }
+  }
 }
-.home_padd{
-    margin: auto;
-  .home_topselect{
-    position: relative;
-    z-index: 1;
-    margin-top: -25%;
-    padding: 1.8rem 1rem 1.8rem 1rem;
-    .home_icon{
-      background: #69fee0;
-      width: 2.4rem;
-      height: 2.4rem;
-      border-radius: 50%;
-      line-height: 2.4rem;
-    }
-    .home_user{
-      margin-left: 5%;
-      .myinfo_user_name{
-        font-size: 1rem;
-        font-weight: bold;
+
+.framebox {
+  background: #ffffff;
+}
+
+.home_padd {
+  margin: auto;
+  padding: 0 !important;
+
+  .home_topselect {
+      position: relative;
+      z-index: 1;
+      margin: -15% auto 0 auto;
+      // padding: 1.8rem 1rem 1.8rem 1rem;
+      width: 686px;
+      height: 218px;
+      padding-left: 32px;
+      box-sizing: border-box;
+      border-radius: 32px;
+      background: #FFFFFF;
+      .home_icon {
+        width: 110px;
+        height: 112px;
+        .bg-image('../../assets/imgs/myinfo/mes_info');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
       }
-      .myinfo_user_edit{
-        border: .5px solid black;
-        border-radius: .3rem;
-        height: 1.4rem;
-        line-height: 1.4rem;
-        margin-top: .8rem;
+      .home_user {
+          margin-left: 5%;
+          .myinfo_user_name {
+              font-size: 40px;
+              font-weight: 700;
+              color: #2f2e41;
+              text-align: left;
+          }
+          .myinfo_user_edit {
+              border: 1px solid #2F2E41;
+              border-radius: 32px;
+              width: 128px;
+              height: 42px;
+              line-height: 42px;
+              font-weight: 500;
+              text-align: center;
+              margin-top: 24px;
+              font-size: 24px;
+              color: #2f2e41;
+          }
       }
-    }
-    p{
-      margin: .5rem 0;
-      font-size: .8rem;
-    }
+      p {
+          margin: 0.5rem 0;
+          font-size: 0.8rem;
+      }
   }
+
   .home_route{
-    padding: 0 .5rem;
-    margin-top: 1rem;
-    .box_frame-row{
-      font-size: .875rem;
-      border-bottom: 1px solid #d3d3d3;
-      align-items: center;
-      height: 2.5rem;
-      .flex-row{
-          width: 50%;
-          .svg-icon{
-              width: 1.5rem;
-              height: 1.5rem;
-              margin-right: 5%;
-          }
-          div{
-              margin-left: 2%;
-          }
+      margin-top: 32px;
+      &:nth-of-type(2) {
+          margin-top: 50px;
       }
-    }
+      .box_frame-row {
+          color: @fontC4D4;
+          padding: 0 @pad18 0 @pad16;
+          font-weight: 500;
+          align-items: center;
+          height: 112px;
+          .flex-row {
+              width: 50%;
+              font-size: 30px;
+            .my_delay,.my_daily,.my_vacation,.my_name,.my_sign{
+                width: 48px;
+                height: 48px;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                margin-right: 16px
+            }
+            .my_daily{
+                .bg-image('../../assets/imgs/myinfo/daily_info');
+            }
+            .my_delay{
+                .bg-image('../../assets/imgs/myinfo/delay_info');
+            }
+            .my_vacation{
+                .bg-image('../../assets/imgs/myinfo/vacation_info');
+            }
+            .my_name{
+                .bg-image('../../assets/imgs/myinfo/name_info');
+            }
+            .my_sign{
+                .bg-image('../../assets/imgs/myinfo/sign_info');
+            }
+          }
+        .svg-icon{
+            height: @font18;
+            width: @font18;
+        }
+      }
+      .line{
+        border-bottom: @borderColor;
+      }
+      .info_line{
+          height: 106px;
+          line-height: 106px;
+          border-bottom: @borderColor;
+          padding: 0 @pad16;
+          font-size: @font15;
+          
+      }
   }
+  .info{
+    margin-top: 28px !important;
+}
 }

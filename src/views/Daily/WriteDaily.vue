@@ -1,69 +1,66 @@
 <template>
-    <div class="box">
-        <nav-bar-top title="写日报"></nav-bar-top>
-        <div class="home">
-          <div class="home_editBox">
-              <div class="home_editBox_time box_frame-row">
-                <div>填写日期</div>
-                <div class="edit_date">
-                  <!-- <div class="edit_date_week">{{weekdayshow}}</div> -->
-                    <van-field
-                        class="getTime"
-                        v-model="startDate"
-                        is-link
-                        readonly
-                        label=""
-                        @click="startTimePop = true"
-                    />
-                    <van-popup v-model="startTimePop" position="bottom">
-                      <van-datetime-picker
-                        v-model="currentDate"
-                        type="month-day"
-                        title=" "
-                        :max-date="maxDate"
-                        :formatter="formatterMD"
-                        @confirm='onConfirmEndTime'
-                        @cancel='startTimePop = false'
-                      />
-                    </van-popup>
-                </div>
-              </div>
-              <work-info v-for="(item,index) in editList"
-                :key="item.id"
-                ref="child"
-                :daily="daily"
-                :commiList='commiList'
-                :taskList='taskList'
-                v-on:checkInput='checkInput'
-                @touchstart.native="touchinUk(index)"
-                @touchend.native="cleartime(index)"
-              >
-              </work-info>
-              <div class="home_editBox_iconAdd" @click="addeditbox">
-                <svg-icon iconClass="tianjia" class="iconBig"></svg-icon>
-              </div>
-
+  <div class="box">
+    <nav-bar-top title="写日报"></nav-bar-top>
+    <!-- <div class="blank"></div> -->
+    <div class="home">
+      <div class="home_editBox">
+        <div class="home_editBox_time box_frame-row">
+          <div class="write_date">填写日期</div>
+          <div class="edit_date">
+            <!-- <div class="edit_date_week">{{weekdayshow}}</div> -->
+            <van-field
+              class="getTime"
+              v-model="startDate"
+              is-link
+              readonly
+              label=""
+              @click="startTimePop = true"
+            />
+            <van-popup v-model="startTimePop" position="bottom">
+              <van-datetime-picker
+                v-model="currentDate"
+                type="month-day"
+                title=" "
+                :max-date="maxDate"
+                :formatter="formatterMD"
+                @confirm="onConfirmEndTime"
+                @cancel="startTimePop = false"
+              />
+            </van-popup>
           </div>
         </div>
-        <div class="submit_btn">
-          <button class="sendBtn"  @click="sendData"
-            :disabled="disabledCommit"
-            :style="thisStyle"
-          >提交日报</button>
+        <work-info
+          v-for="(item, index) in editList"
+          :key="item.id"
+          ref="child"
+          :daily="daily"
+          :commiList="commiList"
+          :taskList="taskList"
+          v-on:checkInput="checkInput"
+          @touchstart.native="touchinUk(index)"
+          @touchend.native="cleartime(index)"
+        >
+        </work-info>
+        <div class="home_editBox_iconAdd" @click="addeditbox">
+          <!-- <svg-icon iconClass="tianjia" class="iconBig"></svg-icon> -->
+          <img src="../../assets/imgs/page/add_page.png" alt="图片无法显示" />
         </div>
+      </div>
     </div>
+    <div class="submit_btn">
+      <button class="sendBtn" @click="sendData" :disabled="disabledCommit" :style="thisStyle">
+        提交日报
+      </button>
+    </div>
+  </div>
 </template>
 <script>
-import '../../assets/css/style/writeDaily.less';
-import createDom from '@/utils/createDom';
-import SvgIcon from '../../components/SvgIcon.vue';
 import WorkInfo from '../../components/MyComponents/WorkInfo.vue';
-import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
 
 let count = 0;
 // const weekDay = `星期${'日一二三四五六'.charAt(new Date().getDay())}`;
 export default {
-  components: { SvgIcon, WorkInfo },
+  components: { WorkInfo },
   name: 'WriteDaily',
   data() {
     return {
@@ -79,7 +76,6 @@ export default {
       disabledCommit: true, // 默认不可提交
       commiList: [], // 任务列表
       taskList: [], // 任务id
-
     };
   },
   methods: {
@@ -100,19 +96,20 @@ export default {
             });
           }
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     // 格式化月日弹框：5月11日
     formatterMD(type, val) {
       if (type === 'month') {
         return `${val}月`;
-      } if (type === 'day') {
+      }
+      if (type === 'day') {
         return `${val}日`;
       }
       return val;
     },
-    formatDate(val) { // 格式化显示日期
+    formatDate(val) {
+      // 格式化显示日期
       let month = val.getMonth() + 1;
       let day = val.getDate();
       if (month < 10) {
@@ -123,9 +120,10 @@ export default {
       }
       return `${month}月${day}日`;
     },
-    formatDateSend(val) { // 格式化时间为2019-05-04的格式
-      const month = (parseInt(val.getMonth() + 1, 10)) < 10 ? `0${val.getMonth() + 1}` : (val.getMonth() + 1);
-      const day = (parseInt(val.getDate(), 10)) < 10 ? `0${val.getDate()}` : (val.getDate());
+    formatDateSend(val) {
+      // 格式化时间为2019-05-04的格式
+      const month = parseInt(val.getMonth() + 1, 10) < 10 ? `0${val.getMonth() + 1}` : val.getMonth() + 1;
+      const day = parseInt(val.getDate(), 10) < 10 ? `0${val.getDate()}` : val.getDate();
       const year = new Date().getFullYear();
       return `${year}-${month}-${day}`;
     },
@@ -153,22 +151,27 @@ export default {
           flag = false;
         }
       });
-      if (flag) { // flag=true说明工作内容不为空
+      if (flag) {
+        // flag=true说明工作内容不为空
         this.disabledCommit = false;
-        this.thisStyle = 'background:rgb(102, 102, 102)';
+        this.thisStyle = 'background:#2F80ED';
       } else {
         this.disabledCommit = true;
-        this.thisStyle = 'background:#d3d3d3';
+        this.thisStyle = 'background:rgba(47,120,237,.6)';
       }
     },
     // 提交日报按钮
     sendData() {
+      if (this.taskList.length <= 0) {
+        this.$toast('请先联系项目经理分配任务~');
+        return;
+      }
       let flag = true;
-      const infoList = [];// 用来存放所有日报info
-      let hour = 0;
+      const infoList = []; // 用来存放所有日报info
+      // let hour = 0;
       Array.prototype.forEach.call(this.$refs.child, (item) => {
-        const time = parseInt(item.workHour.substring(0, 1), 10);
-        hour += time;
+        // const time = parseInt(item.workHour.substring(0, 1), 10);
+        // hour += time;
         const obj = {};
         obj.taskId = item.taskId;
         obj.taskName = item.commiList[item.radio];
@@ -180,18 +183,22 @@ export default {
         infoList.push(obj);
       });
       if (!flag) {
-        createDom(
-          DialogMessage, {}, { content: '<div style="text-align:center">工作内容最少为10个字，请检查！</div>', knowBtn: true },
-        );
-      } else if (hour < 8) {
-        createDom(
-          DialogMessage, {}, { content: '<div style="text-align:center">填写工时不足8小时，请检查工时!</div>', knowBtn: true },
-        );
-      } else if (hour > 8) {
-        createDom(
-          DialogMessage, {}, { content: '<div style="text-align:center">填写工时已超 8 小时,请检查工时!</div>', knowBtn: true },
-        );
+        this.$dialog.alert({
+          message: '工作内容最少为10个字，请检查！',
+          confirmButtonText: '确定',
+        });
       } else {
+        //  else if (hour < 8) {
+        //   this.$dialog.alert({
+        //     message: '填写工时不足8小时，请检查工时!',
+        //     confirmButtonText: '确定',
+        //   });
+        // } else if (hour > 8) {
+        //   this.$dialog.alert({
+        //     message: '填写工时已超 8 小时,请检查工时!',
+        //     confirmButtonText: '确定',
+        //   });
+        // }
         this.requestAxios({
           url: '/workDaily/work-daily/save',
           data: {
@@ -204,11 +211,15 @@ export default {
         })
           .then((res) => {
             if (!res.success) {
-              createDom(DialogMessage, {}, { content: '<div style="text-align:center">保存失败！</div><div style="text-align:center;margin-top:.5rem">请重新提交！</div>', knowBtn: true });// 知道了
+              this.$dialog.alert({
+                message: '保存失败！',
+                confirmButtonText: '确定',
+              });
             } else {
               this.$router.push({ path: '/ApplyEnd', query: { pageend: 0 } });
             }
-          }).catch(() => {});
+          })
+          .catch(() => {});
       }
     },
     // 格式化时间hh:mm:ss
@@ -225,23 +236,29 @@ export default {
     touchinUk(index) {
       clearInterval(this.Loop); // 再次清空定时器，防止重复注册定时器
       this.Loop = setTimeout(() => {
-        this.$dialog.confirm({
-          message: '是否删除?',
-        }).then(() => {
-          this.editList.splice(index, 1);
-        }).catch(() => {});
+        this.$dialog
+          .confirm({
+            message: '是否删除?',
+            confirmButtonText: '确定',
+          })
+          .then(() => {
+            this.editList.splice(index, 1);
+          })
+          .catch(() => {});
       }, 1000);
     },
     cleartime() {
-      clearInterval(this.Loop);// 这个方法主要是用来将每次手指移出之后将计时器清零
+      clearInterval(this.Loop); // 这个方法主要是用来将每次手指移出之后将计时器清零
     },
   },
   mounted() {
     this.sendDate = this.formatDateSend(new Date());
     this.startDate = this.formatDate(new Date());
-    this.defaultProject();// 获取任务
+    this.defaultProject(); // 获取任务
   },
-  watch: {
-  },
+  watch: {},
 };
 </script>
+<style scoped lang="less">
+@import url('../../assets/css/style/writeDaily.less');
+</style>

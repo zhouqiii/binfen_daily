@@ -1,5 +1,4 @@
 .myapprovehome{
-    font-size: .8rem;
     height: 100%;
     .van-tab__text{
         display: flex;
@@ -37,8 +36,37 @@
     .van-checkbox__icon .van-icon{
         background: #ffffff;
     }
+    .checkBoxGroup{
+        padding-bottom: @pad16;
+    }
+    .btn_appr{
+        margin-top: 80px;
+        padding: @pad16;
+        .approve_btn{
+            height: 102px;
+            line-height: 102px;
+            border-radius:20px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            width: 300px;
+        }
+        .allCheck{
+            display: flex;
+            justify-content: center;
+            border: 1px solid #2F80ED;
+            color: #2F80ED;
+            background: #ffffff;
+        }
+        .allApprove{
+            border: 1px solid #2F80ED;
+            color: #ffffff;
+            background: #2F80ED;
+        }
+    }
     .checkBoxSel{
-      margin-right: 10px;
+      margin-right: @mar16;
+      margin-left: @mar16;
     }
     .home_del{
         position: fixed;
@@ -60,7 +88,7 @@
             }
             .van-checkbox__icon--checked .van-icon{
                 color: inherit;
-                background-color: #ffffff;
+                background-color: #806464;
                 border-color: inherit;
             }
             .van-checkbox__icon .van-icon{
@@ -70,40 +98,87 @@
        }
     }
     .list_box{
-        background: rgba(242, 242, 242, 1);
-        border-radius: .2rem;
-        margin-top: 1rem;
-        padding: .3rem .5rem;
+        background: #ffffff;
+        margin-top: 32px;
+        padding: 0 40px;
+        width: 100%;
         .item{
-            height: 1.4rem;
-            line-height: 1.4rem;
+            height: 88px;
+            line-height: 88px;
         }
-        .Span{
-            color: #999999;
+        .SpanItem{
+            height: 56px;
+            line-height: 56px;
         }
         .anoitem{
-            align-items: center;
+            color: @fontC82;
+            font-size: @font13;
+            font-weight: 500;
+        }
+        .span_line{
+            margin-top: @mar10;
+            .van-steps--horizontal{
+                padding: 0;
+                height: 132px;
+            }
         }
         .span_title{
-            font-size: 1rem;
+            font-size: @font16;
+            color: @fontColor;
+            font-weight: 700;
         }
         .span_imapprove{
-            width: 5rem;
-            background: rgba(102, 102, 102, 1);
-            border-radius: 1rem;
+            width: 134px;
+            height: 42px;
+            line-height: 42px;
+            background: rgba(47,128,237,0.20);
+            border: 1px solid @fontC2F8;
+            border-radius: 36px;
             text-align: center;
-            font-size: .875rem;
-            color: #ffffff;
-            height: 1.4rem;
-            line-height: 1.4rem;
+            font-size: 20px;
+            font-weight: 700;
+            color: @fontC2F8;
+            margin: auto 0;
         }
+        .span_approve{
+            width: 134px;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: auto 0;
+            .apprAgree{
+                border-radius: 36px;
+                background: rgba(33,150,83,0.20);
+                color: #219653;
+            }
+            .apprRefuse{
+                border-radius: 36px;
+                background: rgba(235,87,87,0.20);
+                color: #EB5757;
+            }
+        }
+        // .apprAgree,.apprRefuse{
+        //     width: 136px;
+        //     height: 44px;
+        //     line-height: 44px;
+        //     border-radius: 36px;
+        //     text-align: center;
+        //     font-size: 20px;
+        //     font-weight: 700;
+        // }
     }
     .home_noContent{
         .home_noContent_box{
             padding: 40% 0;
             text-align: center;
-            font-size: .8rem;
+            font-size: @font14;
+            color: @fontC82;
+            font-weight: 400;
             img{
+                height: 212px;
+                width: auto;
                 margin-bottom: 5%;
             }
         }
@@ -113,28 +188,3 @@
 .van-tabs__line{
     transform: translateX(5.5rem) translateX(-50%);
 }
-  /*vant时间线样式*/
-  .van-step__circle{
-    width: .8rem;
-    height: .8rem;
-    background-color: #d3d3d3;
-  }
-  .van-step__title{
-      color:#5a5959
-  }
-//   .van-step__icon--active{
-//       font-size: 1rem !important;
-//   }
-  .van-steps--horizontal {
-      padding: 0 1rem;
-      background: inherit;
-      .van-step__circle-container{
-          background: inherit;
-      }
-      .van-step__line{
-          background-color: #d3d3d3;
-      }
-      .van-steps__items{
-          padding-bottom: .6rem;
-      }
-  }

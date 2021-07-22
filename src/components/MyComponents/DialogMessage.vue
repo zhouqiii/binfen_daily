@@ -9,10 +9,12 @@
             <div class="selBtn selectCancel" @click="remain">取消</div>
             <div class="selBtn selectConfirm" @click="sendData">确定</div>
           </div>
-          <div class="applyBtn comfirmbtn" @click="remainApply"
-             v-show="confirmBtn"
-          >确定</div>
-          <div class="applyBtn comfirmbtn" @click="remain" v-show="knowBtn">知道了</div>
+          <div class="applyBtn comfirmbtn" @click="remainApply" v-show="confirmBtn">
+            确定
+          </div>
+          <div class="applyBtn comfirmbtn" @click="remain" v-show="knowBtn">
+            知道了
+          </div>
         </div>
       </div>
     </div>
@@ -21,7 +23,6 @@
 
 <script>
 import router from '../../router/index';
-import '../../assets/css/style/dialog.less';
 
 export default {
   name: 'DialogMessage',
@@ -45,24 +46,23 @@ export default {
       this.remove();
       router.push({
         name: 'Commission',
-        params: { // 为了跳转到我的审核-我已审核
+        params: {
+          // 为了跳转到我的审核-我已审核
           tabIndexGive: 1,
           activeGive: 1,
-
         },
       });
     },
     remainApply() {
       this.remove();
+      this.storage.clear();
       router.push({ name: 'SignIn' });
     },
     remain() {
       this.remove();
     },
-
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {
     // showcancelThe: {
     //   handler(newval) {
@@ -72,6 +72,8 @@ export default {
     //   },
     // },
   },
-
 };
 </script>
+<style scoped lang="less">
+@import url('../../assets/css/style/dialog.less');
+</style>

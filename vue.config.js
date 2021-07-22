@@ -20,12 +20,13 @@ module.exports = {
       },
     },
   },
-  pluginOptions: {
-    'style-resources-loader': {
-      preProcessor: 'less',
-      patterns: [path.resolve(__dirname, 'src/assets/css/mixin.less')], // 引入全局样式变量
-    },
-  },
+  // 不起作用-我注掉了
+  // pluginOptions: {
+  //   'style-resources-loader': {
+  //     preProcessor: 'less',
+  //     patterns: [path.resolve(__dirname, 'src/assets/css/mixin.less')], // 引入全局样式变量
+  //   },
+  // },
   configureWebpack: (config) => {
     const con = config;
     con.name = 'daily';
@@ -44,6 +45,20 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]',
       });
+    // 需要安装 style-resources-loader 与stylus一致
+    const oneOfsMap = config.module.rule('less').oneOfs.store;
+    oneOfsMap.forEach((item) => {
+      item
+        .use('style-resources-loader')
+        .loader('style-resources-loader')
+        .options({
+          // 需要插入的文件路径
+          patterns: './src/assets/css/vars.less',
+          // 需要插入的文件路径数组
+          // patterns: ["./path/to/vars.less", "./path/to/mixins.less"]
+        })
+        .end();
+    });
   },
   devServer: {
     proxy: {

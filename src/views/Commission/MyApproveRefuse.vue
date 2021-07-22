@@ -1,38 +1,39 @@
 <template>
-    <div>
-        <nav-bar-top title="拒绝" :navBg='navBg'></nav-bar-top>
-        <div class="home">
-            <div class="refuse_box">
-                <div class="refuse_title">请写明拒绝原因：</div>
-                <div class="refuse_content">
-                    <van-field
-                        v-model="refuseReason"
-                        class="refuse_reason"
-                        rows="2"
-                        autosize
-                        label=""
-                        v-on:input="getData"
-                        type="textarea"
-                        maxlength="20"
-                        placeholder="请输入"
-                        show-word-limit
-                    />
-                </div>
-            </div>
-            <div class="refuse_btn">
-                <button class="refuse_btn_confirm"
-                    :disabled="disabled"
-                    :style="thisStyle"
-                    @click="sendReason"
-                >
-                    确定
-                </button>
-            </div>
-
+  <div>
+    <nav-bar-top title="拒绝" :navBg="navBg"></nav-bar-top>
+    <div class="home">
+      <div class="refuse_box">
+        <div class="refuse_title">请写明拒绝原因</div>
+        <div class="refuse_content">
+          <van-field
+            v-model="refuseReason"
+            class="refuse_reason"
+            rows="2"
+            autosize
+            label=""
+            v-on:input="getData"
+            type="textarea"
+            maxlength="20"
+            placeholder="请输入"
+            show-word-limit
+          />
         </div>
+      </div>
+      <div class="refuse_btn">
+        <button
+          class="refuse_btn_confirm"
+          :disabled="disabled"
+          :style="thisStyle"
+          @click="sendReason"
+        >
+          确定
+        </button>
+      </div>
     </div>
+  </div>
 </template>
 <script>
+import { checkTask } from '@/api/commission';
 
 export default {
   name: 'MyApproveRefuse',
@@ -56,20 +57,27 @@ export default {
     },
     // 拒绝原因确定按钮
     sendReason() {
-      this.requestAxios({
-        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
-        data: {},
-        method: 'post', // post
-      })
+      const obj = {
+        checkRemark: this.refuseReason,
+        checkStatus: '0', // 0为拒绝 1为同意
+        checkType: this.info.type,
+        id: this.info.id,
+      };
+      checkTask({ checkList: [obj] })
         .then((res) => {
-          if (res.code === 200) {
-            this.$router.push({
-              name: 'ApproveHistory',
-            });
+          if (res.code) {
+            this.$router.go(-2);
+            console.log(res);
           }
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.log('sendReason checkTask err', err);
+        });
     },
+  },
+  mounted() {
+    this.info = JSON.parse(this.$route.query.info);
+    console.log('this.info', this.info);
   },
   watch: {
     // 监听flag变化，这里flag对应输入框的校验
@@ -78,10 +86,10 @@ export default {
     flag: {
       handler(newVal) {
         if (newVal) {
-          this.thisStyle = 'background:rgba(102, 102, 102, 1)';
+          this.thisStyle = 'background:#2f80ed;opcity:1';
           this.disabled = false;
         } else {
-          this.thisStyle = 'background: #cccccc';
+          this.thisStyle = 'opcity: 0.6';
           this.disabled = true;
         }
       },
@@ -90,56 +98,69 @@ export default {
 };
 </script>
 
-<style lang='less'>
-button{
-     outline: none;
+<style lang="less">
+button {
+  outline: none;
 }
-.home{
-    font-size: .875rem;
-    .refuse_box{
-        padding: .5rem;
-        .refuse_title{
-            height: 2rem;
-            line-height: 2rem;
-            color: #999999;
-        }
-        .refuse_content{
-            .van-cell{
-                height: auto;
-                border-bottom: 0;
-                .van-cell__value{
-                    display: initial;
-                    border: 1px solid rgba(204, 204, 204, 1);
-                    border-radius: .5rem;
-                    background: rgba(242, 242, 242, 1);
-                    padding: 1rem 1rem;
-                    .van-field__body{
-                        width: 100%;
-                        .van-field__control{
-                        }
-                    }
-                }
-            }
-            .refuse_reason{
-                .van-field__control{
-                    text-align: left;
-                }
-            }
-        }
+.home {
+  font-size: 0.875rem;
+  .refuse_box {
+    padding: 0 @pad16 @pad18 @pad16;
+    margin-top: @mar16;
+    background: #ffffff;
+    .refuse_title {
+      height: 94px;
+      line-height: 94px;
+      color: @fontC4D4;
+      font-size: @font15;
+      font-weight: 700;
     }
-    .refuse_btn{
-        margin-top:2rem;
-        line-height: 3rem;
-        height: 3rem;
-        text-align: center;
-        .refuse_btn_confirm{
-            width: 70%;
-            margin: auto;
-            border-radius: .5rem;
-            background: #cccccc;
-            color: #ffffff;
+    .refuse_content {
+      .van-cell {
+        height: auto;
+        border-bottom: 0;
+        .van-cell__value {
+          display: initial;
+          border: 1px solid #e0e0e0;
+          border-radius: 16px;
+          background: #ffffff;
+          padding: 24px 30px;
+          .van-field__body {
+            width: 100%;
+            .van-field__control {
+              height: 160px !important;
+              font-size: @font13;
+              line-height: 32px;
+            }
+          }
+          .van-field__word-limit {
+            font-size: @font13;
+            color: #bdbdbd;
+          }
         }
+      }
+      .refuse_reason {
+        .van-field__control {
+          text-align: left;
+        }
+      }
     }
+  }
+  .refuse_btn {
+    margin-top: 2rem;
+    line-height: 3rem;
+    height: 3rem;
+    text-align: center;
+    .refuse_btn_confirm {
+      width: 650px;
+      margin: auto;
+      font-size: @font16;
+      color: @fontCWhite;
+      font-weight: 700;
+      border-radius: 20px;
+      background: rgba(#2f80ed, 0.6);
+      color: #ffffff;
+    }
+  }
 }
-
 </style>

@@ -4,9 +4,36 @@
 @grayeee:#eee;
 @btnred:#E85E4E;
 @white:#ffffff;
-@font30:30px;
-@font36:36px;
-@font28:28px;
+@font13:26px;
+@font14:28px;
+@font15:30px;
+@font16:32px;
+@font18:36px;
+@wid300:300px;
 @bor8px:8px;
-@borderColor:1px solid #d3d3d3;
-@fontColor:#605e5e;
+@icon20:40px;
+@icon24:48px;
+@pad10:20px;
+@pad15:30px;
+@pad16:32px;
+@pad18:36px;
+@pad20:40px;
+@pad22:44px;
+@pad44:88px;
+@mar10:20px;
+@mar15:30px;
+@mar16:32px;
+@mar20:40px;
+@borderColor:1px solid #F9FAFC;
+@fontColor:#333333;
+@fontCWhite:#FCFCFC;
+@fontC2F8:#2F80ED;
+@fontC4D4:#4D4D4D;
+@fontC2F2: #2F2E41;
+@fontC82:#828282;
+.bg-image(@url){
+    background-image: ~"url('@{url}@2x.png')";
+    @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3) {
+        background-image: ~"url('@{url}@3x.png')";
+    }
+  }

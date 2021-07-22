@@ -1,41 +1,43 @@
 <template>
-    <div style="height:100%">
-      <nav-bar-top title="历史任务" :navBg='navBg' :navIcon='navIcon'>
-        <template v-slot:right>
-          <div>
-            <svg-icon iconClass="deletelist"  @click="showDelete =!showDelete"></svg-icon>
-          </div>
-          <div style="margin-left:10px">
-            <svg-icon iconClass="timelouFFF"  @click="showBullet = !showBullet"></svg-icon>
-          </div>
-        </template>
-      </nav-bar-top>
-      <div class="home">
-        <!--任务列表部分-->
-        <div class="commi_alllist">
-          <!--routeGuide用来区分是从任务到任务详情还是从历史任务到历史任务详情 1表示历史任务详情 0表示任务详情-->
-          <my-commission
-            :data="commiList"
-            routeGuide="1"
-            :showDelete='showDelete'
-            @refreshList='refreshList'
-            @deleteTask='deleteTask'
-            ref="taskList"
-          ></my-commission>
+  <div style="height:100%" class="hisCommission">
+    <nav-bar-top title="历史任务" :navBg="navBg" :navIcon="navIcon">
+      <template v-slot:right>
+        <!-- <div>
+          <svg-icon iconClass="deletelist" @click="showDelete = !showDelete"></svg-icon>
+        </div> -->
+        <div style="margin-left:10px">
+          <svg-icon iconClass="timelouFFF" @click="showBullet = !showBullet"></svg-icon>
         </div>
-      </div>
-      <div class="home_pop">
-        <van-popup v-model="showBullet" position="right"
-          :style="{ width: '80%',height:'100%',background:'#d3d3d3' }"
-          get-container=".contentBox"
-        >
-          <screen-bullet @queryList="changeList"></screen-bullet>
-        </van-popup>
+      </template>
+    </nav-bar-top>
+    <div class="home_history">
+      <!--任务列表部分-->
+      <div class="commi_alllist">
+        <!--routeGuide用来区分是从任务到任务详情还是从历史任务到历史任务详情 1表示历史任务详情 0表示任务详情-->
+        <my-commission
+          :dataList="commiList"
+          routeGuide="1"
+          :showDelete="showDelete"
+          @refreshList="refreshList"
+          @deleteTask="deleteTask"
+          ref="taskList"
+        ></my-commission>
       </div>
     </div>
+    <div class="home_pop">
+      <van-popup
+        v-model="showBullet"
+        position="right"
+        :style="{ width: '90%', height: '100%', background: '#F9FAFC' }"
+        get-container=".contentBox"
+      >
+        <screen-bullet @queryList="changeList"></screen-bullet>
+      </van-popup>
+    </div>
+  </div>
 </template>
 <script>
-import '../../assets/css/style/commission.less';
+import { commissionList } from '@/api/commission';
 import MyCommission from '../../components/MyComponents/MyCommission.vue';
 import ScreenBullet from '../../components/MyComponents/ScreeningBullet.vue';
 
@@ -51,27 +53,19 @@ export default {
       approveTab: 0, // 是已审核还是待审核// 这里是为了从拒绝页面跳转过来使用
       showBullet: false, // 一键审批的遮罩
       showDelete: false,
-      commiList: [{
-        taskName: '海外分行功能优化细化003-百姓对账 APP', batch: 'X16', type: '项目类', risk: '低', date: '2021.04.02', lever: 1, id: '28',
-      }, {
-        taskName: '海外分行功能优化细化004-百姓对账 APP', batch: 'X17', type: '项目类', risk: '高', date: '2021.05.02', lever: 3, id: '51',
-      }, {
-        taskName: '海外分行功能优化细化001-百姓对账 APP', batch: 'X16', type: '项目类', risk: '无', date: '2021.04.02', lever: 0, id: '31',
-      }],
+      commiList: [],
     };
   },
   methods: {
     // 获取列表数据
     getListData(obj) {
-      this.requestAxios({
-        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
-        data: obj,
-        method: 'post', // post
-      })
+      commissionList(obj)
         .then((res) => {
-          console.log(res);
+          this.commiList = res.data;
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.log('err', err);
+        });
     },
     routeItem(path) {
       this.$router.push(path);
@@ -80,7 +74,7 @@ export default {
     changeList(val) {
       const checkDefault = this.$refs.taskList;
       this.showDelete = false;
-      checkDefault.checkedAll = false;// 当通过时间筛选更新列表时，将所有对应的删除框置为默认不选中状态
+      checkDefault.checkedAll = false; // 当通过时间筛选更新列表时，将所有对应的删除框置为默认不选中状态
       checkDefault.result = [];
       this.showBullet = false;
       this.getListData(val);
@@ -91,11 +85,16 @@ export default {
     },
     // 删除某些任务的函数
     deleteTask(val) {
-      console.log(val);
+      console.log('这里调用删除任务接口', val);
+      // 删除后更新列表,隐藏删除及全选,重置勾选项
+      const checkDefault = this.$refs.taskList;
+      this.showDelete = false;
+      checkDefault.checkedAll = false;
+      checkDefault.result = [];
+      this.getListData({});
     },
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.$nextTick(() => {
       this.getListData({});
@@ -103,3 +102,6 @@ export default {
   },
 };
 </script>
+<style lang="less" scoped>
+@import url('../../assets/css/style/commission.less');
+</style>

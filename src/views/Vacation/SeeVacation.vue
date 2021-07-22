@@ -1,216 +1,222 @@
 <template>
-    <div class="box">
-        <nav-bar-top title="休假申请" type='MyInfo'>
-          <template v-slot:right>
-            <div>
-              <svg-icon iconClass="deletelist" @click="showDelete =!showDelete"></svg-icon>
-            </div>
-            <div style="margin-left:10px">
-              <svg-icon iconClass="timelou"  @click="showTime"></svg-icon>
-            </div>
-          </template>
-        </nav-bar-top>
-        <div class="home">
-            <!--刷新部分只为申请列表-->
-            <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-              <!--下拉提示-->
-              <template #pulling="props">
-                <svg-icon iconClass="Loading"
-                :style="{ transform: `scale(${props.distance / 80})` }"
-                ></svg-icon>
-                <span class="refresh_text">加载</span>
-              </template>
-              <!-- 释放提示 -->
-              <template #loosing>
-                <svg-icon iconClass="Loading"></svg-icon>
-                <span class="refresh_text">加载</span>
-              </template>
-               <!-- 加载提示 -->
-              <template #loading>
-                <svg-icon iconClass="shuaxin"></svg-icon>
-                <span class="refresh_text">刷新</span>
-              </template>
-              <!--延迟申请列表-->
-              <no-content showNocontent='2' v-show="ifNoContent"></no-content>
-              <div class="home_padd"  v-show="!ifNoContent">
-                 <van-checkbox-group v-model="result" icon-size="25" ref="checkboxGroup"
-                  @change="getCheckIndex"
-                  class="checkBoxGroup"
-                >
-                  <div v-for="(item,index) in commiList" :key="index" class="box_frame-row">
+  <div class="box">
+    <nav-bar-top title="休假申请" type="MyInfo">
+      <template v-slot:right>
+        <div class="img">
+          <img
+            src="../../assets/icons/mine/icon_delete.png"
+            alt=""
+            @click="showDelete = !showDelete"
+          />
+        </div>
+        <div class="img">
+          <img src="../../assets/icons/mine/icon_screen.png" alt="" @click="showTime" />
+        </div>
+      </template>
+    </nav-bar-top>
+    <div class="home">
+      <no-content showNocontent="2" v-if="commiList.length == 0"></no-content>
+      <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh" v-else>
+        <van-list
+          v-model="isUpLoading"
+          :finished="upFinished"
+          :immediate-check="false"
+          :offset="10"
+          finished-text="- 我也是有底线的 -"
+          @load="onLoadList"
+        >
+          <div class="home_padd">
+            <van-checkbox-group
+              v-model="result"
+              icon-size="18"
+              ref="checkboxGroup"
+              @change="getCheckIndex"
+              class="checkBoxGroup"
+            >
+              <div v-for="(item, index) in commiList" :key="index" class="box_frame-row">
+                <div class="daily_seebox">
+                  <div class="daily_seedate">{{ item.createDate }} {{ item.createTimeFormat }}</div>
+                  <div class="flex-row">
                     <div v-show="showDelete" class="checkBoxSel">
                       <van-checkbox :name="item.id" @></van-checkbox>
                     </div>
-                    <div class="daily_seebox"  @click="routeItem('/VacationDetail',index)">
-                      <div class="daily_seedate">{{item.date}}  {{item.time}}</div>
-                      <div class="daily_seecontent">
-                        <div class="vacationText">{{item.taskName}}</div>
-                        <div class="text">休假日期：{{item.date}}</div>
-                        <div class="text">休假时段：{{item.workerHour}}</div>
-                        <div class="daily_seecontent_stepline">
-                          <van-steps active-color="#5a5959"
-                            :active="item.changestatus"
-                          >
-                            <van-step v-for="(st,key) in item.state" :key="key">
-                              <template v-slot:inactive-icon>
-                                <van-icon name="circle"/>
-                              </template>
-                              <template v-slot:active-icon>
-                                <van-icon :name="activeIcon"/>
-                              </template>
-                              <template v-slot:finish-icon>
-                                <van-icon :name="finishIcon"/>
-                              </template>
-                              {{st}}
-                            </van-step>
-                          </van-steps>
-                          <div class="bottom_text">
-                            <span>我</span>
-                            <span style="margin-left:2rem">项目经理审批</span>
-                            <span>经理审批</span>
-                          </div>
-                        </div>
+                    <div class="daily_seecontent" @click="routeItem('/VacationDetail', index)">
+                      <div class="daily_seecontent_week">
+                        <span v-if="item.vacationType == '0'">年假</span>
+                        <span v-if="item.vacationType == '1'">事假</span>
+                        <span v-if="item.vacationType == '2'">婚假</span>
+                        <span v-if="item.vacationType == '3'">产假</span>
+                        <span v-if="item.vacationType == '4'">陪产假</span>
+                        <span v-if="item.vacationType == '5'">病假</span>
+                        <span v-if="item.vacationType == '6'">丧假</span>
+                      </div>
+                      <div class="text">
+                        休假日期：{{ item.vacationStartDate }} 至 {{ item.vacationEndDate }}
+                      </div>
+                      <div class="text">
+                        休假时段：{{ item.vacationStartTime }} - {{ item.vacationEndTime }}
+                      </div>
+                      <div class="daily_seecontent_stepline">
+                        <van-steps
+                          :active-color="item.status < 0 ? '#EB5757' : '#2F80ED'"
+                          :active="item.changestatus"
+                          :inactive-icon="cirFil"
+                          :active-icon="item.status < 0 ? refuseIcon : activeIcon"
+                          :finish-icon="activeIcon"
+                        >
+                          <van-step v-for="(st, key) in item.state" :key="key">
+                            {{ st }}
+                          </van-step>
+                        </van-steps>
                       </div>
                     </div>
                   </div>
-                </van-checkbox-group>
+                </div>
               </div>
-            </van-pull-refresh>
-            <!--右侧弹出层-->
-            <div class="home_pop">
-                <van-popup v-model="show" position="right"
-                    :style="{ width: '80%',height:'100%',background:'#d3d3d3' }"
-                    get-container=".contentBox"
+            </van-checkbox-group>
+          </div>
+        </van-list>
+      </van-pull-refresh>
+      <!--右侧弹出层-->
+      <div class="home_pop">
+        <van-popup
+          v-model="show"
+          position="right"
+          :style="{ height: '100%', background: '#f9fafc' }"
+          get-container=".contentBox"
+        >
+          <!--弹出层挂载的节点-->
+          <div class="contentBox">
+            <div class="mainTitle">提交时间</div>
+            <div class="ruleForm">
+              <div class="start_time_and_end_time flex_evenly">
+                <div class="start_time">
+                  开始时间
+                  <svg-icon icon-class="arrowsDrop"></svg-icon>
+                </div>
+                <div class="end_time">
+                  结束时间
+                  <svg-icon icon-class="arrowsDrop"></svg-icon>
+                </div>
+              </div>
+              <div class="short_line"></div>
+              <div class="formItems">
+                <div class="daily_timesel">
+                  <van-field
+                    v-model="startDate"
+                    readonly
+                    placeholder="请选择"
+                    @click="startTimePop = true"
+                  />
+                  <van-popup v-model="startTimePop" position="bottom">
+                    <van-datetime-picker
+                      v-model="currentDate"
+                      type="date"
+                      :max-date="maxDate"
+                      title=" "
+                      :formatter="formatterD"
+                      @cancel="startTimePop = false"
+                      @confirm="onConfirmStartTime"
+                    />
+                  </van-popup>
+                </div>
+                <div class="daily_timesel">
+                  <van-field
+                    v-model="endDate"
+                    readonly
+                    placeholder="请选择"
+                    @click="endTimePop = true"
+                  />
+                  <van-popup v-model="endTimePop" position="bottom">
+                    <van-datetime-picker
+                      v-model="currentDate"
+                      type="date"
+                      :max-date="maxDate"
+                      title=" "
+                      :formatter="formatterD"
+                      @cancel="endTimePop = false"
+                      @confirm="onConfirmEndTime"
+                    />
+                  </van-popup>
+                </div>
+              </div>
+            </div>
+            <div class="typeBtn ruleForm">
+              <div class="formItem vacation_type">
+                <van-field
+                  v-model="vacationType"
+                  is-link
+                  readonly
+                  placeholder="请选择"
+                  @click="pickVacationType = true"
                 >
-                 <!--弹出层挂载的节点-->
-                <div class="contentBox">
-                    <div class="ruleForm">
-                        <div class="formItem">
-                            <van-field
-                                v-model="startDate"
-                                is-link
-                                readonly
-                                label="提交开始时间"
-                                placeholder="请选择"
-                                @click="startTimePop = true"
-                            />
-                            <van-popup v-model="startTimePop" position="bottom">
-                                <van-datetime-picker
-                                    v-model="currentDate"
-                                    type="date"
-                                    :max-date="maxDate"
-                                    title=" "
-                                     :formatter="formatterD"
-                                    @cancel="startTimePop = false"
-                                    @confirm='onConfirmStartTime'
-                                />
-                            </van-popup>
-                        </div>
-                        <div class="formItem">
-                            <van-field
-                                v-model="endDate"
-                                is-link
-                                readonly
-                                label="提交结束时间"
-                                placeholder="请选择"
-                                @click="endTimePop = true"
-                            />
-                            <van-popup v-model="endTimePop" position="bottom">
-                                <van-datetime-picker
-                                    v-model="currentDate"
-                                    type="date"
-                                    :max-date="maxDate"
-                                    title=" "
-                                    :formatter="formatterD"
-                                    @cancel="endTimePop = false"
-                                    @confirm='onConfirmEndTime'
-                                />
-                            </van-popup>
-                        </div>
-                    </div>
-                    <div class="typeBtn ruleForm" >
-                        <div class="formItem">
-                            <van-field
-                                v-model="vacationType"
-                                is-link
-                                readonly
-                                label="休假类型"
-                                placeholder="请选择"
-                                @click="pickVacationType = true"
-                            />
-                            <van-popup v-model="pickVacationType" round position="bottom">
-                            <van-picker
-                                show-toolbar
-                                :columns="vacationSelects"
-                                @cancel="pickVacationType = false"
-                                @confirm="onConfirmVacation"
-                            />
-                            </van-popup>
-                        </div>
-                    </div>
-                    <div class="statusSelect_btn box_frame">
-                      <div class="checktitle">审批结果</div>
-                      <div class="statusCheckBtn box_frame-row">
-                        <div @click="applyStatus=!applyStatus"
-                          :class="{bgColor:applyStatus}">
-                          已通过
-                        </div>
-                        <div @click="passStatus=!passStatus"
-                          :class="{bgColor:passStatus}">
-                          未通过
-                        </div>
-                        <div @click="checkStatus=!checkStatus"
-                          :class="{bgColor:checkStatus}">
-                          审批中
-                        </div>
-                      </div>
-                    </div>
-                    <div class="timeSelect_btn flex_evenly">
-                        <div class="timeSelect_btn_cancel" @click="resetCheck">重置</div>
-                        <div class="timeSelect_btn_confirm" @click="getSelectComm">确定</div>
-                    </div>
-                </div>
+                  <template #label>
+                    <div class="vacation_type">休假类型</div>
+                  </template>
+                </van-field>
+                <van-popup v-model="pickVacationType" round position="bottom">
+                  <van-picker
+                    show-toolbar
+                    :columns="vacationSelects"
+                    @cancel="pickVacationType = false"
+                    @confirm="onConfirmVacation"
+                  />
                 </van-popup>
-            </div>
-            <!--固定的编辑图标-->
-            <div class="home_edit box_frame">
-                <div>
-                  <svg-icon iconClass="bu" @click="routeItem('/WriteVacation')"></svg-icon>
-                </div>
-            </div>
-            <!--删除全选-->
-            <div class="home_del" v-show="showDelete">
-              <div class="box_frame-row">
-                <div class="delcheck"  @click="checkAllBtn">
-                  <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
-                </div>
-                <div class="del">删除</div>
               </div>
             </div>
+            <div class="statusSelect_btn box_frame">
+              <div class="checktitle">审批结果</div>
+              <div class="statusCheckBtn box_frame-row">
+                <div @click="applyStatus = !applyStatus" :class="{ bgColor: applyStatus }">
+                  已通过
+                </div>
+                <div @click="passStatus = !passStatus" :class="{ bgColor: passStatus }">
+                  未通过
+                </div>
+                <div @click="checkStatus = !checkStatus" :class="{ bgColor: checkStatus }">
+                  审批中
+                </div>
+              </div>
+            </div>
+            <div class="timeSelect_btn flex_evenly">
+              <div class="timeSelect_btn_cancel" @click="resetCheck">重置</div>
+              <div class="timeSelect_btn_confirm" @click="getSelectComm('select')">确定</div>
+            </div>
+          </div>
+        </van-popup>
+      </div>
+      <!--固定的编辑图标-->
+      <div class="home_edit box_frame">
+        <img src="../../assets/imgs/page/go_page@2x.png" @click="routeItem('/WriteVacation')" />
+      </div>
+      <!--删除全选-->
+      <div v-show="showDelete">
+        <div class="blank"></div>
+        <div class="home_del">
+          <div class="box_frame-row">
+            <div class="delcheck" @click="checkAllBtn">
+              <van-checkbox icon-size="25" v-model="checkedAll">全选</van-checkbox>
+            </div>
+            <div class="del" @click="deleteVacation">删除</div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
+import { getVacationList, deleteVacation } from '@/api/user';
 import SvgIcon from '../../components/SvgIcon.vue';
-import '../../assets/css/style/seeExtention.less';
-import circle from '../../assets/icons/circle.png';
+import circle from '../../assets/imgs/page/no_step.png';
+import success from '../../assets/imgs/page/yes_step.png';
+import refuse from '../../assets/imgs/page/refuse_step.png';
 
 export default {
   components: { SvgIcon },
   name: 'SeeVacation',
   data() {
     return {
-      commiList: [{
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '审批中', '审批中'], taskName: '事假', workerHour: '8:30~10:30', status: '0', id: '2', changestatus: '0',
-      }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '1', id: '11', changestatus: '1',
-      }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '拒绝', '审批中'], taskName: '年假', workerHour: '8:30~10:30', status: '-1', id: '66', changestatus: '1',
-      }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '拒绝'], taskName: '病假', workerHour: '8:30~10:30', status: '-2', id: '25', changestatus: '2',
-      }, {
-        time: '7:30', date: '4月22日~4月22日', state: ['已申请', '已通过', '已通过'], taskName: '年假', workerHour: '8:30~10:30', status: '2', id: '89', changestatus: '2',
-      }],
+      commiList: [],
       isLoading: false,
       show: false, // 右侧弹出框
       startDate: '', // 开始时间
@@ -224,15 +230,52 @@ export default {
       checkStatus: false,
       showDelete: false,
       checkedAll: false,
+      cirFil: circle, // 未激活图标
+      activeIcon: success, // 激活图标
+      refuseIcon: refuse, // 激活图标
       ifList: true, // 休假列表是否为空
       pickVacationType: false, // 休假类型选项
       vacationType: '', // 休假类型
-      vacationSelects: ['年假', '事假', '婚假', '产假', '陪产假', '病假', '丧假', '流产假'],
-      activeIcon: circle,
-      finishIcon: circle,
+      vacationTypeId: '', // 休假类型type
+      vacationSelects: [
+        {
+          text: '年假',
+          type: '0',
+        },
+        {
+          text: '事假',
+          type: '1',
+        },
+        {
+          text: '婚假',
+          type: '2',
+        },
+        {
+          text: '产假',
+          type: '3',
+        },
+        {
+          text: '陪产假',
+          type: '4',
+        },
+        {
+          text: '病假',
+          type: '5',
+        },
+        {
+          text: '丧假',
+          type: '6',
+        },
+      ],
       ifNoContent: false,
       result: [],
-
+      pageNum: 1,
+      pageSize: 10,
+      total: 0,
+      isDownLoading: false, // 下拉刷新
+      isUpLoading: false, // 上拉加载
+      upFinished: false, // 上拉加载完毕
+      isSelect: false, // 是否是筛选列表
     };
   },
   methods: {
@@ -248,14 +291,22 @@ export default {
       }
       if (type === 'month') {
         return `${val}月`;
-      } if (type === 'day') {
+      }
+      if (type === 'day') {
         return `${val}日`;
       }
       return val;
     },
-    formatDate(val) { // 格式化身份张有效期时间为2019-05-04的格式
-      const month = (parseInt(val.getMonth() + 1, 10)) < 10 ? `0${val.getMonth() + 1}` : (val.getMonth() + 1);
-      const day = (parseInt(val.getDate(), 10)) < 10 ? `0${val.getDate()}` : (val.getDate());
+    // 格式化时间
+    formatTimeShow(val) {
+      // 将时间16:05:04格式化为16:05的格式
+      const value = val.split(':');
+      return `${value[0]}:${value[1]}`;
+    },
+    formatDate(val) {
+      // 格式化身份张有效期时间为2019-05-04的格式
+      const month = parseInt(val.getMonth() + 1, 10) < 10 ? `0${val.getMonth() + 1}` : val.getMonth() + 1;
+      const day = parseInt(val.getDate(), 10) < 10 ? `0${val.getDate()}` : val.getDate();
       const year = new Date().getFullYear();
       return `${year}-${month}-${day}`;
     },
@@ -271,8 +322,100 @@ export default {
     },
     // 休假类型确定按钮
     onConfirmVacation(val) {
-      this.vacationType = val;
+      this.vacationType = val.text;
+      this.vacationTypeId = val.type;
       this.pickVacationType = false;
+    },
+    // 下拉刷新事件
+    onDownRefresh() {
+      this.showDelete = false;
+      this.result = [];
+      this.pageNum = 1;
+      this.isUpLoading = true;
+      this.upFinished = false; // 不写这句会导致你上拉到底过后在下拉刷新将不能触发下拉加载事件
+      this.getSelectComm('select');
+    },
+    // 上拉加载请求方法
+    onLoadList() {
+      this.pageNum += 1;
+      this.getSelectComm();
+    },
+    getVacationList(obj) {
+      getVacationList(obj)
+        .then((res) => {
+          this.isDownLoading = false;
+          this.isUpLoading = false;
+          const list = res.data.records;
+          const arr = [];
+          if (list === null || list.length === 0) {
+            // 加载结束
+            this.upFinished = true;
+            // return;
+          }
+          if (list.length < this.pageSize) {
+            // 最后一页不足10条的情况
+            this.upFinished = true;
+          }
+          if (list.length > 0) {
+            list.forEach((item, index) => {
+              arr.push({
+                ...item,
+                changestatus: Math.abs(Number(item.status)),
+                createTimeFormat: this.formatTimeShow(item.createTime),
+              });
+              if (item.status === '0') {
+                arr[index].state = ['我已申请', '项目经理待审批', '主管待审批'];
+              }
+              if (item.status === '1') {
+                arr[index].state = ['我已申请', '项目经理已通过', '主管待审批'];
+              }
+              if (item.status === '-1') {
+                arr[index].state = ['我已申请', '项目经理拒绝', '主管待审批'];
+              }
+              if (item.status === '2') {
+                arr[index].state = ['我已申请', '项目经理已通过', '主管已通过'];
+              }
+              if (item.status === '-2') {
+                arr[index].state = ['我已申请', '项目经理已通过', '主管拒绝'];
+              }
+            });
+          }
+
+          // 处理数据
+          if (this.pageNum === 1 || this.isSelect) {
+            this.commiList = arr;
+          } else {
+            this.commiList = this.commiList.concat(arr);
+          }
+          if (this.commiList.length >= res.data.total) {
+            this.upFinished = true;
+          }
+          this.isSelect = false;
+          if (this.isSelect) {
+            this.resetCheck();
+          }
+        })
+        .catch((err) => {
+          console.log('getVacationList err', err);
+        });
+    },
+    // 删除申请
+    deleteVacation() {
+      if (this.result.length <= 0) {
+        this.$toast('请先勾选需要删除的休假申请');
+        return;
+      }
+      // console.log('this.result', this.result);
+      deleteVacation({ ids: this.result })
+        .then((res) => {
+          this.showDelete = false;
+          this.result = [];
+          this.getSelectComm('select');
+          console.log('deleteVacation res', res);
+        })
+        .catch((err) => {
+          console.log('deleteVacation err', err);
+        });
     },
     // 重置按钮
     resetCheck() {
@@ -280,31 +423,55 @@ export default {
       this.endDate = '';
       this.vacationType = '';
       this.currentDate = new Date();
-      this.applyStatus = false;// 清除审核进程状态的筛选条件
+      this.applyStatus = false; // 清除审核进程状态的筛选条件
       this.passStatus = false;
       this.checkStatus = false;
     },
-    // 通过时间筛选看延迟申请列表
-    getSelectComm() {
+    // 通过时间筛选看延时申请列表
+    getSelectComm(type) {
+      if (type === 'select') {
+        this.isSelect = true;
+        this.pageNum = 1;
+        this.upFinished = false;
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        window.pageYOffset = 0;
+      }
       this.show = false;
       const statusList = [];
       if (this.applyStatus) {
-        statusList.push(0);
-      } if (this.passStatus) {
-        statusList.push(1);
-      } if (this.checkStatus) {
-        statusList.push(2);
+        statusList.push('2');
       }
+      if (this.passStatus) {
+        statusList.push('-1', '-2');
+      }
+      if (this.checkStatus) {
+        statusList.push('0', '1');
+      }
+      const obj = {
+        ...this.getSelectQuery(),
+        vacationEndDate: this.endDate,
+        vacationStartDate: this.startDate,
+        status: statusList,
+        pageNum: this.pageNum,
+        vacationType: this.vacationTypeId,
+      };
+      this.getVacationList(obj);
     },
-    // onRefresh刷新列表异步获取数据
-    onRefresh() {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+    getSelectQuery() {
+      const obj = {
+        vacationEndDate: '',
+        vacationStartDate: '',
+        pageNum: 1,
+        pageSize: this.pageSize,
+        status: [],
+        vacationType: '',
+      };
+      return obj;
     },
     // 删除框选择改变时触发
     getCheckIndex() {
-      this.checkedAll = (this.result.length === this.commiList.length);
+      this.checkedAll = this.result.length === this.commiList.length;
     },
     // 全选框
     checkAllBtn() {
@@ -317,22 +484,19 @@ export default {
     // 去写页面
     routeItem(path, val) {
       if (val >= 0) {
-        let refuse = -1;
-        if (this.commiList[val].status < 0) {
-          refuse = 1;
-        }
         this.$router.push({
           path,
           query: {
-            id: JSON.stringify(this.commiList[val].id), // 携带id给日报详情页面，详情页面根据id查接口数据
-            date: JSON.stringify(this.commiList[val].date), // 用来存该日报日期，带给详情页面，因为我看详情的接口没有date
-            refuse, // 是否有拒绝状态
+            id: this.commiList[val].id,
           },
         });
       } else {
         this.$router.push(path);
       }
     },
+  },
+  mounted() {
+    this.onDownRefresh();
   },
   watch: {
     commiList(newval) {
@@ -345,11 +509,12 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
-.vacationText{
-    font-size: 1rem;
+<style lang="less" scoped>
+@import url('../../assets/css/style/seeExtention.less');
+.vacationText {
+  font-size: 1rem;
 }
-.typeBtn{
-    margin-top: 1rem;
+.typeBtn {
+  margin-top: 1rem;
 }
 </style>

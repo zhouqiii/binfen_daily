@@ -1,18 +1,26 @@
 @import '../var.less';
-.home{
+.box{
+  background: #F9FAFC;
+  .home{
     color: @fontColor;
     font-size: .875rem;
     .home_editBox{
+      padding-bottom: 166px;
+      box-sizing: border-box;
       .van-cell{
         border: 0;
       }
-      padding: .5rem .5rem 4rem .5rem;
+      // padding: .5rem .5rem 4rem .5rem;
       .home_editBox_time{
-        padding: .5rem;
-        height: 3rem;
-        line-height: 3rem;
+        padding: 0 @pad18 0 @pad16;
+        color: @fontC4D4;
+        height: 106px;
+        line-height: 106px;
         background: #ffffff;
-        border-radius: .2rem;
+        margin-top:@mar16;
+        .write_date{
+          font-size: 30px;
+        }
         .edit_date{
           margin: auto 0;
           .edit_date_week{
@@ -21,12 +29,7 @@
           }
           .getTime{
             border: 0 !important;
-            .van-cell__right-icon{
-              color: @fontColor;
-            }
-          }
-          div:nth-last-child(1){
-            font-size: .8rem;
+            font-size: @font15;
           }
         }
         .edit_date_delay{
@@ -37,22 +40,54 @@
           }
           .getTime{
             border: 0 !important;
-            .van-cell__right-icon{
-              color: @fontColor;
-            }
           }
           div:nth-last-child(1){
             font-size: .8rem;
           }
         }
       }
+      .approver{
+        margin-top: 32px;
+      }
       .home_editBox_iconAdd{
         margin-top: 1rem;
+        margin-right: 20px;
         width: 100%;
-        text-align: center;
+        text-align: right;
+        img{
+          width: 156px;
+          height: 156px;
+        }
         .iconBig{
           width: 1.5rem;
           height: 1.5rem;
+        }
+      }
+    }
+    .home_editBox_content{
+      padding: 0 32px;
+      .ruleForm{
+        .formItem{
+          .van-collapse{
+            .van-collapse-item{
+              .van-collapse-item__title{
+                .van-cell__title{
+                  span{
+                    font-size: 40px;
+                    font-weight: bold;
+                  }
+                }
+              }
+              .van-collapse-item__wrapper{
+                .van-collapse-item__content{
+                  .van-cell.van-cell--clickable{
+                    border-bottom: 1px solid lightgray;
+                    border-radius: 0;
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -62,40 +97,36 @@
     bottom:0px;
     background-color: #ffffff;
     width: 100%;
-    height: 3rem;
+    height: 166px;
     display: flex;
     align-items: center;
-    .sendBtn{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: #d3d3d3;
-      border-radius:.5rem ;
+    .sendBtn,.sendBtnDefault,.sendBtnChange{
+      width: 650px;
+      color: @fontCWhite;
+      height: 102px;
+      line-height: 102px;
+      border-radius:20px ;
       margin: auto;
       text-align: center;
-      font-size: .875rem;
+      font-size: 32px;
+      font-weight: 700;
 
     }
-    .sendBtnDefault{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: rgb(102, 102, 102);
-      border-radius:.5rem ;
-      margin: auto;
-      text-align: center;
-      font-size: .875rem;
+    .sendBtn,.sendBtnDefault{
+      background: rgba(#2F80ED,.6);
     }
+    .sendBtnChange{
+      background: @fontC2F8;
+    }
+    
   }
   .van-radio__icon .van-icon{
-    border-color: @fontColor;
+    // border-color: @fontColor;
   }
   .van-radio__icon--checked .van-icon{
-    background-color: #ffffff;
-    border-color: @fontColor;
-    color: @fontColor;
+    // background-color: #ffffff;
+    // border-color: @fontColor;
+    // color: @fontColor;
   }
   .van-cell__value{
     color: @fontColor;
@@ -113,3 +144,4 @@
       }
     }
   }
+}

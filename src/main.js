@@ -1,12 +1,36 @@
 import Vue from 'vue';
-import
-{
-  NavBar, Popup, Dialog, Icon, Tab, Tabs, Picker, Toast,
-  PasswordInput, NumberKeyboard, Form, Field, Calendar, Image, DatetimePicker, PullRefresh,
-  Collapse, CollapseItem, Radio, RadioGroup, Cell, Overlay, Step, Steps, Uploader,
-  Badge, Checkbox, CheckboxGroup,
-}
-  from 'vant';
+import {
+  NavBar,
+  Popup,
+  Dialog,
+  Icon,
+  Tab,
+  Tabs,
+  Picker,
+  Toast,
+  PasswordInput,
+  NumberKeyboard,
+  Form,
+  Field,
+  Calendar,
+  Image,
+  DatetimePicker,
+  PullRefresh,
+  Collapse,
+  CollapseItem,
+  Radio,
+  RadioGroup,
+  Cell,
+  Overlay,
+  Step,
+  Steps,
+  Uploader,
+  Badge,
+  Checkbox,
+  CheckboxGroup,
+  List,
+  Tag,
+} from 'vant';
 
 import { requestAxios } from '@/utils/myutils/axios';
 import { requestLogin } from '@/utils/myutils/loginRequest';
@@ -51,7 +75,9 @@ Vue.use(NavBar)
   .use(Uploader)
   .use(Badge)
   .use(Checkbox)
-  .use(CheckboxGroup);
+  .use(CheckboxGroup)
+  .use(List)
+  .use(Tag);
 
 // 组件自己封装的公用组件
 Vue.component('nav-bar-bottom', NavBarBottom);

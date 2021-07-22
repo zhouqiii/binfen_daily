@@ -9,40 +9,45 @@
             <div>欢迎登录</div>
         </div>
         <div class="login login_input">
-            <div>
-                <div>用户名</div>
-                <van-field v-model="phone"
-                    class="userinput"
-                    placeholder="请输入用户名"
-                    :error-message="err.phoneErr"
-                    @blur="checkPhone"
-                    v-on:input="getData"
-                    autocomplete="new-password"
+          <div>
+            <!-- :error-message="err.phoneErr" -->
+            <van-field v-model="phone"
+                class="item userinput"
+                placeholder="请输入用户名"
+                @blur="checkPhone"
+                v-on:input="getData"
+                autocomplete="new-password"
+            >
+              <template v-slot:label>
+                <div class="login_input_icon">用户名</div>
+              </template>
+            </van-field>
+          </div>
+          <div style="margin-top:2rem">
+            <van-field
+                maxlength="20"
+                :type="seen?'password':'text'"
+                v-model="pwd"
+                placeholder="请输入密码"
+                class="item pwdinput"
+                autocomplete="new-password"
+                v-on:input="getData"
+            >
+              <template v-slot:label>
+                <div class="login_input_icon">密码</div>
+              </template>
+                <img slot="right-icon" v-if='eye'
+                    @click="changeSeen"
+                    src="../assets/icons/eye-close.png"
+                    alt="图片加载失败"
                 />
-            </div>
-            <div style="margin-top:2rem">
-                <div>密码</div>
-                <van-field
-                    maxlength="20"
-                    :type="seen?'password':'text'"
-                    v-model="pwd"
-                    placeholder="请输入密码"
-                    class="pwdinput"
-                    autocomplete="new-password"
-                    v-on:input="getData"
-                >
-                    <img slot="right-icon" v-if='eye'
-                        @click="changeSeen"
-                        src="../assets/icons/eye-close.png"
-                        alt="图片加载失败"
-                    />
-                    <img slot="right-icon" v-if='!eye'
-                        @click="changeSeen"
-                        src="../assets/icons/eye.png"
-                        alt="图片加载失败"
-                    />
-                </van-field>
-            </div>
+                <img slot="right-icon" v-if='!eye'
+                    @click="changeSeen"
+                    src="../assets/icons/eye.png"
+                    alt="图片加载失败"
+                />
+            </van-field>
+          </div>
         </div>
         <div class="login login_btn">
             <button class="login_btn_button"

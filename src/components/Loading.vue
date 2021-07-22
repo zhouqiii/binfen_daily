@@ -2,7 +2,7 @@
   <!-- <div class="loading" v-show="loadingShow"> -->
   <div class="loading">
     <div class="loading_bg">
-      <img src="../assets/icons/icon_loading.png" alt="加载中..." class="loading_img" />
+      <img src="../assets/imgs/frame.gif" alt="加载中..." class="loading_img" />
     </div>
   </div>
 </template>
@@ -28,42 +28,42 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.loading{
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    .loading_bg{
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,.3);
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        img.loading_img{
-            width: 40px;
-            height: 40px;
-            -webkit-animation: loading 2s steps(9,end) infinite;
-            -moz-animation: loading 2s steps(9,end) infinite;
-            -o-animation: loading 2s steps(9,end) infinite;
-            animation: loading 2s steps(9,end) infinite;
-        }
+.loading {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  .loading_bg {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img.loading_img {
+      width: 40px;
+      height: 40px;
+      -webkit-animation: loading 2s steps(9, end) infinite;
+      -moz-animation: loading 2s steps(9, end) infinite;
+      -o-animation: loading 2s steps(9, end) infinite;
+      animation: loading 2s steps(9, end) infinite;
     }
+  }
 }
 @keyframes loading {
-    0%{
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-    }
-    100%{
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+  }
 }
 </style>

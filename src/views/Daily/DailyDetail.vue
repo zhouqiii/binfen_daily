@@ -1,39 +1,39 @@
 <template>
-    <div class="box">
-        <nav-bar-top title="日报详情"></nav-bar-top>
-        <div class="home">
-            <div class="home_detail_date box_frame-row">
-                <span>填写日期</span>
-                <span>{{getdate}}</span>
+  <div class="box dailydetail">
+    <nav-bar-top title="日报详情"></nav-bar-top>
+    <div class="home">
+      <div class="home_detail_date box_frame-row">
+        <span>填写日期</span>
+        <span>{{ getdate }}</span>
+      </div>
+      <div class="home_detail_content" v-for="(item, index) in dayListInfo" :key="index">
+        <div class="ruleForm">
+          <div class="formItemComi box_frame-row">
+            <span class="commi_name">任务</span>
+            <p class="text_line_name">{{ item.taskName }}</p>
+          </div>
+          <div class="text_line box_frame-row">
+            <span>工时</span>
+            <span>{{ item.workerLength }}小时</span>
+          </div>
+          <div class="box_frame">
+            <span class="text_work">今日工作</span>
+            <div class="home_detail_workContent">
+              {{ item.workerInfo }}
             </div>
-            <div class="home_detail_content" v-for="(item,index) in dayListInfo" :key="index">
-                <div class="ruleForm">
-                    <div class="formItem box_frame-row">
-                        <span>任务</span>
-                        <span class="textEllipsis" >{{item.taskName}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>工时</span>
-                        <span>{{item.workerLength}}小时</span>
-                    </div>
-                    <div class="box_frame">
-                        <div class="formItem">
-                            <span>今日工作</span>
-                        </div>
-                        <div class="home_detail_workContent">
-                            {{item.workerInfo}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="change_btn" v-show="ifChange==='已提交'">
-          <div class="sendBtn" @click="routeItem('/ChangeDaily')">修改日报</div>
-        </div>
+      </div>
     </div>
+    <div v-if="ifChange === '0'">
+      <div class="blank"></div>
+      <div class="change_btn" v-if="ifChange === '0'">
+        <div class="sendBtn" @click="routeItem('/ChangeDaily')">修改日报</div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-
 export default {
   name: 'DailyDetail',
   data() {
@@ -55,11 +55,10 @@ export default {
       })
         .then((res) => {
           if (res.data) {
-            this.dayListInfo = res.data;// 处理
+            this.dayListInfo = res.data; // 处理
           }
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     routeItem(path) {
       this.$router.push({
@@ -79,59 +78,86 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.home{
-    color: #605e5e;
-    font-size: .875rem;
-    padding: 3.4rem .5rem 4rem .5rem;
-      .home_detail_date{
-        padding: .5rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        background: #ffffff;
-        border-radius: .2rem;
-      }
-     .home_detail_content{
-        margin-top: .5rem;
-        border-radius: .5rem;
-        background: #ffffff;
-        padding: .5rem;
-        .ruleForm{
-            padding: 0;
-            .formItem{
-                height: 2.5rem;
-                line-height: 2.5rem;
-                .textEllipsis{
-                    width: 70%;
-                    text-align: right;
-                }
-            }
-            .home_detail_workContent{
-                width: 90%;
-                margin: auto;
-                line-height: 2rem;
-            }
+.home {
+  .home_detail_date {
+    padding: @pad16 @pad18 @pad16 @pad16;
+    margin-top: @mar16;
+    background: #ffffff;
+    font-size: @font15;
+    color: @fontC4D4;
+    font-weight: 500;
+  }
+  .home_detail_content {
+    margin-top: @mar16;
+    background: #ffffff;
+    padding-left: @pad16;
+    .ruleForm {
+      padding: 0;
+      .formItemComi {
+        min-height: 114px;
+        padding-top: @pad16;
+        .commi_name {
+          flex: 1;
         }
-     }
-}
-.change_btn{
-    position: fixed;
-    bottom:0px;
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    .sendBtn{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: #666666;
-      border-radius:.5rem ;
-      margin: auto;
-      text-align: center;
-      font-size: .875rem;
-
+        .text_line_name {
+          flex: 4.5;
+          font-size: @font15;
+          color: @fontC4D4;
+          font-weight: 500;
+          margin: 0;
+        }
+      }
+      .text_line {
+        height: 114px;
+        line-height: 114px;
+        font-size: @font15;
+        color: @fontC4D4;
+        font-weight: 500;
+        padding: 0 @pad16 0 0;
+        margin: 0;
+        border-bottom: @borderColor;
+      }
+      .text_work {
+        height: 102px;
+        line-height: 102px;
+        font-size: @font15;
+        color: @fontC4D4;
+      }
+      .home_detail_workContent {
+        margin: 0 36px @mar16 0;
+        background: #f9fafc;
+        font-size: @font15;
+        color: @fontC4D4;
+        font-weight: 500;
+        border-radius: 32px;
+        padding: @pad16;
+        line-height: 42px;
+      }
     }
   }
+}
+.blank {
+  height: 170px;
+}
+.change_btn {
+  position: fixed;
+  bottom: 0px;
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 166px;
+  display: flex;
+  align-items: center;
+  .sendBtn {
+    width: 650px;
+    color: #ffffff;
+    height: 102px;
+    line-height: 102px;
+    background: @fontC2F8;
+    border-radius: 20px;
+    margin: auto;
+    text-align: center;
+    font-size: @font16;
+    font-weight: 700;
+  }
+}
 </style>

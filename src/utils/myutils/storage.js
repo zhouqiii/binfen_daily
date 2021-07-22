@@ -1,5 +1,5 @@
-import createDom from '../createDom';
-import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
+import { Dialog } from 'vant';
+import router from '../../router/index';
 // 设置localStorage的值
 // storage.set("test", "你好", expirse_time);
 // 获取localStorage的值
@@ -26,15 +26,17 @@ const storage = {
   get(key) {
     let item = localStorage.getItem(key);
     if (!item) {
-      createDom(
-        DialogMessage,
-        {},
-        {
-          content: `<div style="text-align:center">无账号信息，请先去登录!</div>
-                    `,
-          confirmBtn: true,
-        },
-      );
+      const { href } = window.location;
+      if (href.indexOf('SignIn') === -1) {
+        Dialog
+          .alert({
+            message: '无账号信息，请先去登录!',
+            confirmButtonText: '确定',
+          }).then(() => {
+            localStorage.clear();
+            router.push({ name: 'SignIn' });
+          });
+      }
     }
     // 先将拿到的试着进行json转为对象的形式
     try {
@@ -49,15 +51,14 @@ const storage = {
       // 如果大于就是过期了，如果小于或等于就还没过期
       if (date - item.startTime > item.expires) {
         localStorage.removeItem(key);
-        createDom(
-          DialogMessage,
-          {},
-          {
-            content: `<div style="text-align:center">账号过期，请重新登录!</div>
-                     `,
-            confirmBtn: true,
-          },
-        );
+        Dialog
+          .alert({
+            message: '账号过期，请重新登录!',
+            confirmButtonText: '确定',
+          }).then(() => {
+            localStorage.clear();
+            this.$router.push({ name: 'SignIn' });
+          });
       }
       return item.value;
     }

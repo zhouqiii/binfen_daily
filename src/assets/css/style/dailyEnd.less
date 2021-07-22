@@ -1,39 +1,58 @@
 @import '../var.less';
-.daily_end{
-    margin-top: 4rem;
+
+.box.home{
+  background: #fff;
+  .daily_end{
+    margin-top: 126px;
     font-size: .8rem;
     text-align: center;
    .daily_end_page{
-   }
-   .state{
-     .endtext{
-       font-weight: 400;
-       margin-top: .5rem;
-       font-size: 1.2rem;
+     .box_frame{
+       img{
+         width: 308px;
+         height: 208px;
+         margin: 10px auto;
+       }
+       .endtext{
+         font-size: 28px;
+         margin-top: 46px;
+         color: #828282;
+       }
+     }
+     .text1{
+       font-size: 24px;
+       color: #2F80ED;
+     }
+     .line{
+      font-size: 20px;
+      color: @fontC2F8;
      }
    }
    .goback{
-     height:2.2rem;
-     color:#ffffff;
-     line-height: 2.2rem;
-     margin-top:2.5rem;
+     color:@fontCWhite;
+     font-size: @font16;
+     font-weight: 700;
+     margin-top:132px;
      .applyBtn{
-       width: 35%;
+       width: 264px;
+       height: 96px;
+       line-height: 96px;
        margin: auto;
        text-align: center;
-       border-radius: .3rem;
-       background: #169bd5;
+       border-radius: 20px;
+       background: @fontC2F8;
      }
    }
    .remain{
      color: @fontColor;
-     width: 50%;
-     margin: 1rem auto 0 auto;
-     height: 2rem;
-     line-height: 2rem;
+     width: 280px;
+     margin: 48px auto 0 auto;
+     height: 34px;
+     font-size: 24px;
      .line{
-         font-size: 1.3rem;
+        //  font-size: 1.3rem;
      }
 
    }
  }
+}

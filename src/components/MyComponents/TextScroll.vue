@@ -1,10 +1,10 @@
 <template>
-    <div class="text-container">
-        <!--mode="out-in"属性表示平滑的上一个内容先出，后一个内容在入-->
-        <transition name="slide" mode="out-in" >
-            <div class="text textEllipsis" :key="text.id">{{text.val}}</div>
-        </transition>
-    </div>
+  <div class="text-container">
+    <!--mode="out-in"属性表示平滑的上一个内容先出，后一个内容在入-->
+    <transition name="slide" mode="out-in">
+      <div class="text textEllipsis" :key="text.id">{{ text.val }}</div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -34,7 +34,8 @@ export default {
     },
   },
   created() {
-    this.intervalId = setInterval(() => { // 定义定时器
+    this.intervalId = setInterval(() => {
+      // 定义定时器
       this.getText();
     }, this.playTime);
   },
@@ -44,7 +45,8 @@ export default {
       if (len === 0) {
         return; // 当数组为空时，直接返回
       }
-      if (this.count === len - 1) { // 当前为最后一个时
+      if (this.count === len - 1) {
+        // 当前为最后一个时
         this.count = 0; // 从第一个开始
       } else {
         this.count += 1; // 自增
@@ -58,20 +60,16 @@ export default {
 </script>
 
 <style scoped>
-.text{
-    color: #999999;
-    font-size: .8rem;
-}
 .slide-enter-active {
-    transition: all 1s;
+  transition: all 1s;
 }
-.slide-leave-active{
-    transition: all .5s;
- }
-.slide-enter{
-    /* transform: translateY(20px); */
+.slide-leave-active {
+  transition: all 0.5s;
+}
+.slide-enter {
+  /* transform: translateY(20px); */
 }
 .slide-leave-to {
-    transform: translateY(-50px);
+  transform: translateY(-50px);
 }
 </style>

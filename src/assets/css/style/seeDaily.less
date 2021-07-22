@@ -1,141 +1,202 @@
-.home_padd{
-    .checkBoxGroup{
-        padding-bottom:3.5rem;
-        .van-checkbox__icon--checked .van-icon{
-            color: inherit;
-            background-color: #ffffff;
-            border-color: inherit;
-        }
-        .van-checkbox__icon .van-icon{
-            background: #ffffff;
-        }
-        .daily_seebox{
-            width: 90%;
-            padding-top: 2rem;
-            .daily_seedate{
-                height: 2rem;
-                line-height: 2rem;
-                font-size: .9rem;
-                font-weight: 400;
+.box {
+  .nav_bar_top {
+    .navbar {
+      .van-nav-bar {
+        .van-nav-bar__content {
+          .van-nav-bar__right {
+            .img {
+              width: 48px;
+              height: 48px;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+              &:nth-of-type(1) {
+                margin-right: 48px;
+              }
             }
-            .daily_seecontent{
-                background: #ffffff;
-                margin-left:.9rem;
-                margin-right: .5rem;
-                padding: .5rem .5rem 1.2rem .9rem;
-                border-radius:1rem;
-                .box_frame-row{
-                    height: 2rem;
-                    line-height: 2rem;
-                    .daily_seecontent_week{
-                        font-size: 1rem;
-                    }
-                    .daily_seecontent_state{
-                        font-size: .9rem;
-                        color: #858585;
-                    }
-                }
-                .date{
-                    line-height: 1.5rem;
-                    height: 1.5rem;
-                    font-size: .7rem;
-                    color: black;
-                }
-                .text{
-                    line-height: 1.5rem;
-                    height: 1.5rem;
-                    font-size: .8rem;
-                    color: #5a5959;
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
-.home_pop{
-    .contentBox{
-        padding-top: 1rem;
-        .ruleForm{
-            background: #ffffff;
-        }
-        .timeSelect_btn{
-            margin-top: 6rem;
-            height: 2rem;
-            line-height: 2rem;
-            width: 100%;
-            font-size: .875rem;
+.home_padd {
+  .checkBoxGroup {
+    .van-checkbox__icon--checked .van-icon {
+      color: inherit;
+      background-color: #ffffff;
+      border-color: inherit;
+    }
+    .van-checkbox__icon .van-icon {
+      background: #ffffff;
+    }
+    .daily_seebox {
+      width: 100%;
+      .daily_seedate {
+        height: 104px;
+        line-height: 104px;
+        font-size:@font14;
+        font-weight: 500;
+        color: @fontC82;
+      }
+      .checkBoxSel{
+        margin-right: @mar16;
+      }
+      .daily_seecontent {
+        background: #ffffff;
+        padding: @pad16 @pad20 @pad10 @pad20;
+        border-radius: 32px;
+        display: grid;
+        width: -webkit-fill-available;
+        .box_frame-row {
+          margin-bottom: @mar16;
+          font-weight: 700;
+          .daily_seecontent_week {
+            font-size: @font16;
+            color: @fontColor;
+          }
+          .daily_seecontent_state {
+            height:44px;
+            line-height: 44px;
+            width: 116px;
             text-align: center;
-            .timeSelect_btn_cancel{
-                width: 25%;
-                color: inherit;
-                background: #ffffff;
-                border-radius:.3rem ;
-            }
-            .timeSelect_btn_confirm{
-                width: 25%;
-                background: rgba(22, 155, 213, 1);
-                color: #ffffff;
-                border-radius:.3rem ;
-            }
+            border-radius: 36px;
+            font-size:20px;
+          }
+          .commit{
+            background: rgba(33,150,83,0.20);
+            color: #219653;
+          }
+          .cancel{
+            background: rgba(235,87,87,0.20);
+            color: #eb5757;
+          }
         }
+        .date {
+          line-height: 1.5rem;
+          height: 1.5rem;
+          font-size: 0.7rem;
+          color: black;
+        }
+        .textEllipsis {
+          font-size: @font13;
+          font-weight: 500;
+          color: @fontC82;
+        }
+        .text{
+          margin-bottom: @mar10;
+        }
+      }
     }
+  }
 }
-.home_edit{
-    position: fixed;
-    right: 0;
-    top: 50%;
-    width: 12%;
-    text-align: center;
-    div{
-         margin-top: .5rem;
-         width: 2.4rem;
-         height: 2.4rem;
-         line-height: 2.4rem;
-         background: #ffffff;
-         -moz-border-radius: 1.2rem;
-         -webkit-border-radius: 1.2rem;
-         border-radius: 12rem;
-         border: 1px solid #333333;
+.home_pop {
+  .van-popup {
+    width: 670px;
+  }
+  .contentBox {
+    // padding-top: 1rem;
+    height: 100vh;
+    position: relative;
+    .mainTitle {
+      background: #ffffff;
+      padding: 80px 32px 0 32px;
+      font-size: @font16;
+      font-weight: 700;
+      color: @fontColor;
     }
-
-}
-.home_del{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3rem;
-    z-index: 105;
-    background: #f2f2f2;
-    line-height: 3rem;
-    font-size: .9rem;
-    .box_frame-row{
+    .ruleForm {
+      background: #ffffff;
+      .start_time_and_end_time {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        .delcheck{
-            margin-left: 20px;
+        padding-top: 28px;
+        .start_time,
+        .end_time {
+          font-size: @font14;
+          color: @fontColor;
+          font-weight: 500;
+          text-align: center;
+          width: 50%;
         }
-        .del{
-            margin-right: 20px;
+      }
+      .short_line {
+        width: 20px;
+        height: 2px;
+        background: @fontC4D4;
+        margin: 0 auto;
+      }
+      .formItems {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .daily_timesel {
+          width: 50%;
         }
-        .van-checkbox__icon--checked .van-icon{
-            color: inherit;
-            background-color: #ffffff;
-            border-color: inherit;
-        }
-        .van-checkbox__icon .van-icon{
-            background: #ffffff;
-        }
-
-   }
+      }
+    }
+  }
 }
-.refresh_text{
-    margin-left: .5rem;
-    color: #333333;
+.home_edit {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  width: 156px;
+  text-align: center;
+  z-index: 2;
 }
-.van-cell{
-    line-height: 3rem;
-    height: 3rem;
+.blank{
+  margin:24px @pad20 48px @pad16;
+  height: 122px;
 }
-.van-cell__right-icon{
-    height: 3rem;
-    line-height: 3rem;
+.home_del {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 105;
+  background: #ffffff;
+  font-size: @font16;
+  font-weight: 500;
+  color: @fontC4D4;
+  .box_frame-row {
+    margin:24px @pad20 48px @pad16;
+    align-items: center;
+    height: 102px;
+    line-height: 102px;
+    .del {
+      width: 262px;
+      text-align: center;
+      background: @fontC2F8;
+      color: @fontCWhite;
+      border-radius: 20px;
+      font-size: @font16;
+      font-weight: 700;
+    }
+    .check_all_text{
+      margin-left: 24px;
+    }
+    .van-checkbox__icon--checked .van-icon {
+      color: inherit;
+      background-color: #ffffff;
+      border-color: inherit;
+    }
+    .van-checkbox__icon .van-icon {
+      background: #ffffff;
+    }
+  }
+}
+.refresh_text {
+  margin-left: 0.5rem;
+  color: #333333;
+}
+.van-cell {
+  line-height: 3rem;
+  height: 3rem;
+}
+.van-cell__right-icon {
+  height: 3rem;
+  line-height: 3rem;
 }

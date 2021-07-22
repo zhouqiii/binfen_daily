@@ -1,185 +1,206 @@
 <template>
-    <div>
-        <nav-bar-top :title="title" :navBg='navBg'></nav-bar-top>
-        <div class="home">
-          <div v-show="ifRefuse">
-            <div class="home_detail_date">
-                <span>拒绝原因：</span>
-                <span>{{getdate}}</span>
+  <div>
+    <nav-bar-top :title="title" :navBg="navBg"></nav-bar-top>
+    <div class="home">
+      <div v-show="ifRefuse">
+        <div class="home_detail_date box_frame-row">
+          <span>拒绝原因</span>
+          <span class="info_content">{{ info.checkRemark }}</span>
+        </div>
+      </div>
+      <div class="home_detail_content">
+        <div class="ruleForm">
+          <div class="formItem box_frame-row">
+            <span>姓名</span>
+            <span class="info_content">{{ info.realName }}</span>
+          </div>
+          <div class="formItem box_frame-row" v-if="info.type == '1'">
+            <span>任务名称</span>
+            <span class="textEllipsis info_content">{{ info.taskName }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>项目组</span>
+            <span class="textEllipsis info_content">{{ info.productName }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>{{ info.type == '1' ? '加班日期' : '休假日期' }}</span>
+            <span class="info_content">{{ info.dateInfo }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>{{ info.type == '1' ? '加班时间' : '休假时间' }}</span>
+            <span class="info_content">{{ info.timeInfo }}</span>
+          </div>
+          <div class="formItem box_frame-row" v-if="info.type == '2'">
+            <span>工作交接</span>
+            <span class="textEllipsis info_content">{{ info.taskName }}</span>
+          </div>
+          <div class="box_frame">
+            <div class="formItem">
+              <span>工作内容</span>
+            </div>
+            <div class="home_detail_workContent">
+              {{ info.info }}
             </div>
           </div>
-          <div class="home_detail_content">
-            <div class="ruleForm">
-                <div class="formItem box_frame-row">
-                    <span>姓名</span>
-                    <span>{{name}}</span>
-                </div>
-                <div class="formItem box_frame-row">
-                    <span>任务</span>
-                    <span class="textEllipsis" >{{commision}}</span>
-                </div>
-                <div class="formItem box_frame-row">
-                    <span>项目组</span>
-                    <span class="textEllipsis" >{{projectTeam}}</span>
-                </div>
-                  <div class="formItem box_frame-row">
-                    <span>申请日期</span>
-                    <span>{{date}}</span>
-                </div>
-                <div class="formItem box_frame-row">
-                    <span>延迟申请起始时间</span>
-                    <span>{{workHourStart}}</span>
-                </div>
-                <div class="formItem box_frame-row">
-                    <span>延迟申请截止时间</span>
-                    <span>{{workHourEnd}}</span>
-                </div>
-                <div class="box_frame">
-                    <div class="formItem">
-                        <span>工作内容</span>
-                    </div>
-                    <div class="home_detail_workContent">
-                        {{workContent}}
-                    </div>
-                </div>
-            </div>
         </div>
-        <div class="home_detail_btn flex_around" v-show="ifAgreeBtn">
-            <div class="approve_btn refuse" @click="routeItem('/MyApproveRefuse')">
-                拒绝
-            </div>
-            <div class="approve_btn agree" @click="routeItemCommi('ApproveHistory')">
-                同意
-            </div>
+      </div>
+      <div class="home_detail_btn box_frame-row" v-show="ifAgreeBtn">
+        <div class="refuse_btn" @click="routeItem('/MyApproveRefuse')">
+          拒绝
+        </div>
+        <div class="agree_btn" @click="ApprovedConfirm">
+          同意
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
+import { checkTask } from '@/api/commission';
+
 export default {
   name: 'ExtentionDetail',
   data() {
     return {
-      name: '小明',
+      info: {},
       navBg: false, // header背景色
       getdate: '加班时间有误，重新填写',
-      projectTeam: '缤纷生活',
-      commision: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
-      workHourStart: '6:30',
-      workHourEnd: '6:30',
-      workContent: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
-      date: '2021-4-22',
       ifAgreeBtn: false,
       title: '',
       ifRefuse: false,
     };
   },
   methods: {
-    getInfo() {
-
-    },
     routeItem(path) {
-      this.$router.push(path);
+      this.$router.push({
+        path,
+        query: {
+          info: JSON.stringify(this.info),
+        },
+      });
     },
-    routeItemCommi(name) {
-      this.requestAxios({
-        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
-        data: {},
-        method: 'post', // post
-      })
+    ApprovedConfirm() {
+      const obj = {
+        // 'checkRemark': '',
+        checkStatus: '1',
+        checkType: this.info.type,
+        id: this.info.id,
+      };
+      checkTask({ checkList: [obj] })
         .then((res) => {
           if (res.code === 200) {
-            this.$router.push(name);
+            // console.log(res);
+            this.$router.go(-1);
           }
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.log('checkTask err', err);
+        });
     },
   },
   mounted() {
-    this.getInfo();
-    if (this.$route.query.data === '1') { // 我的审核-历史审核跳转过来的
-      this.ifAgreeBtn = true;
+    this.info = JSON.parse(this.$route.query.info);
+    console.log('this.info', this.info);
+    if (this.info.status === '0' || this.info.status === '1') {
+      this.ifRefuse = false;
+    }
+    if (this.$route.query.data === '1') {
+      // 我的审核-历史审核跳转过来的
       this.title = '审批详情';
-    } if (this.$route.query.data === '2') {
-      this.ifAgreeBtn = false;
+      this.ifAgreeBtn = true;
+    }
+    if (this.$route.query.data === '2') {
       this.title = '历史审批详情';
-      if (JSON.parse(this.$route.query.state) === '拒绝') {
-        this.ifRefuse = true;
-      } else {
-        this.ifRefuse = false;
-      }
+      this.ifAgreeBtn = false;
+    }
+    if (this.info.status === '-1' || this.info.status === '-2') {
+      this.ifRefuse = true;
     }
   },
 };
 </script>
 <style lang="less" scoped>
-.home{
-    color: #605e5e;
-    font-size: .875rem;
-    padding: 3.4rem .5rem 4rem .5rem;
-      .home_detail_date{
-        padding: .5rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        background: #f2f2f2;
-        border-radius: .2rem;
-      }
-     .home_detail_content{
-        margin-top: .5rem;
-        border-radius: .5rem;
-        background: rgba(242, 242, 242, 1);
-        padding: .5rem;
-        .ruleForm{
-            padding: 0;
-            .formItem{
-                height: 2.5rem;
-                line-height: 2.5rem;
-                .textEllipsis{
-                    width: 70%;
-                    text-align: right;
-                }
-            }
-            .home_detail_workContent{
-                width: 90%;
-                margin: auto;
-                line-height: 2rem;
-            }
-        }
-    }
-    .home_detail_btn{
-        margin-top: 1rem;
-        height: 3rem;
-        line-height: 3rem;
-        text-align: center;
-        .approve_btn{
-            width: 35%;
-            border: 1px solid #5a5959;
-            border-radius:.5rem;
-        }
-        .agree{
-            background: rgba(102, 102, 102, 1);
-            color: #ffffff;
-        }
-    }
-}
-.change_btn{
-    position: fixed;
-    bottom:0px;
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    .sendBtn{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: #666666;
-      border-radius:.5rem ;
-      margin: auto;
-      text-align: center;
-      font-size: .875rem;
+.home {
+  font-size: @font15;
+  color: @fontC4D4;
+  font-weight: 500;
+  .home_detail_date {
+    margin-top: @mar16;
+    padding: 40px;
+    background: #ffffff;
+    .info_content {
+      font-weight: 700;
     }
   }
+  .home_detail_content {
+    margin-top: @mar16;
+    background: #ffffff;
+    padding: 8px 40px 32px 40px;
+    .ruleForm {
+      padding: 0;
+      .formItem {
+        margin-top: 28px;
+        .textEllipsis {
+          width: 70%;
+          text-align: right;
+        }
+        .info_content {
+          font-weight: 700;
+        }
+      }
+      .home_detail_workContent {
+        margin-top: 24px;
+        padding: 20px;
+        font-weight: 700;
+        background: #f9fafc;
+        border-radius: 4px;
+        line-height: 32px;
+      }
+    }
+  }
+  .home_detail_btn {
+    margin-top: 80px;
+    padding: 0 @pad20;
+    height: 100px;
+    line-height: 100px;
+    font-size: @font16;
+    text-align: center;
+    .refuse_btn,
+    .agree_btn {
+      width: 300px;
+      border-radius: 20px;
+    }
+    .refuse_btn {
+      margin-top: 0;
+      border: 1px solid @fontC2F8;
+      color: @fontC2F8;
+      background: #ffffff;
+    }
+    .agree_btn {
+      border: 1px solid @fontC2F8;
+      color: #ffffff;
+      background: @fontC2F8;
+    }
+  }
+}
+.change_btn {
+  position: fixed;
+  bottom: 0px;
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  .sendBtn {
+    width: 70%;
+    color: #ffffff;
+    height: 2rem;
+    line-height: 2rem;
+    background: #666666;
+    border-radius: 0.5rem;
+    margin: auto;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+}
 </style>

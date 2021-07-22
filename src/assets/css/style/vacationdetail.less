@@ -1,7 +1,4 @@
 .home{
-    color: #605e5e;
-    font-size: .875rem;
-    padding: 3.4rem .5rem 4rem .5rem;
       .home_detail_date{
         padding: .5rem;
         height: 2.5rem;
@@ -10,22 +7,30 @@
         border-radius: .2rem;
       }
      .home_detail_content{
-        margin-top: .5rem;
-        border-radius: .5rem;
+        margin-top: @mar16;
         background: #ffffff;
-        padding: .5rem;
+        padding: @pad20;
         .ruleFormVacation{
             padding: 0;
             .formItemVacation{
-                margin-top: .8rem;
+                margin-bottom: 28px;
+                font-size: @font15;
+                color: @fontC4D4;
                .vacation_detail_title{
-                   height: 2rem;
-                   line-height: 2rem;
-                   font-size: 1rem;
+                font-weight: 500;
                }
                .vacation_detail_sectitle{
-                   height: 1.5rem;
-                   line-height: 1.5rem;
+                   font-weight: 700;
+               }
+               .vacation_detail_content{
+                   margin-top: @mar15;
+                background: #f9fafc;
+                font-size: @font15;
+                color: @fontC4D4;
+                font-weight: 700;
+                border-radius: 32px;
+                padding: @pad16;
+                line-height: 42px;
                }
                .vacation_detail_img{
                     flex-wrap:wrap;

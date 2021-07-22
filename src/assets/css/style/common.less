@@ -3,148 +3,330 @@
 
 // reset
 html,
-body{
-	// background: #F8F8F8;
-	font-family: PingFang-SC-Heavy, PingFangSC-Regular, PingFang SC;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-text-size-adjust: none;
-	-webkit-overflow-scrolling: touch;
-	color: @gray333;
-    height: 100%;
-    width: 100%;
-
+body {
+  // background: #F8F8F8;
+  font-family: PingFang-SC-Heavy, PingFangSC-Regular, PingFang SC;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
+  -webkit-overflow-scrolling: touch;
+  color: @gray333;
+  height: 100%;
+  width: 100%;
+  background: #F9FAFC;
 }
 
 ::-webkit-scrollbar {
   width: 0;
   background-color: transparent;
 }
-img{
-    max-width: 100%;
-    vertical-align: middle;
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent; //自定义边框
+  outline: none; //消除默认点击蓝色边框效果
+}
+.box_frame {
+  display: flex;
+  flex-direction: column;
+  // height: 245px;
+}
+.box {
+  // background: #e4e4e4;
+  min-height: 100%;
+}
+.home {
+  .home_padd {
+    padding: 0 1rem;
   }
-button{
-    margin: 0;
-    padding: 0;
-    border: 1px solid transparent;  //自定义边框
-    outline: none;    //消除默认点击蓝色边框效果
-}
-.box_frame{
-    display: flex;
-    flex-direction:column;
-    // height: 245px;
-  
-}
-.box{
-    background:#e4e4e4;
-    min-height:100%;
-}
-.home{
-    padding-top: 2.8rem;
-    height:calc(100% - 2.8rem);
-    .home_padd{
-        padding: 0 1rem;
-    }
 }
 .flex_evenly {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-  .flex_start {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .flex_around {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-.box_frame-row{
-    display: flex;
-    flex-direction:row;
-    justify-content: space-between;
-    align-items: center;
-    // height: 245px;
-  
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
-.flex-row{
-    display: flex;
-    flex-direction:row;
-    align-items: center;
-    // height: 245px;
-  
+.flex_start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
-.flex-rowSvg{
-    display: flex;
-    flex-direction:row;
-    // height: 245px;
-  
+.flex_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.ruleForm{
-    padding: 0 1em;
+.flex_between {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.textEllipsis{
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+.flex_around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.box_frame-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  // height: 245px;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // height: 245px;
+}
+.flex-rowSvg {
+  display: flex;
+  flex-direction: row;
+  // height: 245px;
 }
 
-/*vant的form样式修改*/
+.textEllipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
-.van-cell{
-    padding:inherit;
-    line-height: 2.5rem;
-    background-color:inherit;
-    height: 2.5rem;
-    border-bottom: @borderColor;
-    color: @fontColor;
-    .van-cell__right-icon{
-        height: 2.5rem;
-        line-height: 2.5rem;
+//登陆页面vant相关样式定制
+.userinput,.pwdinput{
+  .van-field__left-icon {
+    margin-right: @mar10;
+  }
+  .van-field__control {
+    font-size: @font14;
+  }
+  .van-field__body {
+    width: 100%;
+  }
+}
+//登陆页面vant相关样式定制结束
+//写日报--休假--延迟样式定制
+.write_daily_commi{
+  .van-cell{
+    height: auto;
+    padding: 20px @pad16 20px @pad18;
+    .van-cell__title{
+      flex: 1;
     }
-    
-   
+    .van-cell__value{
+      flex: 4.5;
+      line-height: @pad18;
+      text-align: justify;
+      margin: auto;
+    }
+  }
 }
+.edit_date{
+  .van-cell{
+    height: 106px;
+    line-height: 106px;
+  }
+  .van-cell__right-icon {
+    height: 106px;
+    line-height: 106px;
+  }
+}
+.getTime,.workHour,.vacation_time,.text_handover,.workHourEnd,.workHourStart {
+  .van-field__control {
+   text-align: right;
+  }
+  .van-field__body{
+    width: 100%;
+  }
+}
+.textareaEdit{
+  .van-cell__value{
+    .van-field__body {
+      width: 100%;
+      .van-field__control {
+        min-height: auto !important;
+        width: 100% !important;
+        height: 100%;
+      }
+    }
+  }
+}
+.checkRadio{
+  .van-cell{
+    padding: 0;
+  }
+}
+.checkRadio {
+  .van-cell--large{
+    padding-right: @pad18;
+    height: 88px;
+    line-height: 88px;
+  }
+  .van-collapse-item__wrapper {
+    .van-collapse-item__content {
+      padding: 0 0 0 20px;
+      .van-radio-group{
+        .van-cell{
+          padding: 0;
+          height: 114px;
+          line-height: 114px;
+          border-bottom: @borderColor;
+          border-radius: 0;
+          padding-right: @pad18;
+          align-items: baseline;
+        }
+      }
+      .van-radio__icon .van-icon{
+        width: 30px;
+        height: 30px;
+        font-size: 30px;
+      }
+    }
+  }
+} 
 
-.van-swipe__indicator{
-    height: 0.5rem;
-    width: 0.5rem;
+//写日报样式定制结束
+/*我的日报-延迟-请假定制结束*/
+.daily_timesel{
+  .van-field__control{
+    font-size: @font14;
+    text-align: center;
+  }
+}
+.daily_seecontent_stepline{
+  .van-step__line{
+    height: 0;
+    border-bottom: 1px dashed;
+    color: #ffffff;
+  }
+}
+.vacation_type{
+  .van-field__control{
+    text-align: right;
+    font-size: @font14;
+  }
+}
+/*我的日报-延迟-请假定制结束*/
+/*任务-审核样式定制*/
+.selInput {
+  .van-field__control {
+    text-align: right;
+    font-size: @font14;
   }
   .van-cell__title{
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    font-size: @font14;
   }
-   .van-cell-group{
-            background-color:inherit
-        }
-        .van-field__control{
-            text-align: right;
-            color: @fontColor;
-        }
-        .van-field__label{
-            width: 10em;
-            color: inherit;
-        }
-        .van-field__right-icon{
-            width: 1.2rem;
-        }
-        .van-field__label{
-            width: 7em;
-        }
-        .van-field__value{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            .van-field__body{
-                width: 90%;
-            }
-            .van-field__error-message{
-                width: 35%;
-            }
-        }
+}
+.time_pop_box {
+    .van-field__control {
+      color: @fontC4D4;
+      text-align: center;
+      font-size: @font14;
+    }
+}
+.list_box_task{
+  .van-collapse-item__content{
+    padding: 30px 0 0 0;
+    .van-step__line{
+      display: none;
+    }
+    .van-icon__image{
+      height: 48px;
+      width: 48px;
+      margin-right: 20px;
+      margin-top: 36px
+    }
+ }
+  .van-cell{
+    height: 32px;
+    line-height: 32px;
+    .van-cell__title{
+      font-size: @font16;
+      color: @fontColor;
+      font-weight: 700;
+    }
+    .van-cell__right-icon{
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+}
+.span_line{
+  .van-step__line{
+    height: 0;
+    border-bottom: 1px dashed;
+    color: #ffffff;
+  }
+
+}
+/*任务-审核样式定制结束*/
+.van-collapse-item__content {
+  background-color: #F9FAFC;
+  .van-radio-group{
+    .van-cell{
+      background: #F9FAFC;
+      height: 104px;
+      line-height: 104px;
+      padding-left: 20px;
+    }
+  }
+}
 /*vant样式修改完*/
 /*一些box公共样式及ui插件样式更改--zhouqi结束*/
+
+// 李松添加
+.home_pop {
+  .van-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+.ruleForm {
+  .formItems {
+    .formItem {
+      .van-field__control {
+        text-align: center;
+      }
+    }
+  }
+}
+.typeBtn.ruleForm {
+  .formItem {
+    .van-cell {
+      padding: 0 48px;
+    }
+  }
+}
+.timeSelect_btn {
+  height: 174px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  .timeSelect_btn_cancel,
+  .timeSelect_btn_confirm {
+    width: 264px;
+    height: 102px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 24px;
+    border-radius: 20px;
+    font-size: 32px;
+  }
+  .timeSelect_btn_cancel {
+    color: @fontC2F8;
+    background: #ffffff;
+    border: 1px solid @fontC2F8;
+  }
+  .timeSelect_btn_confirm {
+    background: @fontC2F8;
+    color: #fcfcff;
+    border: 1px solid @fontC2F8;
+  }
+}

@@ -1,132 +1,137 @@
 @import '../var.less';
-.home{
-    color: @fontColor;
-    font-size: .875rem;
-    .home_editBox{ 
-      padding: .5rem .5rem 4rem .5rem;
-      .home_time_vacation{
-        padding: 0 .5rem;
+.home {
+  color: @fontColor;
+  font-size: 0.875rem;
+  .home_editBox {
+    padding-bottom: 20px;
+    background: #f9fafc;
+    .home_time_vacation {
+      padding: 0 @pad18 0 @pad16;
+      color: @fontC4D4;
+      height: 106px;
+      line-height: 106px;
+      background: #ffffff;
+      margin-top:@mar16;
+      .edit_date_vacation {
+        margin: auto 0;
+        width: 100%;
+        .van-cell {
+          border-bottom: 0;
+        }
+      }
+    }
+    .ruleFormVacation {
+      background: #ffffff;
+      border-radius: 0.1rem;
+      margin-top: 32px;
+      .write_daily_commi{
+        .commiTitle {
+          font-size: @font15;
+          color: @fontC4D4;
+          font-weight: 500;
+        }
+      }
+      .formItemVacation {
+        padding: 0 @pad18 0 @pad16;
         height: 3.5rem;
         line-height: 3.5rem;
-        background: #ffffff;
-        border-radius: .1rem;
-        .edit_date_vacation{
-          margin: auto 0;
-          width: 100%;
-          .van-cell{
-            border-bottom: 0;
+        .van-cell {
+          height: 3.5rem;
+          line-height: 3.5rem;
+          padding: 0;
+        }
+        .van-cell__right-icon {
+          height: 3.5rem;
+          line-height: 3.5rem;
+        }
+        .text_handover {
+          padding-right: 48px;
+          .van-field__body {
+            width: 100%;
+            .van-field__control {
+              text-align: left;
+            }
+          }
+        }
+        .imagePicker {
+          .van-picker-column__item:first-child {
+            // height: 20px !important;
+          }
+        }
+        .textarea_img{
+          height: 98px;
+          line-height: 98px;
+          color: @fontC4D4;
+          font-size: @font15;
+        }
+      }
+      .imageItem {
+        .van-uploader__wrapper {
+          justify-content: flex-start;
+          .van-uploader__preview {
+            margin: 0 2rem 1rem 0;
           }
         }
       }
-      .ruleFormVacation{
-        padding: 0 .5rem; 
-        background: #ffffff;
-        border-radius: .1rem;
-        margin-top: .5rem;
-        .formItemVacation{
-            height: 3.5rem;
-            line-height: 3.5rem;
-            .van-cell{
-              height: 3.5rem;
-              line-height: 3.5rem;
-            }
-            .van-cell__right-icon{
-              height: 3.5rem;
-              line-height: 3.5rem;
-            }
-            .text_handover{
-                .van-field__body{
-                    width: 100%;
-                    .van-field__control{
-                        text-align: left;
-                    }
-                }
-            }
-            .imagePicker{
-                .van-picker-column__item:first-child{
-                    // height: 20px !important;
-                }
-            }
-        }
-        .imageItem{
-          .van-uploader__wrapper{
-            justify-content: flex-start;
-            .van-uploader__preview{
-              margin: 0 2rem 1rem 0;
-            }
-            }
-          // .van-uploader{
-          //   width: 100%;
-          //   .van-uploader__wrapper{
-          //     justify-content: flex-start;
-          //     .van-uploader__preview{
-          //       width: 30%;
-          //       .van-uploader__preview-image{
-          //         width: 100%;
-          //         height: inherit;
-          //       }
-          //     }
-          //     .van-uploader__upload{
-          //       width: 30%;
-          //       height: inherit;
-          //     }
-          // }
-          // }
+    }
+    .textarea_box {
+      padding: 0 @pad18 0 @pad16;
+      font-size: @font15;
+      color: @fontC4D4;
+      height: 377px;
+      .textarea_title {
+        height: 98px;
+        line-height: 98px;
+        .vacation_tips{
+          color: @fontC82;
+          font-size: @font13;
         }
       }
-      .textarea_box{
-          height: 7rem;
-          .textarea_title{
-            height: 3rem;
-            line-height: 3rem;
-        }
-        .textarea_reason{
-            border-bottom: 0;
-            overflow: hidden;
-            .van-field__body{
-                width: 100%;
-                .van-field__control{
-                    line-height: 1.3rem;
-                    text-align: left;
-                    overflow: auto;
-                    min-height: auto;
-                }
-            }
-        }
+      .van-cell{
+        padding: 0;
+      }
+      .textarea_reason {
+        border-bottom: 0;
+        overflow: hidden;
       }
     }
   }
-  .submit_btn{
-    position: fixed;
-    bottom:0px;
-    background-color: #ffffff;
-    width: 100%;
-    height: 3rem;
+}
+.blank{
+  height: 166px;
+}
+.submit_btn {
+  position: fixed;
+  bottom: 0px;
+  background-color: #ffffff;
+  width: 100%;
+  height: 166px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .sendBtn {
+    width: 650px;
+    height: 102px;
+    color: @fontCWhite;
+    background: rgba(#2f80ed, 1);
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 32px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    .sendBtn{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: #666666;
-      border-radius:.5rem ;
-      margin: auto;
-      text-align: center;
-      font-size: .875rem;
-
-    }
   }
-  .van-radio__icon .van-icon{
-    border-color: @fontColor;
-  }
-  .van-radio__icon--checked .van-icon{
-    background-color: #ffffff;
-    border-color: @fontColor;
-    color: @fontColor;
-  }
-  .van-cell__value{
-    color: @fontColor;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-  }
+}
+.van-radio__icon .van-icon {
+  border-color: @fontColor;
+}
+.van-radio__icon--checked .van-icon {
+  background-color: #ffffff;
+  border-color: @fontColor;
+  color: @fontColor;
+}
+.van-cell__value {
+  color: @fontColor;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

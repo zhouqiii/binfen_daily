@@ -1,6 +1,6 @@
 @import './var.less';
 .van-nav-bar__title{
-	font-size: @font36;
+	font-size: @font18;
 	font-weight: 800;
 }
 .van-dialog{
@@ -8,6 +8,7 @@
 	line-height: 42px;
 	color:@gray333;
 }
+
 .van-dialog__confirm,
 .van-dialog__confirm:active{
 	color:@red;
@@ -18,34 +19,51 @@
 		color:@gray333;
 	}
 }
-/*vant-popup取消和确定文字的颜色和大小*/
+
+/*vant的pop弹出框*/
+.van-picker-column__item{
+	font-size: @font15;
+	font-weight: 500;
+	color: @fontC4D4;
+}
 .van-picker-column__item--selected{
-	font-size: 1.2rem;
-    border-bottom: 1px solid rgba(215, 215, 215, 1);
+	font-size: 40px;
+	font-weight: 700;
+	color: @fontC4D4;
+	height: 116px !important;
+	line-height: 116px !important;
+	border-bottom: 1px solid rgba(215, 215, 215, 1);
     border-top: 1px solid rgba(215, 215, 215, 1);
 	.van-ellipsis{
 		font-size: 1.2rem !important;
 	}
 }
-.van-picker__confirm{
-	color:#33cc33;
-	font-size: @font30;
+.van-popup--bottom{
+	border-top-right-radius: 32px;
+	border-top-left-radius: 32px;
 }
-.van-picker__cancel{
-	font-size: @font30;
-	color:@gray;
+.van-picker__toolbar{
+	height: 116px;
+	line-height: 116px;
+	background: #F9FAFC;
+	.van-picker__confirm{
+		color:@fontC2F8;
+		font-weight: 700;
+		font-size: @font16;
+	}
+	.van-picker__cancel{
+		font-size: @font16;
+		color:@fontC82;
+		font-weight: 500;
+	}
 }
+/*vant的pop弹出框*/
 .van-picker__title{
-	font-size: @font36;
+	font-size: @font18;
 }
-.van-popup--bottom.van-popup--round{
-	border-radius: 16px 16px 0 0;
-}
+
 .van-picker-column{
 	font-size:.8rem;
-}
-.van-picker-column__item{
-	color: @gray333;
 }
 .van-picker__columns{
 	.van-hairline--top-bottom::after,
@@ -53,3 +71,112 @@
 		border-width:0;
 	}
 }
+/*van-cell修改*/
+.van-cell::after{
+	border-bottom: 0 !important;
+  }
+  .van-hairline--top-bottom::after, .van-hairline-unset--top-bottom::after{
+	border: 0;
+  }
+  /*van-cell修改结束*/
+  /*van-dialog定制弹框样式*/
+  .van-dialog{
+	width: 540px;
+	border-radius: 32px !important;
+	.van-dialog__content--isolated{
+	  min-height: auto;
+	}
+	.van-dialog__message{
+	  font-size: @font15;
+	  color: @fontC4D4;
+	  padding: 48px 56px;
+	}
+	.van-dialog__confirm, .van-dialog__confirm:active{
+	  color: @fontC2F8;
+	  font-size: @font16;
+	  font-weight: bold;
+	  padding: @pad15 0;
+	}
+  }
+  .van-dialog__cancel{
+	.van-button__text{
+		font-size: @font16;
+		color: @fontC82;
+	}
+}
+  /*定制弹框样式结束*/
+  /*vant步骤条样式*/
+  .van-step--finish{
+	  .van-step__line{
+		  background: @fontC2F8 !important;
+	  }
+	  .van-step__title{
+		  color: @fontC2F8 !important;
+	  }
+  }
+  .van-icon__image{
+	height: @font18;
+	width: @font18;
+  }
+  .van-step--horizontal .van-step__title{
+	font-size: 26px;
+	color: @fontC82;
+  }
+  .van-step__line{
+	color: #e0e0e0;
+  }
+  /*vant步骤条样式结束*/
+  .van-field__control {
+	font-size: @font15;
+	color: @fontC4D4;
+  }
+  .van-field__right-icon {
+	width: 1.2rem;
+  }
+  .van-field__value {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	.van-field__body {
+	  // width: 90%;////////////////
+	}
+	.van-field__error-message {
+	  width: 35%;
+	}
+  }
+  /*vant的form样式修改*/
+.van-cell {
+	padding: inherit;
+	// background-color: #fcfcff;
+	height: 114px;
+	line-height: 114px;
+	border-radius: 10px;
+	.van-cell__right-icon {
+	  height: 114px;
+	  line-height: 114px;
+	  margin-left: 16px;
+	  color: @fontC4D4;
+	}
+  }
+  .van-swipe__indicator {
+	height: 0.5rem;
+	width: 0.5rem;
+  }
+  .van-cell__title {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: @font15;
+	  color: @fontC4D4;
+  }
+  .van-cell-group {
+	background-color: inherit;
+  }
+  .van-collapse-item__wrapper{
+	  margin-top: @mar10;
+  }
+  .van-checkbox__label{
+	  margin-left: @mar16;
+	  line-height:inherit;
+	  color: inherit;
+  }

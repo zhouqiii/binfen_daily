@@ -1,147 +1,122 @@
 <template>
-    <div class="box">
-        <nav-bar-top title="延迟申请详情"></nav-bar-top>
-        <div class="home">
-            <div class="home_detail_date" v-show="ifRefuse">
-                <span>拒绝原因：</span>
-                <span>{{getdate}}</span>
+  <div class="box">
+    <nav-bar-top title="延时申请详情"></nav-bar-top>
+    <div class="home" v-if="info">
+      <div class="home_detail_date" v-if="info.remark">
+        <span>拒绝原因：</span>
+        <span>{{ info.remark }}</span>
+      </div>
+      <div class="home_detail_content">
+        <div class="ruleForm">
+          <div class="formItem box_frame-row">
+            <span>项目组</span>
+            <span class="item_content">{{ info.productName }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>任务</span>
+            <span class="item_content textEllipsis">{{ info.taskName }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>申请日期</span>
+            <span class="item_content">{{ info.workerDate }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>延时申请起始时间</span>
+            <span class="item_content">{{ info.workerStartTime }}</span>
+          </div>
+          <div class="formItem box_frame-row">
+            <span>延时申请截止时间</span>
+            <span class="item_content">{{ info.workerEndTime }}</span>
+          </div>
+          <div class="box_frame">
+            <div class="formItem">
+              <span>工作内容</span>
             </div>
-            <div class="home_detail_content">
-                <div class="ruleForm">
-                    <div class="formItem box_frame-row">
-                        <span>项目组</span>
-                        <span>{{projectTeam}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>任务</span>
-                        <span class="textEllipsis" >{{commision}}</span>
-                    </div>
-                     <div class="formItem box_frame-row">
-                        <span>申请日期</span>
-                        <span>{{date}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>延迟申请起始时间</span>
-                        <span>{{workHourStart}}</span>
-                    </div>
-                    <div class="formItem box_frame-row">
-                        <span>延迟申请截止时间</span>
-                        <span>{{workHourEnd}}</span>
-                    </div>
-                    <div class="box_frame">
-                        <div class="formItem">
-                            <span>今日工作</span>
-                        </div>
-                        <div class="home_detail_workContent">
-                            {{workContent}}
-                        </div>
-                    </div>
-                </div>
+            <div class="home_detail_workContent">
+              {{ info.workerInfo }}
             </div>
+          </div>
         </div>
-        <!-- <div class="change_btn">
-          <div class="sendBtn" @click="changeBtn">修改延迟申请</div>
-        </div> -->
+      </div>
     </div>
+    <!-- <div class="change_btn">
+          <div class="sendBtn" @click="changeBtn">修改延时申请</div>
+        </div> -->
+  </div>
 </template>
 <script>
-import createDom from '@/utils/createDom';
-import DialogMessage from '../../components/MyComponents/DialogMessage.vue';
+import { getWorkLateDetail } from '@/api/user';
 
 export default {
   name: 'ExtentionDetail',
   data() {
     return {
-      getdate: '加班时间有误，重新填写',
-      projectTeam: '缤纷生活',
-      commision: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
-      workHourStart: '6:30',
-      workHourEnd: '6:30',
-      workContent: '海外分行功能优化细化001-百姓对海外分行功能优化细化001',
-      date: '2021-4-22',
-      ifRefuse: false,
+      info: {},
     };
   },
   methods: {
-    getInfo() {
-      if (this.$route.query.refuse > 0) { // 有拒绝状态
-        this.ifRefuse = true;
-      } else {
-        this.ifRefuse = false;
-      }
+    getWorkLateDetail(id) {
+      getWorkLateDetail(id)
+        .then((res) => {
+          this.info = res.data;
+          console.log('getWorkLateDetail res', res);
+        })
+        .catch((err) => {
+          console.log('getWorkLateDetail err', err);
+        });
     },
     changeBtn() {
       this.show = false;
-      createDom(
-        DialogMessage,
-        {},
-        {
-          content: `<div style="text-align:center">暂不开放延迟申请修改页面！</div>
-                    `,
-          knowBtn: true,
-        },
-      );
+      this.$dialog.alert({
+        message: '暂不开放延时申请修改页面！',
+        confirmButtonText: '确定',
+      });
     },
   },
   mounted() {
-    this.getInfo();
+    const { id } = this.$route.query;
+    this.getWorkLateDetail(id);
   },
 };
 </script>
 <style lang="less" scoped>
-.home{
-    color: #605e5e;
-    font-size: .875rem;
-    padding: 3.4rem .5rem 4rem .5rem;
-      .home_detail_date{
-        padding: .5rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        background: #ffffff;
-        border-radius: .2rem;
-      }
-     .home_detail_content{
-        margin-top: .5rem;
-        border-radius: .5rem;
-        background: #ffffff;
-        padding: .5rem;
-        .ruleForm{
-            padding: 0;
-            .formItem{
-                height: 2.5rem;
-                line-height: 2.5rem;
-                .textEllipsis{
-                    width: 70%;
-                    text-align: right;
-                }
-            }
-            .home_detail_workContent{
-                width: 90%;
-                margin: auto;
-                line-height: 2rem;
-            }
+.home {
+  .home_detail_date {
+    padding: 0.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    background: #ffffff;
+    border-radius: 0.2rem;
+  }
+  .home_detail_content {
+    margin-top: @mar16;
+    background: #ffffff;
+    padding: @pad20;
+    .ruleForm {
+      padding: 0;
+      font-size: @font15;
+      color: @fontC4D4;
+      font-weight: 500;
+      .formItem {
+        margin-bottom: 28px;
+        .item_content {
+          font-weight: 700;
         }
-     }
-}
-.change_btn{
-    position: fixed;
-    bottom:0px;
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    .sendBtn{
-      width: 70%;
-      color: #ffffff;
-      height: 2rem;
-      line-height: 2rem;
-      background: #666666;
-      border-radius:.5rem ;
-      margin: auto;
-      text-align: center;
-      font-size: .875rem;
-
+        .textEllipsis {
+          width: 70%;
+          text-align: right;
+        }
+      }
+      .home_detail_workContent {
+        background: #f9fafc;
+        font-size: @font15;
+        color: @fontC4D4;
+        font-weight: 500;
+        border-radius: 32px;
+        padding: @pad16;
+        line-height: 42px;
+      }
     }
   }
+}
 </style>

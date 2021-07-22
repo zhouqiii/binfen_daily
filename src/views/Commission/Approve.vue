@@ -1,42 +1,33 @@
 <template>
-    <div style="height:100%">
-      <nav-bar-top title="审批" :navBg='navBg' :navIcon='navIcon'>
-        <template v-slot:right>
-          <div>
-            <svg-icon iconClass="history" @click="routeItem('/ApproveHistory')"></svg-icon>
-          </div>
-        </template>
-      </nav-bar-top>
-      <div class="home">
-        <!--任务列表部分-->
-        <div class="commi_alllist">
-          <my-approve
-            approveTab="0"
-            ref="chaildApprove"
-            :data='approveList'
-            @refresh="refreshAppr"
-          ></my-approve>
+  <div style="height:100%">
+    <nav-bar-top title="审批" :navBg="navBg" :navIcon="navIcon">
+      <template v-slot:right>
+        <div class="icon">
+          <svg-icon iconClass="checkApproveBack" @click="showRadio = !showRadio"></svg-icon>
         </div>
-      </div>
-      <div class="submit_btn" v-show="approveList.length!==0">
-        <button class="sendBtn" @click="show = true">一键审批</button>
-      </div>
-      <!--确定一键审批的弹框-->
-      <van-overlay :show="show" @click="show = false">
-        <div class="wrapper" @click.stop>
-          <div class="dialog_box">
-            <div class="btn_title">确定全部申请通过？</div>
-            <div class="btn_select flex_around">
-              <div class="selBtn selectCancel" @click="show = false">取消</div>
-              <div class="selBtn selectConfirm" @click="changeData">确定</div>
-            </div>
-          </div>
+        <div>
+          <svg-icon iconClass="history" @click="routeItem('/ApproveHistory')"></svg-icon>
         </div>
-      </van-overlay>
+      </template>
+    </nav-bar-top>
+    <nav-bar-bottom></nav-bar-bottom>
+    <div class="home">
+      <!--任务列表部分-->
+      <div class="commi_alllist">
+        <my-approve
+          approveTab="0"
+          ref="chaildApprove"
+          :dataList="approveList"
+          @refresh="refreshAppr"
+          :showRadio="showRadio"
+          @sendApprove="changeData"
+        ></my-approve>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import '../../assets/css/style/commission.less';
+import { checkList, checkTask } from '@/api/commission';
 import MyApprove from '../../components/MyComponents/MyApprove.vue';
 
 export default {
@@ -45,56 +36,87 @@ export default {
   data() {
     return {
       navBg: false, // header背景色
-      navIcon: true, // header是否有向左icon
-      show: false, // 一键审批的遮罩
+      navIcon: false, // header是否有向左icon
       showDelete: false,
       ifManager: true,
-      approveList: [{
-        title: '大鹏提交的延迟申请', vacationtype: '婚假', time: '18:30-21:30', date: '2021-04-29', status: '1', id: '50',
-      }, {
-        title: '老王提交的延迟申请', vacationtype: '婚假', time: '18:30-21:30', date: '2021-04-29', status: '2', id: '80',
-      }, {
-        title: '张三替交的延迟申请', vacationtype: '病假', time: '18:30-21:30', date: '2021-04-29', status: '1', id: '60',
-      }],
+      approveList: [],
+      showRadio: false, // 审批的选择框
     };
+  },
+  watch: {
+    $route() {
+      this.refreshAppr();
+    },
   },
   methods: {
     // 获取列表数据
     getListData(obj) {
-      this.requestAxios({
-        url: '/workDaily/work-daily/getListByPage', // /workDaily/work-daily/getListByPage
-        data: obj,
-        method: 'post', // post
-      })
+      checkList(obj)
         .then((res) => {
-          console.log(res);
+          this.approveList = [];
+          res.data.forEach((item, index) => {
+            this.approveList.push(item);
+            this.approveList[index].status_num = item.status.replace('-', '');
+          });
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.log('err', err);
+        });
     },
-    // 弹框的确定按钮
-    changeData() {
-      console.log('确定全部通过');
-      this.show = false;
-      this.routeItem('/ApproveHistory');
+    // 多选框审批的确定按钮
+    changeData(val) {
+      if (val.length <= 0) {
+        this.$toast('请先勾选需要删除的休假申请');
+        return;
+      }
+      this.$dialog
+        .confirm({
+          message: '确定选中申请通过',
+          confirmButtonText: '确定',
+        })
+        .then(() => {
+          this.sendApprove(val);
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    // 发送多选审批
+    sendApprove(val) {
+      const list = [];
+      val.forEach((item) => {
+        list.push({
+          checkRemark: '',
+          checkStatus: '1',
+          checkType: item.type,
+          id: item.id,
+        });
+      });
+      checkTask({ checkList: list })
+        .then((res) => {
+          if (res.code === 200) {
+            this.showRadio = false;
+            this.refreshAppr();
+          }
+        })
+        .catch((err) => {
+          console.log('checkTask err', err);
+        });
     },
     routeItem(path) {
       this.$router.push(path);
     },
     // 刷新
     refreshAppr() {
-      this.getListData({});
+      this.getListData({ checkStatus: '0' });
     },
   },
   mounted() {
-    const index = this.$route.params.tabIndexGive;// 这里是为了从拒绝页面跳转过来使用
-    if (index) {
-      this.tabIndexChange(index);
-    }
+    this.refreshAppr();
   },
-  created() {
-    if (this.$route.params.activeGive) {
-      this.approveTab = this.$route.params.activeGive;
-    }// 这里是为了从拒绝页面跳转过来使用
-  },
+  created() {},
 };
 </script>
+<style lang="less" scoped>
+@import url('../../assets/css/style/commission.less');
+</style>
